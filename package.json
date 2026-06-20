@@ -32,6 +32,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
     "fork-ts-checker-webpack-plugin": "^9.1.0",
+    "html-loader": "^5.1.0",
     "html-webpack-plugin": "^5.6.7",
     "mini-css-extract-plugin": "^2.10.2",
     "prettier": "^3.8.4",
@@ -49,10 +50,6 @@
     ]
   },
   "dependencies": {
-    "axios": "^1.18.0",
-    "highlight.js": "^11.11.1",
-    "html-loader": "^5.1.0",
-    "markdown-it": "^14.2.0",
     "material-design-icons": "^3.0.1"
   }
 }
