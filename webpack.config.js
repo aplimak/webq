@@ -3,19 +3,26 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
   context: __dirname, // to automatically find tsconfig.json
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  devtool: 'inline-source-map', // For better debugging
+  devtool: isProduction ? false : 'inline-source-map',
   entry: './src/index.ts',
   output: {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'www'),
+    clean: true,
   },
   devServer: {
     // static: "./public",
     hot: true,
+  },
+  cache: {
+    type: 'filesystem',
   },
   module: {
     rules: [
@@ -36,7 +43,7 @@ module.exports = {
       {
         test: /\.module\.css$/,
         use: [
-          'style-loader',
+          isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
           {
             loader: 'css-loader',
             options: {
@@ -47,7 +54,11 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [
+          isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+          'css-loader',
+          'sass-loader',
+        ],
       },
     ],
   },
@@ -57,8 +68,26 @@ module.exports = {
       '@': path.resolve(__dirname, 'src'),
     },
   },
+  performance: {
+    hints: false,
+  },
   optimization: {
-    minimizer: [`...`, new CssMinimizerPlugin()],
+    minimizer: [
+      `...`,
+      new TerserPlugin({
+        terserOptions: {
+          compress: {
+            drop_console: true,
+            drop_debugger: true,
+          },
+          format: {
+            comments: false,
+          },
+        },
+        extractComments: false,
+      }),
+      new CssMinimizerPlugin(),
+    ],
     splitChunks: {
       chunks: 'all',
       cacheGroups: {

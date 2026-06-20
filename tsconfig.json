@@ -11,6 +11,7 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx", // Not used, but for future if needed
+    "types": ["node"],
     "paths": {
       "@/*": ["./src/*"]
     }
