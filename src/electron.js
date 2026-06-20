@@ -1,21 +1,21 @@
-import { app, BrowserWindow, Menu } from "electron";
+import { app, BrowserWindow, Menu } from 'electron';
 
 function createWindow() {
-    const mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
-    });
+  const mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+  });
 
-    mainWindow.loadFile("index.html");
-    Menu.setApplicationMenu(null);
+  mainWindow.loadFile('index.html');
+  Menu.setApplicationMenu(null);
 }
 
 app.whenReady().then(() => {
-    createWindow();
+  createWindow();
 
-    app.on("activate", () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
-            createWindow();
-        }
-    });
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
 });

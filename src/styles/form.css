@@ -1,50 +1,50 @@
 .form-group {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .form-control {
-    border: 1px solid var(--object-border);
-    border-radius: 6px;
-    padding: 10px;
-    margin: 5px 0;
-    box-sizing: border-box;
-    outline: none;
-    color: var(--md-primary-text-color);
-    background-color: var(--object-background);
-    /* Important for padding to not affect width */
-    width: 100%;
-    transition: all 0.2s;
-    /* Smooth border color transition */
+  border: 1px solid var(--object-border);
+  border-radius: 6px;
+  padding: 10px;
+  margin: 5px 0;
+  box-sizing: border-box;
+  outline: none;
+  color: var(--md-primary-text-color);
+  background-color: var(--object-background);
+  /* Important for padding to not affect width */
+  width: 100%;
+  transition: all 0.2s;
+  /* Smooth border color transition */
 }
 
 .form-control:focus {
-    background-color: var(--object-background-focus);
-    border-color: var(--object-border-focus);
-    /* Bootstrap's primary color */
-    outline: none;
-    /* Remove default focus outline */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-    /* Subtle shadow */
+  background-color: var(--object-background-focus);
+  border-color: var(--object-border-focus);
+  /* Bootstrap's primary color */
+  outline: none;
+  /* Remove default focus outline */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  /* Subtle shadow */
 }
 
 .form-control:hover {
-    background-color: var(--object-background-hover);
+  background-color: var(--object-background-hover);
 }
 
 /* Text Input Styling */
-.form-control[type="text"] {
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 5px;
+.form-control[type='text'] {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 5px;
 }
 
 /* Checkbox Styling */
-.form-control[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    cursor: pointer;
-    vertical-align: middle;
-    margin-right: 8px;
+.form-control[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-right: 8px;
 }

@@ -1,61 +1,61 @@
-[data-theme="light"] {
-    --md-primary: #2979ff;
-    --md-primary-light: #64b5f6;
-    --md-primary-dark: #1967d4;
+[data-theme='light'] {
+  --md-primary: #2979ff;
+  --md-primary-light: #64b5f6;
+  --md-primary-dark: #1967d4;
 
-    --md-secondary: #9e9e9e;
-    --md-secondary-light: #cfcdcd;
-    --md-secondary-dark: #757575;
+  --md-secondary: #9e9e9e;
+  --md-secondary-light: #cfcdcd;
+  --md-secondary-dark: #757575;
 
-    --md-background: #fafafa;
-    --md-surface: #ffffff;
-    --md-elevation: #dedede;
+  --md-background: #fafafa;
+  --md-surface: #ffffff;
+  --md-elevation: #dedede;
 
-    --md-on-primary: #ffffff;
-    --md-on-secondary: #ffffff;
-    --md-on-background: #000000;
-    --md-on-surface: #000000;
+  --md-on-primary: #ffffff;
+  --md-on-secondary: #ffffff;
+  --md-on-background: #000000;
+  --md-on-surface: #000000;
 
-    --md-primary-text-color: #212121;
-    --md-icon-color: #777;
+  --md-primary-text-color: #212121;
+  --md-icon-color: #777;
 
-    --md-green: rgba(76, 175, 80, 0.5); /* Lighter, more subtle */
-    --md-yellow: rgba(255, 235, 59, 0.5); /* Softer, less harsh */
-    --md-red: rgba(231, 76, 60, 0.5); /* Less aggressive */
+  --md-green: rgba(76, 175, 80, 0.5); /* Lighter, more subtle */
+  --md-yellow: rgba(255, 235, 59, 0.5); /* Softer, less harsh */
+  --md-red: rgba(231, 76, 60, 0.5); /* Less aggressive */
 
-    --primary-color: var(--md-background);
-    --primary-text-color: var(--md-on-background);
-    --primary-icon-color: var(--md-icon-color);
-    --error-text-color: #b00020;
+  --primary-color: var(--md-background);
+  --primary-text-color: var(--md-on-background);
+  --primary-icon-color: var(--md-icon-color);
+  --error-text-color: #b00020;
 
-    --header-primary-color: #f8f8f8;
-    --header-primary-text-color: var(--md-on-surface);
+  --header-primary-color: #f8f8f8;
+  --header-primary-text-color: var(--md-on-surface);
 
-    --button-primary-color: var(--md-primary);
-    --button-primary-text-color: var(--md-on-primary);
-    --button-secondary-color: var(--md-secondary);
-    --button-secondary-text-color: var(--md-on-secondary);
-    --button-disabled-color: #bdbdbd;
-    --button-disabled-text-color: #ffffff;
-    --button-shadow-color: rgba(0, 0, 0, 0.12);
+  --button-primary-color: var(--md-primary);
+  --button-primary-text-color: var(--md-on-primary);
+  --button-secondary-color: var(--md-secondary);
+  --button-secondary-text-color: var(--md-on-secondary);
+  --button-disabled-color: #bdbdbd;
+  --button-disabled-text-color: #ffffff;
+  --button-shadow-color: rgba(0, 0, 0, 0.12);
 
-    --card-primary-color: var(--md-surface);
-    --card-primary-text-color: var(--md-on-surface);
-    --card-secondary-text-color: #555;
-    --card-shadow-color: rgba(0, 0, 0, 0.1);
+  --card-primary-color: var(--md-surface);
+  --card-primary-text-color: var(--md-on-surface);
+  --card-secondary-text-color: #555;
+  --card-shadow-color: rgba(0, 0, 0, 0.1);
 
-    --dialog-background: var(--md-surface);
-    --dialog-text-color: var(--md-on-surface);
-    --dialog-header-text-color: var(--md-on-primary);
-    --dialog-footer-button-text-color: #050505;
-    --dialog-footer-button-text-color-hover: #05050590;
+  --dialog-background: var(--md-surface);
+  --dialog-text-color: var(--md-on-surface);
+  --dialog-header-text-color: var(--md-on-primary);
+  --dialog-footer-button-text-color: #050505;
+  --dialog-footer-button-text-color-hover: #05050590;
 
-    --table-header-background: var(--md-elevation);
-    --table-cell-border: var(--md-secondary);
+  --table-header-background: var(--md-elevation);
+  --table-cell-border: var(--md-secondary);
 
-    --object-background: rgba(0, 0, 0, 0.05);
-    --object-background-focus: rgba(0, 0, 0, 0.08);
-    --object-background-hover: rgba(0, 0, 0, 0.1);
-    --object-border: rgba(99, 102, 241, 0.3);
-    --object-border-focus: rgba(99, 102, 241, 0.6);
+  --object-background: rgba(0, 0, 0, 0.05);
+  --object-background-focus: rgba(0, 0, 0, 0.08);
+  --object-background-hover: rgba(0, 0, 0, 0.1);
+  --object-border: rgba(99, 102, 241, 0.3);
+  --object-border-focus: rgba(99, 102, 241, 0.6);
 }

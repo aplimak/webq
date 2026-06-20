@@ -1,70 +1,70 @@
 .button {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .button.bordered {
-    border: 1px solid var(--object-border);
-    border-radius: 6px;
-    color: var(--md-primary-text-color);
-    background-color: var(--object-background);
-    transition: all 0.2s;
+  border: 1px solid var(--object-border);
+  border-radius: 6px;
+  color: var(--md-primary-text-color);
+  background-color: var(--object-background);
+  transition: all 0.2s;
 }
 
 .button.bordered.padded {
-    padding: 8px;
+  padding: 8px;
 }
 
 .button.bordered:hover {
-    background-color: var(--object-background-hover);
+  background-color: var(--object-background-hover);
 }
 
 .button.flat {
-    background-color: var(--dialog-background);
-    color: var(--dialog-footer-button-text-color);
-    border: none;
+  background-color: var(--dialog-background);
+  color: var(--dialog-footer-button-text-color);
+  border: none;
 }
 
 .button.flat:hover {
-    color: var(--dialog-footer-button-text-color-hover);
+  color: var(--dialog-footer-button-text-color-hover);
 }
 
 .button.filled {
-    border: none;
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-    /* To clip the animation */
-    transition: transform 0.2s ease;
+  border: none;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  /* To clip the animation */
+  transition: transform 0.2s ease;
 }
 
 .button.filled.padded {
-    padding: 12px;
+  padding: 12px;
 }
 
 .button.filled.gapped {
-    gap: 8px;
+  gap: 8px;
 }
 
 .button.filled.fixed-height {
-    height: 40px;
+  height: 40px;
 }
 
 .button.filled:not(.disabled):not(.no-hover):hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px var(--button-shadow-color);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px var(--button-shadow-color);
 }
 
 .button.filled.primary {
-    background-color: var(--button-primary-color);
-    color: var(--button-primary-text-color);
+  background-color: var(--button-primary-color);
+  color: var(--button-primary-text-color);
 }
 
 .button.filled.secondary {
-    background-color: var(--button-secondary-color);
-    color: var(--button-secondary-text-color);
+  background-color: var(--button-secondary-color);
+  color: var(--button-secondary-text-color);
 }
 
 .button.filled.disabled {
-    background-color: var(--button-disabled-color);
-    color: var(--button-disabled-text-color);
+  background-color: var(--button-disabled-color);
+  color: var(--button-disabled-text-color);
 }

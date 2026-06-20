@@ -1,73 +1,73 @@
-import { ToastService } from "./components/toast";
+import { ToastService } from './components/toast';
 
 export const sharedToastService = new ToastService();
 
 export function showSuccessToast(message: string, duration?: number) {
-    sharedToastService.show(message, "success", duration);
+  sharedToastService.show(message, 'success', duration);
 }
 
 export function showErrorToast(message: string, duration?: number) {
-    sharedToastService.show(message, "error", duration);
+  sharedToastService.show(message, 'error', duration);
 }
 
 export function showInfoToast(message: string, duration?: number) {
-    sharedToastService.show(message, "info", duration);
+  sharedToastService.show(message, 'info', duration);
 }
 
 export function navigateTo(route: string) {
-    window.location.hash = route;
+  window.location.hash = route;
 }
 
 export enum StorageCategory {
-    remotePortal = "rp",
-    Uno = "uno",
-    configuration = "config",
+  remotePortal = 'rp',
+  Uno = 'uno',
+  configuration = 'config',
 }
 
 export function getLocalItem(category: StorageCategory, key: string) {
-    return localStorage.getItem(`als_${category}_${key}`);
+  return localStorage.getItem(`als_${category}_${key}`);
 }
 
 export function setLocalItem(category: StorageCategory, key: string, value: string) {
-    return localStorage.setItem(`als_${category}_${key}`, value);
+  return localStorage.setItem(`als_${category}_${key}`, value);
 }
 
 export function setupInputNavigation(
-    container: HTMLElement,
-    onLastElement: (elem: HTMLInputElement) => void,
+  container: HTMLElement,
+  onLastElement: (elem: HTMLInputElement) => void
 ) {
-    function handleContainerKeydown(event: KeyboardEvent) {
-        if (event.key !== "Enter") {
-            return;
-        }
-
-        const focusedInput = event.target;
-        if (!(focusedInput instanceof HTMLInputElement)) {
-            return;
-        }
-        const inputs: HTMLInputElement[] = [];
-        container.querySelectorAll("input:not(.hide)").forEach((item) => {
-            if (item instanceof HTMLInputElement) {
-                inputs.push(item);
-            }
-        });
-        const currentIndex = inputs.indexOf(focusedInput);
-        if (currentIndex !== -1) {
-            const nextIndex = currentIndex + 1;
-            if (nextIndex >= inputs.length) {
-                onLastElement(focusedInput);
-                return;
-            }
-            inputs[nextIndex]?.focus();
-        }
+  function handleContainerKeydown(event: KeyboardEvent) {
+    if (event.key !== 'Enter') {
+      return;
     }
 
-    container.addEventListener("keydown", handleContainerKeydown);
+    const focusedInput = event.target;
+    if (!(focusedInput instanceof HTMLInputElement)) {
+      return;
+    }
+    const inputs: HTMLInputElement[] = [];
+    container.querySelectorAll('input:not(.hide)').forEach((item) => {
+      if (item instanceof HTMLInputElement) {
+        inputs.push(item);
+      }
+    });
+    const currentIndex = inputs.indexOf(focusedInput);
+    if (currentIndex !== -1) {
+      const nextIndex = currentIndex + 1;
+      if (nextIndex >= inputs.length) {
+        onLastElement(focusedInput);
+        return;
+      }
+      inputs[nextIndex]?.focus();
+    }
+  }
 
-    // Return a cleanup function (important if you replace the container)
-    return function cleanup() {
-        container.removeEventListener("keydown", handleContainerKeydown);
-    };
+  container.addEventListener('keydown', handleContainerKeydown);
+
+  // Return a cleanup function (important if you replace the container)
+  return function cleanup() {
+    container.removeEventListener('keydown', handleContainerKeydown);
+  };
 }
 
 /**
@@ -77,7 +77,7 @@ export function setupInputNavigation(
  * @returns {string} A relative time string (e.g., "5m ago", "1h ago", "2d ago", "3w ago").
  * @throws {Error} If the input is not a number or is negative.
  */
-export function getRelativeTime(timestamp: number, short=false): string {
+export function getRelativeTime(timestamp: number, short = false): string {
   if (typeof timestamp !== 'number') {
     throw new Error('Timestamp must be a number.');
   }
@@ -102,9 +102,7 @@ export function getRelativeTime(timestamp: number, short=false): string {
 
   const duration = {
     years: Math.floor((upper.getTime() - lower.getTime()) / (365.25 * 24 * 60 * 60 * 1000)),
-    months: Math.floor(
-      (upper.getTime() - lower.getTime()) / (30.44 * 24 * 60 * 60 * 1000)
-    ),
+    months: Math.floor((upper.getTime() - lower.getTime()) / (30.44 * 24 * 60 * 60 * 1000)),
     days: Math.floor((upper.getTime() - lower.getTime()) / (24 * 60 * 60 * 1000)),
     hours: Math.floor((upper.getTime() - lower.getTime()) / (60 * 60 * 1000)),
     minutes: Math.floor((upper.getTime() - lower.getTime()) / (60 * 1000)),
@@ -116,9 +114,9 @@ export function getRelativeTime(timestamp: number, short=false): string {
       return time;
     }
     if (future) {
-        return `in ${time}`;
+      return `in ${time}`;
     } else {
-        return `${time} ago`;
+      return `${time} ago`;
     }
   }
 
@@ -158,30 +156,31 @@ export function getRelativeTime(timestamp: number, short=false): string {
 }
 
 export function isElementHidden(element: HTMLElement) {
-    // Check if offsetWidth and offsetHeight are 0
-    if (element.offsetWidth === 0 && element.offsetHeight === 0) {
-      return true;
-    }
-  
-    // Get the computed style of the element
-    const computedStyle = window.getComputedStyle(element);
-  
-    // Check for common CSS properties that cause visibility issues
-    // A more comprehensive list could be added if needed.
-    const visibility = computedStyle.visibility;
-    const display = computedStyle.display;
-    const opacity = computedStyle.opacity;
-  
-    //Consider elements with zero-height/width and hidden due to media query
-    if (display === 'none') {
-      return true; //Explicitly hidden
-    }
-    if (visibility === 'hidden') {
-      return true; //Explicitly hidden
-    }
-    if (opacity === '0' || opacity === '0.0' || opacity === '0.00') { //Accounts for float representation.
-      return true; // Transparent (effectively hidden)
-    }
-  
-    return false; // Not hidden (based on these checks)
+  // Check if offsetWidth and offsetHeight are 0
+  if (element.offsetWidth === 0 && element.offsetHeight === 0) {
+    return true;
   }
+
+  // Get the computed style of the element
+  const computedStyle = window.getComputedStyle(element);
+
+  // Check for common CSS properties that cause visibility issues
+  // A more comprehensive list could be added if needed.
+  const visibility = computedStyle.visibility;
+  const display = computedStyle.display;
+  const opacity = computedStyle.opacity;
+
+  //Consider elements with zero-height/width and hidden due to media query
+  if (display === 'none') {
+    return true; //Explicitly hidden
+  }
+  if (visibility === 'hidden') {
+    return true; //Explicitly hidden
+  }
+  if (opacity === '0' || opacity === '0.0' || opacity === '0.00') {
+    //Accounts for float representation.
+    return true; // Transparent (effectively hidden)
+  }
+
+  return false; // Not hidden (based on these checks)
+}
