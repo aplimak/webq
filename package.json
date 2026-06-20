@@ -11,7 +11,8 @@
     "emulate": "npm run dev && PATH=$ANDROID_HOME/emulator:$PATH cordova emulate android",
     "lint": "eslint --ext .ts,.js src",
     "lint:fix": "eslint --ext .ts,.js src --fix",
-    "format": "prettier --write \"src/**/*.{ts,js,css,scss,html,json,md}\""
+    "format": "prettier --write \"src/**/*.{ts,js,css,scss,html,json,md}\"",
+    "clean": "rm -rf www && mkdir www"
   },
   "keywords": [
     "ecosystem:cordova"
