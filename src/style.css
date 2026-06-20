@@ -8,6 +8,10 @@
 
 @import 'material-design-icons/iconfont/material-icons.css';
 
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   user-select: none;
