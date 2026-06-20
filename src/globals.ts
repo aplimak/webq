@@ -1,9 +1,8 @@
-import axios from 'axios';
 import { getLocalItem, StorageCategory, setLocalItem } from './utils';
 
 export let isDark = false;
 
-export function setTheme(dark: boolean, save: boolean = false) {
+export function setTheme(dark: boolean, save: boolean = false): void {
   isDark = dark;
 
   if (save) {
@@ -13,7 +12,7 @@ export function setTheme(dark: boolean, save: boolean = false) {
   applyTheme();
 }
 
-export function applyTheme() {
+export function applyTheme(): void {
   if (isDark) {
     document.body.setAttribute('data-theme', 'dark');
   } else {
@@ -21,7 +20,7 @@ export function applyTheme() {
   }
 }
 
-export default function () {
+export default function (): void {
   let dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const useDarkTheme = getLocalItem(StorageCategory.configuration, 'useDarkTheme');
   if (useDarkTheme) {

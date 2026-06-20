@@ -6,11 +6,11 @@ import './style.css';
 
 let content: Element | null = null;
 
-function handleNotFound(root: Element) {
+function handleNotFound(root: Element): void {
   root.innerHTML = '<h1>Page Not Found</h1>';
 }
 
-export async function navigate(route: string) {
+export async function navigate(route: string): Promise<void> {
   showLoading(true);
 
   if (route.startsWith('#')) {
@@ -30,22 +30,16 @@ export async function navigate(route: string) {
   // Perform actions based on the route
   switch (route) {
     case '':
-    case '/':
+    case '/': {
       const main = await import('./main');
       await main.route(content);
       break;
-    case '/uno':
+    }
+    case '/uno': {
       const uno = await import('./apps/uno');
       uno.route(content);
       break;
-    case '/ollama':
-      const ollama = await import('./apps/ollama');
-      await ollama.route(content);
-      break;
-    case '/rp/monitor':
-      const monitor = await import('./apps/connectionmonitor');
-      monitor.route(content);
-      break;
+    }
     default:
       handleNotFound(content);
       break;
@@ -54,7 +48,7 @@ export async function navigate(route: string) {
   hideLoading();
 }
 
-function updateThemeBtnIcon(btn: Element, rotate = false) {
+function updateThemeBtnIcon(btn: Element, rotate = false): void {
   const span = btn.querySelector('span');
   if (!span) {
     return;
