@@ -1,0 +1,30 @@
+@import "highlight.js/styles/github-dark.min.css";
+
+#ai-bottom-bar {
+    position: sticky;
+    bottom: 0;
+    background-color: var(--primary-color);
+}
+
+#ai-bottom-bar input,
+#ai-bottom-bar select,
+#ai-bottom-bar button {
+    height: 36px;
+}
+
+#ai-response {
+    overflow-y: auto;
+}
+
+#ai-waiting {
+    display: none;
+    flex-direction: row;
+}
+
+#ai-waiting:last-child {
+    display: flex;
+}
+
+[dir="rtl"] #ai-send > span {
+    transform: rotate(180deg);
+}

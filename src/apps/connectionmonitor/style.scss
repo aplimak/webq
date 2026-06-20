@@ -1,0 +1,121 @@
+#connection-monitor {
+    &, .dgapped {
+        gap: 16px;
+    }
+
+    #events-container {
+        overflow-y: scroll;
+        max-height: 400px;
+        border-radius: 8px;
+
+        .card.event {
+            padding: 16px;
+
+            &:hover #event-status-container > :not(:last-child) {
+                display: none;
+            }
+        }
+    }
+
+    #sites-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(450px, 100%), 1fr));
+        border-radius: 8px;
+
+        &[data-site-filter="up"] > :not([data-status="up"]),
+        &[data-site-filter="partial"] > :not([data-status="partial"]),
+        &[data-site-filter="down"] > :not([data-status="down"]) {
+            display: none;
+        }
+
+        .card.site {
+            align-items: stretch;
+            padding-right: 16px;
+
+            &[data-mode="http"] {
+                cursor: pointer;
+            }
+
+            &[data-mode="tcp"],
+            &[data-mode="http"]:not(:hover) {
+                #site-link-icon {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .spaced {
+        justify-content: space-between;
+    }
+
+    .card {
+        .title {
+            margin: 8px;
+        }
+
+        &.event,
+        &.site {
+            border-width: 1px;
+            border-style: solid;
+        }
+    }
+
+    .status-pill.UP,
+    [data-status="up"] {
+        border-color: #05dd69;
+    }
+
+    .status-pill.PARTIAL,
+    [data-status="partial"] {
+        border-color: #d3a11f;
+    }
+
+    .status-pill.DOWN,
+    [data-status="down"] {
+        border-color: #ff4444;
+    }
+
+    .status-pill {
+        font-weight: 700;
+        padding: 6px 8px;
+        border-radius: 999px;
+        border-width: 1px;
+        border-style: solid;
+        font-size: 12px;
+
+        &.UP {
+            background: #05dd6936;
+            color: #05dd69;
+        }
+        
+        &.PARTIAL {
+            background: #d3a11f36;
+            color: #d3a11f;
+        }
+        
+        &.DOWN {
+            background: #ff444436;
+            color: #ff4444;
+        }
+    }
+
+    #sites-filter-bar {
+        button {
+            padding: 8px;
+            font-size: 0.7em;
+        }
+    }
+
+    @media (max-width: 767px) {
+        #sites-filter-bar {
+            justify-content: center;
+        }
+    }
+
+    @media (min-width: 768px) {
+        #events-container {
+            width: 300px;
+        }
+    }
+}

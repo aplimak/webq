@@ -1,0 +1,12 @@
+.card {
+    border-radius: 8px;
+}
+
+.card.prime {
+    background-color: var(--card-primary-color);
+    box-shadow: 0 4px 8px var(--card-shadow-color);
+}
+
+.card.flat {
+    background-color: var(--object-background);
+}

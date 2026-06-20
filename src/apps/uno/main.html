@@ -1,0 +1,32 @@
+<div id="uno-action-bar" class="button-container flex-row center">
+    <button id="new-round" class="button filled flex-row center padded gapped bold fixed-height primary hide"></button>
+    <button id="cancel" class="button filled center padded fixed-height secondary hide">
+        <span class="material-icons">close</span>
+    </button>
+    <button id="undo" class="button filled center padded  fixed-height secondary hide">
+        <span class="material-icons">undo</span>
+    </button>
+    <button id="reset" class="button filled center padded fixed-height secondary hide">
+        <span class="material-icons">replay</span>
+    </button>
+    <button id="config" class="button filled center padded fixed-height secondary">
+        <span class="fast material-icons">settings</span>
+    </button>
+</div>
+<div id="uno-stats">
+    <div class="uno-stat-card card prime flex-col">
+        <span class="uno-text title">Round</span>
+        <span id="uno-stats-round" class="uno-text bold">0</span>
+        <span id="uno-stats-last-winner" class="uno-text"></span>
+    </div>
+    <div id="uno-stats-player" class="uno-stat-card card prime flex-col"></div>
+    <div class="uno-stat-card card prime flex-col">
+        <span class="uno-text title">Highest</span>
+        <span id="uno-stats-highest-score" class="uno-text bold">0</span>
+        <span id="uno-max-score" class="uno-text">of 0</span>
+    </div>
+</div>
+<div id="uno-players" class="middle"></div>
+<div id="uno-rounds-wrapper" class="scrollable-table-wrapper">
+    <table id="uno-rounds"></table>
+</div>
