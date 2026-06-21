@@ -7,13 +7,13 @@ import {
   showErrorToast,
   showSuccessToast,
   scrollToBottom,
-} from '../../utils';
+} from '../../shell/utils';
 import addPlayerForm from './addplayer.html';
 import main from './main.html';
 import settingsForm from './settings.html';
 import './style.css';
 
-import { Dialog } from '../../components/dialog';
+import { Dialog } from '../../shell/components/dialog';
 import * as backend from './backend';
 import * as database from './database';
 import type { Player, PlayerDefinition, RoundResult, RoundScore } from './models';
@@ -92,7 +92,7 @@ function addRoundToTable(table: Element, round: RoundResult) {
   }
 }
 
-export function route(content: Element) {
+export default async function route(content: Element): Promise<void> {
   content.innerHTML = main;
 
   // it initializes the whole backend and restores existing rounds
@@ -781,11 +781,11 @@ function refreshNewRoundBtn(newRoundBtn: Element) {
   }
 }
 
-export default function (card: Element) {
+export function initCard(card: Element) {
   const enterBtn = card.querySelector('#uno-button');
   if (enterBtn) {
     enterBtn.addEventListener('click', async () => {
-      navigateTo('/uno');
+      navigateTo('uno');
     });
   }
 }

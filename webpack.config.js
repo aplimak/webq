@@ -10,7 +10,9 @@ const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
   context: __dirname,
   mode: isProduction ? 'production' : 'development',
-  entry: './src/index.ts',
+  entry: {
+    shell: './src/index.ts',
+  },
   output: {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'www'),
@@ -121,22 +123,32 @@ module.exports = {
           new CssMinimizerPlugin(),
         ]
       : [],
+    chunkIds: 'named',
     splitChunks: {
       chunks: 'all',
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendor',
-          priority: -10,
+          priority: 10,
+          minSize: 0,
+          maxSize: 100000, // Splits huge libs if necessary
+        },
+
+        pages: {
+          test: /[\\/]src[\\/]pages[\\/]/,
+          chunks: 'all',
+          name: 'pages',
+          priority: 20,
           minSize: 0,
           maxSize: 100000,
         },
-        common: {
-          test: /[\\/]src[\\/]/,
-          name: 'common',
-          priority: -5,
+
+        shell: {
+          test: /[\\/]src[\\/](?!pages[\\/])[\\/]/, // everything EXCEPT pages
+          name: 'shell',
+          priority: 5,
           minSize: 0,
-          maxSize: 100000,
         },
       },
     },

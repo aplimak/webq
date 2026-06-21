@@ -1,6 +1,7 @@
-export async function route(content: Element): Promise<void> {
-  const main = await import('./main.html');
-  content.innerHTML = main.default;
+import main from './main.html';
+
+export default async function route(content: Element): Promise<void> {
+  content.innerHTML = main;
 
   const cardContainer = content.querySelector('.card-container');
   if (!cardContainer) {
@@ -11,7 +12,7 @@ export async function route(content: Element): Promise<void> {
   // Uno app
   const unoCard = cardContainer.querySelector('#uno-card');
   if (unoCard) {
-    const uno = await import('./apps/uno');
-    uno.default(unoCard);
+    const uno = await import('../uno');
+    uno.initCard(unoCard);
   }
 }

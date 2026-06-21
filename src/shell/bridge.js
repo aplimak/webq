@@ -1,5 +1,5 @@
 const utils = require('./utils');
-const globals = require('./globals');
+const globals = require('./themeManager');
 
 document.addEventListener('deviceready', () => {
   globals.applyTheme();

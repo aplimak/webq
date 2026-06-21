@@ -1,4 +1,4 @@
-import { getLocalItem, StorageCategory, setLocalItem } from '../../utils';
+import { getLocalItem, StorageCategory, setLocalItem } from '../../shell/utils';
 import type { PlayerDefinition, RoundResult } from './models';
 
 const defaultPlayerDefs: PlayerDefinition[] = [

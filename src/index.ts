@@ -1,11 +1,12 @@
-import { hideLoading, showLoading } from './components/loading';
-import initGlobals, { isDark, setTheme } from './globals';
-import { navigateTo } from './utils';
-import './bridge';
+import { initTheme } from './shell/themeManager';
+import { navigateTo } from './shell/utils';
+import './shell/bridge';
 
-import './style.css';
+import './shell/style.css';
 
 let content: Element | null = null;
+let currentCleanup: (() => void) | null = null;
+const DEFAULT_ROUTE = 'home';
 
 function handleNotFound(root: Element): void {
   root.innerHTML = '<h1>Page Not Found</h1>';
@@ -28,77 +29,43 @@ export async function navigate(route: string): Promise<void> {
 
   // Perform actions based on the route
   document.startViewTransition(async () => {
-    switch (route) {
-      case '':
-      case '/': {
-        const main = await import('./main');
-        await main.route(content!);
-        break;
+    if (currentCleanup) {
+      currentCleanup(); // Calls the destroy() function returned by the previous page
+      currentCleanup = null;
+    }
+
+    try {
+      const module = await import(`./pages/${route}`);
+
+      const result = await module.default(content);
+
+      if (typeof result === 'function') {
+        currentCleanup = result; // Store cleanup for the next navigation
       }
-      case '/uno': {
-        const uno = await import('./apps/uno');
-        uno.route(content!);
-        break;
-      }
-      default:
-        handleNotFound(content!);
-        break;
+    } catch (error) {
+      console.error(`Page "${route}" not found:`, error);
+      handleNotFound(content!);
     }
   });
 }
 
-function updateThemeBtnIcon(btn: Element, rotate = false): void {
-  const span = btn.querySelector('span');
-  if (!span) {
-    return;
-  }
-
-  let icon = 'brightness_';
-  if (isDark) {
-    icon += 'high';
-  } else {
-    icon += 'low';
-  }
-  span.innerHTML = icon;
-
-  if (rotate && !span.classList.contains('rotate')) {
-    span.classList.add('rotate');
-    setTimeout(() => {
-      span.classList.remove('rotate');
-    }, 1000);
-  }
-}
-
 window.addEventListener('hashchange', () => {
-  navigate(window.location.hash || '/');
+  navigate(window.location.hash.slice(1) || DEFAULT_ROUTE);
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
   content = document.getElementById('content');
 
-  initGlobals();
+  initTheme();
 
   const headerTitle = document.querySelector('.header-title');
   if (headerTitle && headerTitle instanceof HTMLDivElement) {
     headerTitle.style.cursor = 'pointer';
     headerTitle.addEventListener('click', () => {
-      navigateTo('/');
+      navigateTo('home');
     });
   }
 
-  const switchThemeButton = document.querySelector('#switch-theme');
-  if (switchThemeButton) {
-    updateThemeBtnIcon(switchThemeButton);
-    switchThemeButton.classList.remove('hide');
-    switchThemeButton.addEventListener('click', () => {
-      setTheme(!isDark, true);
-      updateThemeBtnIcon(switchThemeButton, true);
-    });
-  }
-
-  if (!window.location.hash) {
-    window.location.hash = '/';
-  } else {
-    navigate(window.location.hash);
-  }
+  const initialRoute = window.location.hash.slice(1) || DEFAULT_ROUTE;
+  navigate(initialRoute);
 });
