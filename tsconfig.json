@@ -13,7 +13,8 @@
     "jsx": "react-jsx", // Not used, but for future if needed
     "types": ["node"],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@shell/*": ["./src/shell/*"]
     }
   },
   "include": ["src/**/*"],

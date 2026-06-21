@@ -7,13 +7,13 @@ import {
   showErrorToast,
   showSuccessToast,
   scrollToBottom,
-} from '../../shell/utils';
+} from '@shell/utils';
 import addPlayerForm from './addplayer.html';
 import main from './main.html';
 import settingsForm from './settings.html';
 import './style.css';
 
-import { Dialog } from '../../shell/components/dialog';
+import { Dialog } from '@shell/components/dialog';
 import * as backend from './backend';
 import * as database from './database';
 import type { Player, PlayerDefinition, RoundResult, RoundScore } from './models';
