@@ -28,10 +28,6 @@ body {
   font-weight: 600;
 }
 
-.error {
-  color: var(--error-text-color);
-}
-
 .green {
   background-color: var(--md-green) !important;
 }
