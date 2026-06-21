@@ -526,6 +526,7 @@ function reloadPage(content: Element) {
 
 function announceWinner(winner: Player) {
   const dialog = new Dialog('winner-announcement', '');
+  dialog.resolvePromiseOnUnexpectedClose = true;
   dialog.dialog.style.backgroundColor = '#00FF7F';
   dialog.dialog.style.color = '#000';
   dialog.header.classList.add('hide');
@@ -541,6 +542,83 @@ function announceWinner(winner: Player) {
         </div>`;
 
   dialog.open();
+
+  try {
+    // Create the audio context (must be done inside the user gesture)
+    const audioCtx = new window.AudioContext();
+
+    // Resume if suspended (important for Chrome autoplay policy)
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume().then(() => _playAudio(audioCtx));
+    } else {
+      _playAudio(audioCtx);
+    }
+
+    dialog.promise.then(() => {
+      audioCtx.close();
+    });
+  } catch (err) {
+    showErrorToast(`Web Audio couldn't play: ${err}`);
+    // Fallback: if Web Audio fails, at least the vibration works.
+  }
+}
+
+function _playAudio(audioCtx: AudioContext) {
+  const now = audioCtx.currentTime;
+
+  const freqs = [
+    523.25, // C5
+    659.25, // E5
+    783.99, // G5
+    1046.5, // C6
+    880.0, // A5
+    783.99, // G5
+    659.25, // E5
+    523.25, // C5
+    659.25, // E5
+    783.99, // G5
+    1046.5, // C6
+    987.77, // B5
+    783.99, // G5
+    659.25, // E5
+    523.25, // C5
+    1046.5, // C6
+    987.77, // B5
+    880.0, // A5
+    783.99, // G5
+    659.25, // E5 (ends on a bright note)
+  ];
+
+  // Each note: 0.4s duration + 0.1s gap = 0.5s per note.
+  // 20 notes × 0.5s = exactly 10 seconds.
+  const noteDuration = 0.1;
+  const gap = 0.1;
+  const step = noteDuration + gap;
+
+  // Volume: 0.9 – loud but still clean (max is 1.0)
+  const volume = 0.9;
+
+  freqs.forEach((freq, index) => {
+    const startTime = now + index * step;
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'sine'; // pure tone, pleasant
+    osc.frequency.value = freq;
+
+    // Envelope: quick attack, slight decay, then release
+    gain.gain.setValueAtTime(0.001, startTime);
+    gain.gain.exponentialRampToValueAtTime(volume, startTime + 0.015);
+    gain.gain.exponentialRampToValueAtTime(volume * 0.6, startTime + noteDuration * 0.7);
+    gain.gain.exponentialRampToValueAtTime(0.001, startTime + noteDuration);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start(startTime);
+    osc.stop(startTime + noteDuration);
+  });
 }
 
 function refresh(content: Element, checkWinner = false) {
