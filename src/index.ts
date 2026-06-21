@@ -1,6 +1,7 @@
 import { hideLoading, showLoading } from './components/loading';
 import initGlobals, { isDark, setTheme } from './globals';
 import { navigateTo } from './utils';
+import './bridge';
 
 import './style.css';
 

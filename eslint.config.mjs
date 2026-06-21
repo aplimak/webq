@@ -15,6 +15,11 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   {
+    env: {
+      browser: true, // defines `window`, `document`
+      node: true, // defines `require`, `module`, `process`
+      es6: true, // enables ES6 globals (optional)
+    },
     extends: compat.extends(
       'eslint:recommended',
       'plugin:@typescript-eslint/recommended',
