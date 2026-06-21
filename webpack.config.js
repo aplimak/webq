@@ -60,6 +60,20 @@ module.exports = {
           'sass-loader',
         ],
       },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[name][ext]', // e.g. fonts/MyFont.woff2
+        },
+      },
+      {
+        test: /cordova\.js$/,
+        type: 'asset/resource',
+        generator: {
+          filename: '[name][ext]',
+        },
+      },
     ],
   },
   resolve: {
