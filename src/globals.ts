@@ -13,11 +13,10 @@ export function setTheme(dark: boolean, save: boolean = false): void {
 }
 
 export function applyTheme(): void {
-  if (isDark) {
-    document.body.setAttribute('data-theme', 'dark');
-  } else {
-    document.body.setAttribute('data-theme', 'light');
-  }
+  import('./bridge').then((bridge) => {
+    bridge.updateStatusBarColor(isDark ? '#2e2e2e' : '#f8f8f8', isDark);
+    document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  });
 }
 
 export default function (): void {
