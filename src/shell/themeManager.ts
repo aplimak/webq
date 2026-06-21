@@ -41,7 +41,7 @@ function updateThemeBtnIcon(btn: Element, rotate = false): void {
   }
 }
 
-export function initTheme(): void {
+document.addEventListener('DOMContentLoaded', async () => {
   let dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const useDarkTheme = getLocalItem(StorageCategory.configuration, 'useDarkTheme');
   if (useDarkTheme) {
@@ -59,4 +59,4 @@ export function initTheme(): void {
       updateThemeBtnIcon(switchThemeButton, true);
     });
   }
-}
+});

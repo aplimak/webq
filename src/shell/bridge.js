@@ -1,8 +1,8 @@
 const utils = require('./utils');
-const globals = require('./themeManager');
+const themeMgr = require('./themeManager');
 
 document.addEventListener('deviceready', () => {
-  globals.applyTheme();
+  themeMgr.applyTheme();
 
   // handle back button, if we are in the main page, exit app, otherwise go back
   document.addEventListener('backbutton', () => {
