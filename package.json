@@ -27,6 +27,7 @@
     "@babel/preset-env": "^8.0.2",
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^10.0.1",
+    "@types/cordova": "^11.0.3",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^26.0.0",
     "@typescript-eslint/eslint-plugin": "^8.61.1",
@@ -36,6 +37,7 @@
     "cordova": "^13.0.0",
     "cordova-android": "^15.0.0",
     "cordova-plugin-device": "^3.0.0",
+    "cordova-plugin-dialogs": "^2.0.2",
     "css-loader": "^7.1.4",
     "css-minimizer-webpack-plugin": "^8.0.0",
     "eslint": "^10.5.0",
@@ -60,7 +62,8 @@
       "android"
     ],
     "plugins": {
-      "cordova-plugin-device": {}
+      "cordova-plugin-device": {},
+      "cordova-plugin-dialogs": {}
     }
   },
   "dependencies": {

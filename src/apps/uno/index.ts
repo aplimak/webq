@@ -277,23 +277,73 @@ function submitRound(content: Element) {
 }
 
 function handleUndo(content: Element) {
-  const response = confirm('Are you really want to remove last round?');
-  if (response) {
-    database.removeLastRound();
-    // its just resets the backend but without syncing and also reloads all stored rounds
-    backend.restoreRounds();
-    showSuccessToast('Last round is removed');
-    reloadPage(content);
+  if ('notification' in navigator) {
+    const notif = navigator.notification as {
+      confirm: (
+        message: string,
+        callback?: (index: number) => void,
+        title?: string,
+        buttonLabels?: string[]
+      ) => void;
+    };
+    notif.confirm(
+      'Do you really want to remove last round?',
+      (index) => onUndoConfirm(content, index),
+      'Undo Last Round',
+      ['OK', 'Cancel']
+    );
+  } else {
+    const response = confirm('Are you really want to remove last round?');
+    if (response) {
+      onUndoConfirm(content, 1);
+    }
   }
 }
 
-function handleReset(content: Element) {
-  const response = confirm('Are you really want to reset game progress?');
-  if (response) {
-    backend.resetGame();
-    showSuccessToast('Game Progress is Reset');
-    reloadPage(content);
+function onUndoConfirm(content: Element, index: number) {
+  if (index !== 1) {
+    return;
   }
+
+  database.removeLastRound();
+  // its just resets the backend but without syncing and also reloads all stored rounds
+  backend.restoreRounds();
+  showSuccessToast('Last round is removed');
+  reloadPage(content);
+}
+
+function handleReset(content: Element) {
+  if ('notification' in navigator) {
+    const notif = navigator.notification as {
+      confirm: (
+        message: string,
+        callback?: (index: number) => void,
+        title?: string,
+        buttonLabels?: string[]
+      ) => void;
+    };
+    notif.confirm(
+      'Do you really want to reset the game progress?',
+      (index) => onResetConfirm(content, index),
+      'Reset Game Progress',
+      ['OK', 'Cancel']
+    );
+  } else {
+    const response = confirm('Are you really want to reset game progress?');
+    if (response) {
+      onResetConfirm(content, 1);
+    }
+  }
+}
+
+function onResetConfirm(content: Element, index: number) {
+  if (index !== 1) {
+    return;
+  }
+
+  backend.resetGame();
+  showSuccessToast('Game Progress is Reset');
+  reloadPage(content);
 }
 
 function handleSettings(content: Element) {
