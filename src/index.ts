@@ -49,8 +49,12 @@ export async function navigate(route: string): Promise<void> {
   });
 }
 
-window.addEventListener('hashchange', () => {
+function _navigate() {
   navigate(window.location.hash.slice(1) || DEFAULT_ROUTE);
+}
+
+window.addEventListener('hashchange', () => {
+  _navigate();
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -66,6 +70,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  const initialRoute = window.location.hash.slice(1) || DEFAULT_ROUTE;
-  navigate(initialRoute);
+  _navigate();
 });

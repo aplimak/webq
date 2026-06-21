@@ -6,7 +6,7 @@ document.addEventListener('deviceready', () => {
 
   // handle back button, if we are in the main page, exit app, otherwise go back
   document.addEventListener('backbutton', () => {
-    if (window.location.pathname === '/index.html' && window.location.hash === '#/') {
+    if (window.location.pathname === '/index.html' && window.location.hash.slice(1) === 'home') {
       navigator.app.exitApp();
     } else {
       window.history.back();
