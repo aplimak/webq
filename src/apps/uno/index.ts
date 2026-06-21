@@ -6,6 +6,7 @@ import {
   setupInputNavigation,
   showErrorToast,
   showSuccessToast,
+  scrollToBottom,
 } from '../../utils';
 import addPlayerForm from './addplayer.html';
 import main from './main.html';
@@ -85,6 +86,9 @@ function addRoundToTable(table: Element, round: RoundResult) {
 
     row.innerHTML = html;
     body.appendChild(row);
+
+    const wrapper = table.closest('#uno-rounds-wrapper');
+    scrollToBottom(wrapper!);
   }
 }
 

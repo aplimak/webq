@@ -184,3 +184,10 @@ export function isElementHidden(element: HTMLElement) {
 
   return false; // Not hidden (based on these checks)
 }
+
+export function scrollToBottom(element: Element): void {
+  element.scrollTo({
+    behavior: 'smooth',
+    top: element.scrollHeight,
+  });
+}
