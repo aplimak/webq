@@ -8,9 +8,9 @@
   "scripts": {
     "build:prod": "NODE_ENV=production webpack --config webpack.config.js && cordova build android --release -- --packageType=apk",
     "build:dev": "NODE_ENV=development webpack --config webpack.config.js && cordova build android --debug",
+    "start": "NODE_ENV=development webpack serve --config webpack.config.js",
     "run:prod": "npm run build:prod && cordova run android --release --noprepare --nobuild -- --packageType=apk",
     "run:dev": "npm run build:dev && cordova run android --debug --noprepare --nobuild",
-    "start": "npm run run:dev",
     "emulate": "npm run build:dev && PATH=$ANDROID_HOME/emulator:$PATH cordova emulate android --debug --noprepare --nobuild",
     "lint": "eslint --ext .ts,.js src",
     "lint:fix": "eslint --ext .ts,.js src --fix",
@@ -56,7 +56,8 @@
     "ts-loader": "^9.6.1",
     "typescript": "^6.0.3",
     "webpack": "^5.107.2",
-    "webpack-cli": "^7.0.3"
+    "webpack-cli": "^7.0.3",
+    "webpack-dev-server": "^5.2.5"
   },
   "cordova": {
     "platforms": [
