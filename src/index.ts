@@ -12,8 +12,6 @@ function handleNotFound(root: Element): void {
 }
 
 export async function navigate(route: string): Promise<void> {
-  showLoading(true);
-
   if (route.startsWith('#')) {
     route = route.substring(1);
   }
@@ -29,24 +27,24 @@ export async function navigate(route: string): Promise<void> {
   window.location.hash = route;
 
   // Perform actions based on the route
-  switch (route) {
-    case '':
-    case '/': {
-      const main = await import('./main');
-      await main.route(content);
-      break;
+  document.startViewTransition(async () => {
+    switch (route) {
+      case '':
+      case '/': {
+        const main = await import('./main');
+        await main.route(content!);
+        break;
+      }
+      case '/uno': {
+        const uno = await import('./apps/uno');
+        uno.route(content!);
+        break;
+      }
+      default:
+        handleNotFound(content!);
+        break;
     }
-    case '/uno': {
-      const uno = await import('./apps/uno');
-      uno.route(content);
-      break;
-    }
-    default:
-      handleNotFound(content);
-      break;
-  }
-
-  hideLoading();
+  });
 }
 
 function updateThemeBtnIcon(btn: Element, rotate = false): void {
