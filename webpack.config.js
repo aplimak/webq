@@ -19,7 +19,7 @@ module.exports = {
   },
   devServer: {
     // static: "./public",
-    hot: true,
+    hot: false,
   },
   cache: {
     type: 'filesystem',
