@@ -8,21 +8,13 @@ const TerserPlugin = require('terser-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
-  context: __dirname, // to automatically find tsconfig.json
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  devtool: isProduction ? false : 'inline-source-map',
+  context: __dirname,
+  mode: isProduction ? 'production' : 'development',
   entry: './src/index.ts',
   output: {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'www'),
     clean: true,
-  },
-  devServer: {
-    // static: "./public",
-    hot: false,
-  },
-  cache: {
-    type: 'filesystem',
   },
   module: {
     rules: [
@@ -96,26 +88,39 @@ module.exports = {
       '@': path.resolve(__dirname, 'src'),
     },
   },
-  performance: {
-    hints: false,
-  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: 'index.html',
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+    }),
+    new ForkTsCheckerWebpackPlugin({
+      typescript: {
+        configFile: path.resolve(__dirname, 'tsconfig.json'),
+      },
+    }),
+  ],
   optimization: {
-    minimizer: [
-      `...`,
-      new TerserPlugin({
-        terserOptions: {
-          compress: {
-            drop_console: true,
-            drop_debugger: true,
-          },
-          format: {
-            comments: false,
-          },
-        },
-        extractComments: false,
-      }),
-      new CssMinimizerPlugin(),
-    ],
+    minimizer: isProduction
+      ? [
+          `...`,
+          new TerserPlugin({
+            terserOptions: {
+              compress: {
+                drop_console: true,
+                drop_debugger: true,
+              },
+              format: {
+                comments: false,
+              },
+            },
+            extractComments: false,
+          }),
+          new CssMinimizerPlugin(),
+        ]
+      : [],
     splitChunks: {
       chunks: 'all',
       cacheGroups: {
@@ -137,24 +142,11 @@ module.exports = {
     },
     runtimeChunk: 'single',
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-      filename: 'index.html',
-    }),
-    new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-    }),
-    new ForkTsCheckerWebpackPlugin({
-      typescript: {
-        configFile: path.resolve(__dirname, 'tsconfig.json'),
-      },
-    }),
-  ],
-  watchOptions: {
-    // for some systems, watching many files can result in a lot of CPU or memory usage
-    // https://webpack.js.org/configuration/watch/#watchoptionsignored
-    // don't use this pattern, if you have a monorepo with linked packages
-    ignored: /node_modules/,
+  devtool: isProduction ? false : 'inline-source-map',
+  devServer: {
+    hot: false,
+  },
+  cache: {
+    type: 'filesystem',
   },
 };
