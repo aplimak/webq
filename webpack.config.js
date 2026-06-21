@@ -112,9 +112,14 @@ module.exports = {
           `...`,
           new TerserPlugin({
             terserOptions: {
+              ecma: 2020, // output ES2020 syntax
+              output: {
+                ecma: 2020, // ensure output uses ES2020
+              },
               compress: {
                 drop_console: true,
                 drop_debugger: true,
+                ecma: 2020, // compress using ES2020 rules
               },
               format: {
                 comments: false,
