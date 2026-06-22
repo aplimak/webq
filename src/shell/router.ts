@@ -1,56 +1,75 @@
 import { navigateTo } from './utils';
+import { shellStorage } from './storage';
+import { Page } from './page';
 
-let content: Element | null = null;
-let currentCleanup: (() => void) | null = null;
-const DEFAULT_ROUTE = 'home';
+const DEFAULT_ROUTE = shellStorage.get('defaultRoute');
+
+export let currentPage: Page | null = null;
+
+export function inMainPage(): boolean {
+  return window.location.hash.slice(1) === DEFAULT_ROUTE;
+}
 
 function handleNotFound(root: Element, route: string): void {
   root.innerHTML = `<h1>Page Not Found: ${route}</h1>`;
 }
 
-async function navigate(route: string): Promise<void> {
-  if (!content) {
-    console.error('content div not found');
-    return;
-  }
-
-  if (route.startsWith('#')) {
-    route = route.substring(1);
-  }
-
-  console.log(`Navigating to: ${route}`);
-
-  // Update the URL in the browser's address bar
-  window.location.hash = route;
-
-  // Perform actions based on the route
-  document.startViewTransition(async () => {
-    if (currentCleanup) {
-      currentCleanup(); // Calls the destroy() function returned by the previous page
-      currentCleanup = null;
+async function initRoute(): Promise<void> {
+  async function navigate(route: string): Promise<void> {
+    if (route.startsWith('#')) {
+      route = route.substring(1);
     }
 
-    try {
-      const module = await import(`../pages/${route}`);
+    console.log(`Navigating to: ${route}`);
 
-      const result = await module.default(content);
+    // Update the URL in the browser's address bar
+    window.location.hash = route;
 
-      if (typeof result === 'function') {
-        currentCleanup = result; // Store cleanup for the next navigation
+    // Perform actions based on the route
+    document.startViewTransition(async () => {
+      try {
+        if (currentPage?.exit) {
+          await currentPage.exit(route);
+        }
+      } catch (error) {
+        console.warn(`Error while exiting page: ${currentPage?.id}`, error);
       }
-    } catch (error) {
-      console.error(`Page "${route}" not found:`, error);
-      handleNotFound(content!, route);
-    }
-  });
-}
 
-function doNavigate() {
-  navigate(window.location.hash.slice(1) || DEFAULT_ROUTE);
-}
+      try {
+        const module = await import(`../pages/${route}`);
+        const page = module.default as Page;
 
-document.addEventListener('DOMContentLoaded', async () => {
-  content = document.getElementById('content');
+        if (typeof page.route !== 'function') {
+          throw Error('Page is not routable');
+        }
+        if (page.id !== route) {
+          throw Error(`Page id: ${page.id} does not match route: ${route}`);
+        }
+
+        const prevPage = currentPage;
+        currentPage = page;
+
+        await currentPage.route({
+          content: content,
+          previousRoute: prevPage?.id,
+        });
+      } catch (error) {
+        console.error(`Page "${route}" not found:`, error);
+        handleNotFound(content!, route);
+      }
+    });
+  }
+
+  function doNavigate(): void {
+    navigate(window.location.hash.slice(1) || DEFAULT_ROUTE);
+  }
+
+  const _content = document.getElementById('content');
+  if (!(_content instanceof HTMLDivElement)) {
+    throw Error('Invalid content container');
+  }
+  const content = _content;
+
   doNavigate();
 
   window.addEventListener('hashchange', () => {
@@ -64,4 +83,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       navigateTo('home');
     });
   }
-});
+}
+
+document.addEventListener('DOMContentLoaded', initRoute);

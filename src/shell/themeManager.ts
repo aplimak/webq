@@ -1,4 +1,4 @@
-import { getLocalItem, StorageCategory, setLocalItem } from './utils';
+import { shellStorage } from './storage';
 
 export let isDark = false;
 
@@ -6,7 +6,7 @@ export function setTheme(dark: boolean, save: boolean = false): void {
   isDark = dark;
 
   if (save) {
-    setLocalItem(StorageCategory.configuration, 'useDarkTheme', isDark ? '1' : '0');
+    shellStorage.set('useDarkTheme', dark);
   }
 
   applyTheme(save);
@@ -47,13 +47,10 @@ function updateThemeBtnIcon(btn: Element, rotate = false): void {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  let dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const useDarkTheme = getLocalItem(StorageCategory.configuration, 'useDarkTheme');
-  if (useDarkTheme) {
-    dark = useDarkTheme !== '0';
-  }
+  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const useDarkTheme = shellStorage.get('useDarkTheme', systemDark);
 
-  setTheme(dark);
+  setTheme(useDarkTheme);
 
   const switchThemeButton = document.querySelector('#switch-theme');
   if (switchThemeButton) {

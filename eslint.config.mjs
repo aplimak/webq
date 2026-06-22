@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import js from '@eslint/js';
 import { FlatCompat } from '@eslint/eslintrc';
+import globals from 'globals';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,11 +16,7 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   {
-    env: {
-      browser: true, // defines `window`, `document`
-      node: true, // defines `require`, `module`, `process`
-      es6: true, // enables ES6 globals (optional)
-    },
+    files: ['src/**/*.ts'],
     extends: compat.extends(
       'eslint:recommended',
       'plugin:@typescript-eslint/recommended',
@@ -30,6 +27,10 @@ export default defineConfig([
       parser: tsParser,
       ecmaVersion: 2022,
       sourceType: 'module',
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
     },
 
     rules: {

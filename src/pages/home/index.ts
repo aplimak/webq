@@ -1,18 +1,30 @@
+import { Page } from '@shell/page';
+import { navigateTo } from '@/shell/utils';
+
 import main from './main.html';
 
-export default async function route(content: Element): Promise<void> {
-  content.innerHTML = main;
+const page: Page = {
+  id: 'home',
+  route: async (context) => {
+    context.content.innerHTML = main;
 
-  const cardContainer = content.querySelector('.card-container');
-  if (!cardContainer) {
-    console.error('card-container not found');
-    return;
-  }
+    const cardContainer = context.content.querySelector('.card-container');
+    if (!cardContainer) {
+      console.error('card-container not found');
+      return;
+    }
 
-  // Uno app
-  const unoCard = cardContainer.querySelector('#uno-card');
-  if (unoCard) {
-    const uno = await import('../uno');
-    uno.initCard(unoCard);
-  }
-}
+    // Uno app
+    const unoCard = cardContainer.querySelector('#uno-card');
+    if (unoCard) {
+      const enterBtn = unoCard.querySelector('#uno-button');
+      if (enterBtn) {
+        enterBtn.addEventListener('click', async () => {
+          navigateTo('uno');
+        });
+      }
+    }
+  },
+};
+
+export default page;

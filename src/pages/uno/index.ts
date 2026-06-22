@@ -1,6 +1,5 @@
 import {
   getLocalItem,
-  navigateTo,
   StorageCategory,
   setLocalItem,
   setupInputNavigation,
@@ -11,6 +10,7 @@ import {
 import addPlayerForm from './addplayer.html';
 import main from './main.html';
 import settingsForm from './settings.html';
+import { Page } from '@shell/page';
 import './style.css';
 
 import { Dialog } from '@shell/components/dialog';
@@ -90,74 +90,6 @@ function addRoundToTable(table: Element, round: RoundResult) {
     const wrapper = table.closest('#uno-rounds-wrapper');
     scrollToBottom(wrapper!);
   }
-}
-
-export default async function route(content: Element): Promise<void> {
-  content.innerHTML = main;
-
-  // it initializes the whole backend and restores existing rounds
-  backend.default();
-
-  const newRoundBtn = content.querySelector('#new-round');
-  if (newRoundBtn) {
-    newRoundBtn.addEventListener('click', () => {
-      if (newRoundBtn.classList.contains('disabled')) {
-        return;
-      }
-
-      if (newRoundBtn.classList.contains('uno-apply')) {
-        submitRound(content);
-      } else {
-        handleNewRound(content, newRoundBtn);
-      }
-      refreshNewRoundBtn(newRoundBtn);
-    });
-  }
-
-  const cancelBtn = content.querySelector('#cancel');
-  if (cancelBtn) {
-    cancelBtn.addEventListener('click', () => {
-      refresh(content);
-    });
-  }
-
-  const undoBtn = content.querySelector('#undo');
-  if (undoBtn) {
-    undoBtn.addEventListener('click', () => {
-      handleUndo(content);
-    });
-  }
-
-  const resetBtn = content.querySelector('#reset');
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      handleReset(content);
-    });
-  }
-
-  const configBtn = content.querySelector('#config');
-  if (configBtn) {
-    configBtn.addEventListener('click', () => {
-      const span = configBtn.querySelector('span');
-      if (span && !span.classList.contains('rotate')) {
-        span.classList.add('rotate');
-        setTimeout(() => {
-          span.classList.remove('rotate');
-        }, 1000);
-      }
-
-      handleSettings(content);
-    });
-  }
-
-  const playersContainer = content.querySelector('#uno-players');
-  if (playersContainer) {
-    setupInputNavigation(playersContainer as HTMLElement, (elem) => {
-      submitRound(content);
-    });
-  }
-
-  reloadPage(content);
 }
 
 function fixPlayersContainerOverflow(playersContainer: Element) {
@@ -707,8 +639,7 @@ function refresh(content: Element, checkWinner = false) {
     highestScore.innerHTML = stats.highestScore.toString();
     if (highestScore.parentElement) {
       highestScore.parentElement.classList.remove('red', 'yellow');
-      if (stats.gameEnded) {
-      } else if (endScore * 0.75 < stats.highestScore) {
+      if (endScore * 0.75 < stats.highestScore) {
         highestScore.parentElement.classList.add('red');
       } else if (endScore / 3 < stats.highestScore) {
         highestScore.parentElement.classList.add('yellow');
@@ -781,11 +712,79 @@ function refreshNewRoundBtn(newRoundBtn: Element) {
   }
 }
 
-export function initCard(card: Element) {
-  const enterBtn = card.querySelector('#uno-button');
-  if (enterBtn) {
-    enterBtn.addEventListener('click', async () => {
-      navigateTo('uno');
+async function route(content: HTMLDivElement) {
+  content.innerHTML = main;
+
+  // it initializes the whole backend and restores existing rounds
+  backend.default();
+
+  const newRoundBtn = content.querySelector('#new-round');
+  if (newRoundBtn) {
+    newRoundBtn.addEventListener('click', () => {
+      if (newRoundBtn.classList.contains('disabled')) {
+        return;
+      }
+
+      if (newRoundBtn.classList.contains('uno-apply')) {
+        submitRound(content);
+      } else {
+        handleNewRound(content, newRoundBtn);
+      }
+      refreshNewRoundBtn(newRoundBtn);
     });
   }
+
+  const cancelBtn = content.querySelector('#cancel');
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => {
+      refresh(content);
+    });
+  }
+
+  const undoBtn = content.querySelector('#undo');
+  if (undoBtn) {
+    undoBtn.addEventListener('click', () => {
+      handleUndo(content);
+    });
+  }
+
+  const resetBtn = content.querySelector('#reset');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      handleReset(content);
+    });
+  }
+
+  const configBtn = content.querySelector('#config');
+  if (configBtn) {
+    configBtn.addEventListener('click', () => {
+      const span = configBtn.querySelector('span');
+      if (span && !span.classList.contains('rotate')) {
+        span.classList.add('rotate');
+        setTimeout(() => {
+          span.classList.remove('rotate');
+        }, 1000);
+      }
+
+      handleSettings(content);
+    });
+  }
+
+  const playersContainer = content.querySelector('#uno-players');
+  if (playersContainer) {
+    setupInputNavigation(playersContainer as HTMLElement, (_) => {
+      submitRound(content);
+    });
+  }
+
+  reloadPage(content);
 }
+
+const page: Page = {
+  id: 'uno',
+  route: async (context) => {
+    await route(context.content);
+  },
+};
+
+export default page;

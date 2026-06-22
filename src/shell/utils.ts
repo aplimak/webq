@@ -36,7 +36,7 @@ export function setupInputNavigation(
   container: HTMLElement,
   onLastElement: (elem: HTMLInputElement) => void
 ) {
-  function handleContainerKeydown(event: KeyboardEvent) {
+  function handleContainerKeydown(event: KeyboardEvent): void {
     if (event.key !== 'Enter') {
       return;
     }
@@ -65,7 +65,7 @@ export function setupInputNavigation(
   container.addEventListener('keydown', handleContainerKeydown);
 
   // Return a cleanup function (important if you replace the container)
-  return function cleanup() {
+  return function cleanup(): void {
     container.removeEventListener('keydown', handleContainerKeydown);
   };
 }
@@ -89,8 +89,8 @@ export function getRelativeTime(timestamp: number, short = false): string {
   let lower = new Date(timestamp * 1000); // Convert seconds to milliseconds
   let upper = new Date();
 
-  let tLower = lower;
-  let tUpper = upper;
+  const tLower = lower;
+  const tUpper = upper;
 
   let future = false;
 
@@ -109,7 +109,7 @@ export function getRelativeTime(timestamp: number, short = false): string {
     seconds: Math.floor((upper.getTime() - lower.getTime()) / 1000),
   };
 
-  function fixTime(time: string) {
+  function fixTime(time: string): string {
     if (short) {
       return time;
     }
@@ -129,7 +129,7 @@ export function getRelativeTime(timestamp: number, short = false): string {
     seconds: (value: number) => fixTime(`${value}s`),
   };
 
-  let relativeTime = '';
+  let relativeTime;
 
   if (duration.years > 0) {
     relativeTime = mappings.years(duration.years);
@@ -155,7 +155,7 @@ export function getRelativeTime(timestamp: number, short = false): string {
   return mappings.seconds(duration.seconds);
 }
 
-export function isElementHidden(element: HTMLElement) {
+export function isElementHidden(element: HTMLElement): boolean {
   // Check if offsetWidth and offsetHeight are 0
   if (element.offsetWidth === 0 && element.offsetHeight === 0) {
     return true;
