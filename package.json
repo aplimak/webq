@@ -6,15 +6,15 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "build:prod": "NODE_ENV=production webpack --config webpack.config.js --progress --fail-on-warnings && cordova build android --release -- --packageType=apk",
+    "build:prod": "npm run lint && NODE_ENV=production webpack --config webpack.config.js --progress --fail-on-warnings && cordova build android --release -- --packageType=apk",
     "build:dev": "NODE_ENV=development webpack --config webpack.config.js --progress && cordova build android --debug",
     "start": "NODE_ENV=development webpack serve --config webpack.config.js --progress",
     "start:prod": "NODE_ENV=production webpack serve --config webpack.config.js --progress",
     "run:prod": "npm run build:prod && cordova run android --release --noprepare --nobuild -- --packageType=apk",
     "run:dev": "npm run build:dev && cordova run android --debug --noprepare --nobuild",
     "emulate": "npm run build:dev && PATH=$ANDROID_HOME/emulator:$PATH cordova emulate android --debug --noprepare --nobuild",
-    "lint": "eslint --ext .ts,.js src",
-    "lint:fix": "eslint --ext .ts,.js src --fix",
+    "lint": "eslint --ext .ts,.js src --max-warnings 0",
+    "lint:fix": "eslint --ext .ts,.js src --fix --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,js,css,scss,html,json,md}\"",
     "clean": "rm -rf www && mkdir www"
   },
