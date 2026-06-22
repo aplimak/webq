@@ -16,7 +16,7 @@ export class Player {
     this._processedRounds = [];
   }
 
-  applyRound(round: RoundResult) {
+  applyRound(round: RoundResult): void {
     if (this._processedRounds.includes(round.id)) {
       // Already applied
       return;

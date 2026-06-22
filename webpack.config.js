@@ -165,4 +165,5 @@ module.exports = {
   devServer: {
     hot: false,
   },
+  cache: false,
 };

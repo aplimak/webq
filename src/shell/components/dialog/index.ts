@@ -102,7 +102,7 @@ export class Dialog {
     this.overlay.addEventListener('click', this.onUnexpectedClose.bind(this));
   }
 
-  addButton(button: DialogButton) {
+  addButton(button: DialogButton): void {
     const btn = document.createElement('button');
     btn.classList.add('button', 'flat', 'center');
     btn.textContent = button.text;
@@ -117,7 +117,7 @@ export class Dialog {
     this.footer.appendChild(btn);
   }
 
-  open() {
+  open(): Promise<void> {
     if (this.isOpen) {
       return this.promise; // Prevent multiple openings
     }
@@ -132,7 +132,7 @@ export class Dialog {
     return this.promise;
   }
 
-  close(acceptPromise = true) {
+  close(acceptPromise = true): void {
     if (!this.container) {
       throw Error('Dialog container is null');
     }
@@ -157,7 +157,7 @@ export class Dialog {
     this.isOpen = false;
   }
 
-  onUnexpectedClose() {
+  private onUnexpectedClose(): void {
     if (!this.allowUnexpectedClosing) {
       return;
     }

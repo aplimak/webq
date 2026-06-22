@@ -2,19 +2,19 @@ import { ToastService } from './components/toast';
 
 export const sharedToastService = new ToastService();
 
-export function showSuccessToast(message: string, duration?: number) {
+export function showSuccessToast(message: string, duration?: number): void {
   sharedToastService.show(message, 'success', duration);
 }
 
-export function showErrorToast(message: string, duration?: number) {
+export function showErrorToast(message: string, duration?: number): void {
   sharedToastService.show(message, 'error', duration);
 }
 
-export function showInfoToast(message: string, duration?: number) {
+export function showInfoToast(message: string, duration?: number): void {
   sharedToastService.show(message, 'info', duration);
 }
 
-export function navigateTo(route: string) {
+export function navigateTo(route: string): void {
   window.location.hash = route;
 }
 
@@ -24,12 +24,12 @@ export enum StorageCategory {
   configuration = 'config',
 }
 
-export function getLocalItem(category: StorageCategory, key: string) {
+export function getLocalItem(category: StorageCategory, key: string): string | null {
   return localStorage.getItem(`als_${category}_${key}`);
 }
 
-export function setLocalItem(category: StorageCategory, key: string, value: string) {
-  return localStorage.setItem(`als_${category}_${key}`, value);
+export function setLocalItem(category: StorageCategory, key: string, value: string): void {
+  localStorage.setItem(`als_${category}_${key}`, value);
 }
 
 export function setupInputNavigation(

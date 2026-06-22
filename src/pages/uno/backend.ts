@@ -13,14 +13,14 @@ export const rounds: RoundResult[] = [];
 export let currentRound: RoundData | null = null;
 export let lastRound: RoundData | null = null;
 
-function definePlayers() {
+function definePlayers(): void {
   const playerDefs = getPlayerDefs();
   for (const def of playerDefs) {
     players.push(new Player(def.id, def.name));
   }
 }
 
-export function resetGame(sync = true) {
+export function resetGame(sync = true): void {
   players.length = 0;
   rounds.length = 0;
 
@@ -35,7 +35,7 @@ export function resetGame(sync = true) {
   newRound();
 }
 
-export function newRound(result?: RoundResult, sync = true) {
+export function newRound(result?: RoundResult, sync = true): void {
   if (rounds.length > 0 && !result) {
     throw Error('Ending a round requires providing round result');
   }
@@ -140,7 +140,7 @@ export function getSortedPlayers(): PlayerSortingResult {
   };
 }
 
-export function restoreRounds() {
+export function restoreRounds(): void {
   resetGame(false);
 
   const pastRounds = getRounds();
@@ -151,6 +151,6 @@ export function restoreRounds() {
   }
 }
 
-export default function () {
+export default function (): void {
   restoreRounds();
 }

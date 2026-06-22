@@ -16,11 +16,11 @@ const defaultPlayerDefs: PlayerDefinition[] = [
   },
 ];
 
-export function getDefaultPlayerDefs() {
+export function getDefaultPlayerDefs(): PlayerDefinition[] {
   return defaultPlayerDefs.slice();
 }
 
-export function verifyPlayerDefs(players: PlayerDefinition[]) {
+export function verifyPlayerDefs(players: PlayerDefinition[]): void {
   if (players.length < 2) {
     throw Error('At least two players are required');
   }
@@ -52,7 +52,7 @@ export function verifyPlayerDefs(players: PlayerDefinition[]) {
   }
 }
 
-export function verifyRounds(rounds: RoundResult[]) {
+export function verifyRounds(rounds: RoundResult[]): void {
   let i = 1;
   for (const round of rounds) {
     if (typeof round.id !== 'number') {
@@ -99,7 +99,7 @@ export function verifyRounds(rounds: RoundResult[]) {
   }
 }
 
-export function getPlayerDefs() {
+export function getPlayerDefs(): PlayerDefinition[] {
   const existingPlayers = getLocalItem(StorageCategory.Uno, 'players');
   let players: PlayerDefinition[];
   if (existingPlayers) {
@@ -116,14 +116,14 @@ export function getPlayerDefs() {
   return players;
 }
 
-export function addPlayerDef(player: PlayerDefinition) {
+export function addPlayerDef(player: PlayerDefinition): void {
   const players = getPlayerDefs();
   players.push(player);
 
   updatePlayerDefs(players);
 }
 
-export function removePlayerDef(player: PlayerDefinition) {
+export function removePlayerDef(player: PlayerDefinition): void {
   const players = getPlayerDefs().filter((item) => {
     return item.id !== player.id;
   });
@@ -131,17 +131,17 @@ export function removePlayerDef(player: PlayerDefinition) {
   updatePlayerDefs(players);
 }
 
-export function resetPlayerDefs() {
+export function resetPlayerDefs(): void {
   updatePlayerDefs(defaultPlayerDefs);
 }
 
-export function updatePlayerDefs(players: PlayerDefinition[]) {
+export function updatePlayerDefs(players: PlayerDefinition[]): void {
   verifyPlayerDefs(players);
   const data = JSON.stringify(players);
   setLocalItem(StorageCategory.Uno, 'players', data);
 }
 
-export function getRounds() {
+export function getRounds(): RoundResult[] {
   const existingRounds = getLocalItem(StorageCategory.Uno, 'rounds');
   let rounds: RoundResult[];
   if (existingRounds) {
@@ -158,25 +158,25 @@ export function getRounds() {
   return rounds;
 }
 
-export function storeRound(round: RoundResult) {
+export function storeRound(round: RoundResult): void {
   const rounds = getRounds();
   rounds.push(round);
 
   updateRounds(rounds);
 }
 
-export function removeLastRound() {
+export function removeLastRound(): void {
   const rounds = getRounds();
   rounds.pop();
 
   updateRounds(rounds);
 }
 
-export function resetRounds() {
+export function resetRounds(): void {
   updateRounds([]);
 }
 
-function updateRounds(rounds: RoundResult[]) {
+function updateRounds(rounds: RoundResult[]): void {
   verifyRounds(rounds);
   const data = JSON.stringify(rounds);
   setLocalItem(StorageCategory.Uno, 'rounds', data);

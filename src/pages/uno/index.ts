@@ -1,51 +1,23 @@
 import {
   getLocalItem,
   StorageCategory,
-  setLocalItem,
   setupInputNavigation,
   showErrorToast,
   showSuccessToast,
   scrollToBottom,
 } from '@shell/utils';
-import addPlayerForm from './addplayer.html';
+
 import main from './main.html';
-import settingsForm from './settings.html';
 import { Page } from '@shell/page';
 import './style.css';
 
-import { Dialog } from '@shell/components/dialog';
 import * as backend from './backend';
 import * as database from './database';
-import type { Player, PlayerDefinition, RoundResult, RoundScore } from './models';
+import type { RoundResult, RoundScore } from './models';
 
-let endScore = 300;
+export let endScore = 300;
 
-function comparePlayerDefs(a: PlayerDefinition[], b: PlayerDefinition[]): boolean {
-  if (a === b) {
-    return true;
-  }
-
-  if (Array.isArray(a) && Array.isArray(b)) {
-    if (a.length !== b.length) {
-      return false;
-    }
-    for (let i = 0; i < a.length; i++) {
-      const itemA = a[i];
-      const itemB = b[i];
-      if (!itemA || !itemB) {
-        return false;
-      }
-      if (itemA.id !== itemB.id || itemA.name !== itemB.name) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  return false; // If none of the above conditions are met, they are not equal
-}
-
-function drawTable(table: Element) {
+function drawTable(table: Element): void {
   let html = `
     <thead>
         <tr class="fixed-header">
@@ -61,7 +33,7 @@ function drawTable(table: Element) {
   table.innerHTML = html;
 }
 
-function addRoundToTable(table: Element, round: RoundResult) {
+function addRoundToTable(table: Element, round: RoundResult): void {
   const body = table.querySelector('tbody');
   if (body) {
     const row = document.createElement('tr');
@@ -92,7 +64,7 @@ function addRoundToTable(table: Element, round: RoundResult) {
   }
 }
 
-function fixPlayersContainerOverflow(playersContainer: Element) {
+function fixPlayersContainerOverflow(playersContainer: Element): void {
   const containerWidth = (playersContainer as HTMLDivElement).offsetWidth;
   const scrollWidth = (playersContainer as HTMLDivElement).scrollWidth;
 
@@ -103,7 +75,7 @@ function fixPlayersContainerOverflow(playersContainer: Element) {
   }
 }
 
-function handleNewRound(content: Element, newRoundBtn: Element) {
+function handleNewRound(content: Element, newRoundBtn: Element): void {
   const playerCards = content.querySelectorAll<HTMLDivElement>('.uno-player-card');
   let focused = false;
   for (const card of playerCards) {
@@ -129,7 +101,7 @@ function handleNewRound(content: Element, newRoundBtn: Element) {
   }
 }
 
-function submitRound(content: Element) {
+function submitRound(content: Element): void {
   const scores: RoundScore[] = [];
   let winnerId: string | null = null;
   const nanPlayers: string[] = [];
@@ -212,7 +184,7 @@ function submitRound(content: Element) {
   refresh(content, true);
 }
 
-function handleUndo(content: Element) {
+function handleUndo(content: Element): void {
   if ('notification' in navigator) {
     const notif = navigator.notification as {
       confirm: (
@@ -236,7 +208,7 @@ function handleUndo(content: Element) {
   }
 }
 
-function onUndoConfirm(content: Element, index: number) {
+function onUndoConfirm(content: Element, index: number): void {
   if (index !== 1) {
     return;
   }
@@ -248,7 +220,7 @@ function onUndoConfirm(content: Element, index: number) {
   reloadPage(content);
 }
 
-function handleReset(content: Element) {
+function handleReset(content: Element): void {
   if ('notification' in navigator) {
     const notif = navigator.notification as {
       confirm: (
@@ -272,7 +244,7 @@ function handleReset(content: Element) {
   }
 }
 
-function onResetConfirm(content: Element, index: number) {
+function onResetConfirm(content: Element, index: number): void {
   if (index !== 1) {
     return;
   }
@@ -282,157 +254,7 @@ function onResetConfirm(content: Element, index: number) {
   reloadPage(content);
 }
 
-function handleSettings(content: Element) {
-  let playerDefs = database.getPlayerDefs();
-
-  function refreshPlayerDefsCards() {
-    const playersContainer = dialog.body.querySelector('.uno-config-players');
-    if (playersContainer) {
-      playersContainer.innerHTML = '';
-      for (const playerDef of playerDefs) {
-        const card = document.createElement('div');
-        card.classList.add('uno-config-player-item', 'card', 'flat', 'flex-row', 'center');
-        card.innerHTML = `
-                    <span class="text middle bold" style="font-size: 1.2em; min-width: 2.5em;border-radius: 50%;background-color: var(--object-background);min-height: 2.5em;align-content: center;">${playerDef.id}</span>
-                    <span style="word-break: break-word;overflow-wrap: break-word;">${playerDef.name}</span>
-                    <button class="button bordered center padded material-icons" style="margin-left: auto;">delete</button>`;
-        card.querySelector('button')?.addEventListener('click', () => {
-          playerDefs = playerDefs.filter((item) => item.id !== playerDef.id);
-          playersContainer.removeChild(card);
-        });
-        playersContainer.appendChild(card);
-      }
-    }
-  }
-
-  function submitConfig() {
-    let needReload = false;
-
-    const maxScoreInput = dialog.body.querySelector('#max-score-input');
-    if (maxScoreInput && maxScoreInput instanceof HTMLInputElement) {
-      try {
-        const val = maxScoreInput.value;
-        const numVal = parseInt(val, 10);
-        if (Number.isNaN(numVal)) {
-          throw Error('Not a number');
-        }
-        setLocalItem(StorageCategory.Uno, 'maxScore', numVal.toString());
-      } catch (e) {
-        showErrorToast(`Error while updating max score: ${e instanceof Error ? e.message : e}`);
-        return;
-      }
-    }
-
-    try {
-      const storedPlayerDefs = database.getPlayerDefs();
-      if (!comparePlayerDefs(playerDefs, storedPlayerDefs)) {
-        database.updatePlayerDefs(playerDefs);
-        backend.restoreRounds();
-        needReload = true;
-      }
-    } catch (e) {
-      showErrorToast(`Error while saving players data: ${e instanceof Error ? e.message : e}`);
-      return;
-    }
-
-    if (needReload) {
-      reloadPage(content);
-    } else {
-      loadSettings();
-      refresh(content);
-    }
-    showSuccessToast('Settings Saved Successfully');
-    dialog.close();
-  }
-
-  const dialog = new Dialog('uno-config-dialog', 'Settings');
-  dialog.autoCloseAfterClickingButton = false;
-  dialog.resolvePromiseOnUnexpectedClose = true;
-  dialog.body.innerHTML = settingsForm;
-  setupInputNavigation(dialog.body, submitConfig);
-
-  const maxScoreInput = dialog.body.querySelector('#max-score-input');
-  if (maxScoreInput && maxScoreInput instanceof HTMLInputElement) {
-    maxScoreInput.value = endScore.toString();
-  }
-
-  dialog.body.querySelector('#reset-players')?.addEventListener('click', () => {
-    playerDefs = database.getDefaultPlayerDefs();
-    refreshPlayerDefsCards();
-  });
-
-  dialog.body.querySelector('#add-player')?.addEventListener('click', () => {
-    function submitNewPlayer() {
-      const playerId = (
-        innerDialog.body.querySelector('#player-id') as HTMLInputElement
-      ).value.toUpperCase();
-      if (!playerId) {
-        showErrorToast('Player ID is required');
-        return;
-      } else if (playerId.length > 1) {
-        showErrorToast('Player ID Must be one character');
-        return;
-      } else {
-        const exists = playerDefs.filter((item) => item.id === playerId).length !== 0;
-        if (exists) {
-          showErrorToast('Player with this ID Already exists');
-          return;
-        }
-      }
-
-      const playerName = (innerDialog.body.querySelector('#player-name') as HTMLInputElement).value;
-      if (!playerName) {
-        showErrorToast('Player name is required');
-        return;
-      }
-
-      playerDefs.push({
-        id: playerId,
-        name: playerName,
-      });
-
-      refreshPlayerDefsCards();
-
-      innerDialog.close();
-    }
-
-    const innerDialog = new Dialog('nwq-player', 'New Player', [], dialog.container ?? undefined);
-    innerDialog.autoCloseAfterClickingButton = false;
-    innerDialog.resolvePromiseOnUnexpectedClose = true;
-
-    innerDialog.body.innerHTML = addPlayerForm;
-    setupInputNavigation(innerDialog.body, submitNewPlayer);
-
-    innerDialog.addButton({
-      text: 'Cancel',
-      onClick: () => {
-        innerDialog.close();
-      },
-    });
-
-    innerDialog.addButton({
-      text: 'OK',
-      onClick: submitNewPlayer,
-    });
-    innerDialog.open();
-  });
-
-  refreshPlayerDefsCards();
-
-  dialog.addButton({
-    text: 'Cancel',
-    onClick: () => {
-      dialog.close();
-    },
-  });
-  dialog.addButton({
-    text: 'OK',
-    onClick: submitConfig,
-  });
-  dialog.open();
-}
-
-function loadSettings() {
+export function loadSettings(): void {
   const maxScore = getLocalItem(StorageCategory.Uno, 'maxScore');
   if (maxScore) {
     const valNum = parseInt(maxScore, 10);
@@ -444,7 +266,7 @@ function loadSettings() {
   }
 }
 
-function reloadPage(content: Element) {
+export function reloadPage(content: Element): void {
   loadSettings();
 
   const roundsTable = content.querySelector('#uno-rounds');
@@ -460,104 +282,7 @@ function reloadPage(content: Element) {
   refresh(content);
 }
 
-function announceWinner(winner: Player) {
-  const dialog = new Dialog('winner-announcement', '');
-  dialog.resolvePromiseOnUnexpectedClose = true;
-  dialog.dialog.style.backgroundColor = '#00FF7F';
-  dialog.dialog.style.color = '#000';
-  dialog.header.classList.add('hide');
-  dialog.footer.classList.add('hide');
-  dialog.body.classList.add('flex-col', 'center');
-
-  dialog.body.innerHTML = `
-        <div class="flex-col center">
-            <span class="text middle bold" style="margin-bottom: 16px;">The Game Winner is</span>
-            <span class="text middle center" style="font-size: 2.5em;font-weight: 700;margin-bottom: 24px;">${winner.name}</span>
-            <span style="font-size: 1.5em;font-weight: 600;">Score: ${winner.score}</span>
-            <span style="font-size: 1.5em;font-weight: 600;">Wins: ${winner.wins}</span>
-        </div>`;
-
-  dialog.open();
-
-  try {
-    // Create the audio context (must be done inside the user gesture)
-    const audioCtx = new window.AudioContext();
-
-    // Resume if suspended (important for Chrome autoplay policy)
-    if (audioCtx.state === 'suspended') {
-      audioCtx.resume().then(() => _playAudio(audioCtx));
-    } else {
-      _playAudio(audioCtx);
-    }
-
-    dialog.promise.then(() => {
-      audioCtx.close();
-    });
-  } catch (err) {
-    showErrorToast(`Web Audio couldn't play: ${err}`);
-    // Fallback: if Web Audio fails, at least the vibration works.
-  }
-}
-
-function _playAudio(audioCtx: AudioContext) {
-  const now = audioCtx.currentTime;
-
-  const freqs = [
-    523.25, // C5
-    659.25, // E5
-    783.99, // G5
-    1046.5, // C6
-    880.0, // A5
-    783.99, // G5
-    659.25, // E5
-    523.25, // C5
-    659.25, // E5
-    783.99, // G5
-    1046.5, // C6
-    987.77, // B5
-    783.99, // G5
-    659.25, // E5
-    523.25, // C5
-    1046.5, // C6
-    987.77, // B5
-    880.0, // A5
-    783.99, // G5
-    659.25, // E5 (ends on a bright note)
-  ];
-
-  // Each note: 0.4s duration + 0.1s gap = 0.5s per note.
-  // 20 notes × 0.5s = exactly 10 seconds.
-  const noteDuration = 0.1;
-  const gap = 0.1;
-  const step = noteDuration + gap;
-
-  // Volume: 0.9 – loud but still clean (max is 1.0)
-  const volume = 0.9;
-
-  freqs.forEach((freq, index) => {
-    const startTime = now + index * step;
-
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-
-    osc.type = 'sine'; // pure tone, pleasant
-    osc.frequency.value = freq;
-
-    // Envelope: quick attack, slight decay, then release
-    gain.gain.setValueAtTime(0.001, startTime);
-    gain.gain.exponentialRampToValueAtTime(volume, startTime + 0.015);
-    gain.gain.exponentialRampToValueAtTime(volume * 0.6, startTime + noteDuration * 0.7);
-    gain.gain.exponentialRampToValueAtTime(0.001, startTime + noteDuration);
-
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-
-    osc.start(startTime);
-    osc.stop(startTime + noteDuration);
-  });
-}
-
-function refresh(content: Element, checkWinner = false) {
+export function refresh(content: Element, checkWinner = false): void {
   const stats = backend.getStatistics(endScore);
 
   const newRoundBtn = content.querySelector('#new-round');
@@ -696,11 +421,13 @@ function refresh(content: Element, checkWinner = false) {
   }
 
   if (checkWinner && stats.gameEnded) {
-    announceWinner(stats.topPlayer);
+    import('./celebrate').then((celebrate) => {
+      celebrate.default(stats.topPlayer);
+    });
   }
 }
 
-function refreshNewRoundBtn(newRoundBtn: Element) {
+function refreshNewRoundBtn(newRoundBtn: Element): void {
   if (newRoundBtn.classList.contains('uno-apply')) {
     newRoundBtn.innerHTML = `
                 <span class="material-icons">check</span>
@@ -712,7 +439,7 @@ function refreshNewRoundBtn(newRoundBtn: Element) {
   }
 }
 
-async function route(content: HTMLDivElement) {
+async function route(content: HTMLDivElement): Promise<void> {
   content.innerHTML = main;
 
   // it initializes the whole backend and restores existing rounds
@@ -757,7 +484,7 @@ async function route(content: HTMLDivElement) {
 
   const configBtn = content.querySelector('#config');
   if (configBtn) {
-    configBtn.addEventListener('click', () => {
+    configBtn.addEventListener('click', async () => {
       const span = configBtn.querySelector('span');
       if (span && !span.classList.contains('rotate')) {
         span.classList.add('rotate');
@@ -766,7 +493,8 @@ async function route(content: HTMLDivElement) {
         }, 1000);
       }
 
-      handleSettings(content);
+      const settings = await import('./settings');
+      settings.default(content);
     });
   }
 

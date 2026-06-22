@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /**
  * Interface representing a storage backend that provides methods for getting, setting, and removing items by key. This allows for different storage implementations (e.g., localStorage, sessionStorage, or custom backends) to be used interchangeably with the ScopedStorage class.
  */

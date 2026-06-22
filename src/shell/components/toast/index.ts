@@ -42,7 +42,7 @@ export class ToastService {
     this.observer.observe(this.container, config);
   }
 
-  show(message: string, type = 'info', duration = 8000) {
+  show(message: string, type = 'info', duration = 8000): void {
     const toast = this.createToast(message, type);
     this.container.appendChild(toast);
 
@@ -53,7 +53,7 @@ export class ToastService {
     }
   }
 
-  createToast(message: string, type: string) {
+  private createToast(message: string, type: string): HTMLDivElement {
     const toast = document.createElement('div');
     toast.classList.add('toast', 'flex-row', 'center');
     toast.classList.add(type);
@@ -87,7 +87,7 @@ export class ToastService {
     return toast;
   }
 
-  removeToast(toast: Element) {
+  private removeToast(toast: Element): void {
     if (toast.classList.contains('fade-out')) {
       // Already fading out
       return;
