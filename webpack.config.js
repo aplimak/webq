@@ -165,7 +165,4 @@ module.exports = {
   devServer: {
     hot: false,
   },
-  cache: {
-    type: 'filesystem',
-  },
 };
