@@ -9,13 +9,18 @@ export function setTheme(dark: boolean, save: boolean = false): void {
     setLocalItem(StorageCategory.configuration, 'useDarkTheme', isDark ? '1' : '0');
   }
 
-  applyTheme();
+  applyTheme(save);
 }
 
-export function applyTheme(): void {
+export function applyTheme(rotate = false): void {
   import('./bridge').then((bridge) => {
     bridge.updateStatusBarColor(isDark ? '#2e2e2e' : '#f8f8f8', isDark);
     document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+
+    const switchThemeButton = document.querySelector('#switch-theme');
+    if (switchThemeButton) {
+      updateThemeBtnIcon(switchThemeButton, rotate);
+    }
   });
 }
 
@@ -52,11 +57,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const switchThemeButton = document.querySelector('#switch-theme');
   if (switchThemeButton) {
-    updateThemeBtnIcon(switchThemeButton);
     switchThemeButton.classList.remove('hide');
     switchThemeButton.addEventListener('click', () => {
       setTheme(!isDark, true);
-      updateThemeBtnIcon(switchThemeButton, true);
     });
   }
 });
