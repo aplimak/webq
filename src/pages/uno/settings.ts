@@ -1,5 +1,5 @@
 import * as database from './database';
-import { Dialog } from '@/shell/components/dialog';
+import { Dialog } from '@/shell/utils';
 import {
   StorageCategory,
   setLocalItem,

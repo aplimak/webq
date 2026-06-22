@@ -1,4 +1,4 @@
-import { Dialog } from '@/shell/components/dialog';
+import { Dialog } from '@/shell/utils';
 import { showErrorToast } from '@/shell/utils';
 import { Player } from './models';
 

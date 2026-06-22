@@ -1,4 +1,5 @@
 import { ToastService } from './components/toast';
+export { Dialog } from './components/dialog';
 
 export const sharedToastService = new ToastService();
 
