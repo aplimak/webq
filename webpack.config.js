@@ -143,15 +143,30 @@ module.exports = {
         },
 
         pages: {
-          test: /[\\/]src[\\/]pages[\\/]/,
+          test: (module) => {
+            const id = module.identifier() || '';
+            // Match `src/pages/*` but exclude `src/pages/*/lazy/`
+            return /[\\/]src[\\/]pages[\\/]/.test(id) && !/[\\/]lazy[\\/]/.test(id);
+          },
           chunks: 'all',
+          priority: 20,
+          minSize: 0,
           name(module) {
             const id = module.identifier() || '';
-            // Extract the folder name right after 'src/pages/'
             const match = id.match(/[\\/]src[\\/]pages[\\/]([^\\/]+)/);
             return match ? `pages-${match[1]}` : 'pages';
           },
-          priority: 20,
+          enforce: true,
+        },
+
+        lazyPages: {
+          test: (module) => {
+            const id = module.identifier() || '';
+            // Match `src/pages/*/lazy/`
+            return /[\\/]src[\\/]pages[\\/][^\\/]+[\\/]lazy[\\/]/.test(id);
+          },
+          chunks: 'async', // only lazy-loaded modules (optional but safe)
+          priority: 30, // higher than pages → takes precedence
           minSize: 0,
           enforce: true,
         },

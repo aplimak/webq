@@ -1,5 +1,5 @@
 import { Dialog, toast } from '@/shell/components';
-import { Player } from './models';
+import { Player } from '../models';
 
 function playAudio(audioCtx: AudioContext): void {
   const now = audioCtx.currentTime;

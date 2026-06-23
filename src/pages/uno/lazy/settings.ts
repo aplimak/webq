@@ -1,9 +1,9 @@
-import * as database from './database';
+import * as database from '../database';
 import { Dialog, toast } from '@/shell/components';
 import { StorageCategory, setLocalItem, setupInputNavigation } from '@/shell/utils';
-import * as backend from './backend';
-import { PlayerDefinition } from './models';
-import { endScore, loadSettings, refresh, reloadPage } from '.';
+import * as backend from '../backend';
+import { PlayerDefinition } from '../models';
+import { endScore, loadSettings, refresh, reloadPage } from '..';
 
 import addPlayerForm from './addplayer.html';
 import settingsForm from './settings.html';

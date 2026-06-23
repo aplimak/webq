@@ -415,7 +415,7 @@ export function refresh(content: Element, checkWinner = false): void {
   }
 
   if (checkWinner && stats.gameEnded) {
-    import('./celebrate').then((celebrate) => {
+    import('./lazy/celebrate').then((celebrate) => {
       celebrate.default(stats.topPlayer);
     });
   }
@@ -487,7 +487,7 @@ async function route(content: HTMLDivElement): Promise<void> {
         }, 1000);
       }
 
-      const settings = await import('./settings');
+      const settings = await import('./lazy/settings');
       settings.default(content);
     });
   }
