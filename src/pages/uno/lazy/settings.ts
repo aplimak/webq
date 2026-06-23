@@ -1,9 +1,10 @@
-import * as database from '../database';
 import { Dialog, toast } from '@/shell/components';
-import { StorageCategory, setLocalItem, setupInputNavigation } from '@/shell/utils';
-import * as backend from '../backend';
+import { setupInputNavigation } from '@/shell/utils';
+
+import { unoStorage } from '../storage';
+import { restoreRounds } from '../backend';
 import { PlayerDefinition } from '../models';
-import { endScore, loadSettings, refresh, reloadPage } from '..';
+import { loadSettings, refresh, reloadPage } from '..';
 
 import addPlayerForm from './addplayer.html';
 import settingsForm from './settings.html';
@@ -34,7 +35,7 @@ function comparePlayerDefs(a: PlayerDefinition[], b: PlayerDefinition[]): boolea
 }
 
 export default function (content: Element): void {
-  let playerDefs = database.getPlayerDefs();
+  let playerDefs = unoStorage.get('playerDefs');
 
   function refreshPlayerDefsCards(): void {
     const playersContainer = dialog.body.querySelector('.uno-config-players');
@@ -67,7 +68,7 @@ export default function (content: Element): void {
         if (Number.isNaN(numVal)) {
           throw Error('Not a number');
         }
-        setLocalItem(StorageCategory.Uno, 'maxScore', numVal.toString());
+        unoStorage.set('endScore', numVal);
       } catch (e) {
         toast.error(`Error while updating max score: ${e instanceof Error ? e.message : e}`);
         return;
@@ -75,10 +76,10 @@ export default function (content: Element): void {
     }
 
     try {
-      const storedPlayerDefs = database.getPlayerDefs();
+      const storedPlayerDefs = unoStorage.get('playerDefs');
       if (!comparePlayerDefs(playerDefs, storedPlayerDefs)) {
-        database.updatePlayerDefs(playerDefs);
-        backend.restoreRounds();
+        unoStorage.set('playerDefs', playerDefs);
+        restoreRounds();
         needReload = true;
       }
     } catch (e) {
@@ -104,11 +105,11 @@ export default function (content: Element): void {
 
   const maxScoreInput = dialog.body.querySelector('#max-score-input');
   if (maxScoreInput && maxScoreInput instanceof HTMLInputElement) {
-    maxScoreInput.value = endScore.toString();
+    maxScoreInput.value = unoStorage.get('endScore').toString();
   }
 
   dialog.body.querySelector('#reset-players')?.addEventListener('click', () => {
-    playerDefs = database.getDefaultPlayerDefs();
+    playerDefs = unoStorage.getDefault('playerDefs');
     refreshPlayerDefsCards();
   });
 

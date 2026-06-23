@@ -27,6 +27,36 @@ export interface StorageOptions<T> {
    * Optional default values for keys. If a key is not found in the storage, the value from this object will be returned if it exists.
    */
   defaultValue?: T;
+
+  /**
+   * Intercepts get requests.
+   * It could change the storage returned value.
+   * If it returns null, the default value will be used.
+   * @param key The requested key.
+   * @param value The raw value returned by the storage backend.
+   * @returns The value of the key.
+   */
+  getInterceptor?: <K extends keyof T>(key: K, value: string | null) => string | null;
+
+  /**
+   * Intercepts set requests.
+   * It could change the provided value.
+   * Could throw error to interrupt set operation.
+   * @param key The key that will be updated.
+   * @param value The value provided for sat operation.
+   * @returns The value to be used for set operation.
+   */
+  setInterceptor?: <K extends keyof T>(key: K, value: T[K]) => T[K];
+
+  /**
+   * Validates both data being returned by get and data being set.
+   * Could invalidate by returning false for general error or specialized thrown error.
+   * Ignored for default or fallback values.
+   * @param key The target key.
+   * @param value The value of/for the key.
+   * @returns true for valid or false for invalid value.
+   */
+  validator?: <K extends keyof T>(key: K, value: T[K]) => boolean;
 }
 
 /**
@@ -38,14 +68,30 @@ export class ScopedStorage<T extends Record<string, any>> {
   private readonly storage: StorageBackend;
   private readonly defaultVal: T | undefined;
 
+  private readonly getInterceptor?: <K extends keyof T>(
+    key: K,
+    value: string | null
+  ) => string | null;
+  private readonly setInterceptor?: <K extends keyof T>(key: K, value: T[K]) => T[K];
+  private readonly validator?: <K extends keyof T>(key: K, value: T[K]) => boolean;
+
   constructor(options: StorageOptions<T>) {
     this.scope = `${options.id}`;
     this.storage = options.storage;
     this.defaultVal = options.defaultValue;
+    this.getInterceptor = options.getInterceptor;
+    this.setInterceptor = options.setInterceptor;
+    this.validator = options.validator;
   }
 
   private getScopedKey(key: keyof T): string {
     return `${this.scope}:${String(key)}`;
+  }
+
+  private validate<K extends keyof T>(key: K, value: T[K]): void {
+    if (this.validator && !this.validator(key, value)) {
+      throw Error(`Data validation failed for key: ${String(key)}`);
+    }
   }
 
   /**
@@ -56,21 +102,39 @@ export class ScopedStorage<T extends Record<string, any>> {
    * @throws Will throw an error if the key is not found and no fallback or default value is provided.
    */
   get<K extends keyof T>(key: K, fallback?: T[K]): T[K] {
-    const raw = this.storage.getItem(this.getScopedKey(key));
+    let raw = this.storage.getItem(this.getScopedKey(key));
+    if (this.getInterceptor) {
+      raw = this.getInterceptor(key, raw);
+    }
     if (raw === null) {
       if (fallback !== undefined) {
         return fallback;
       }
-      if (this.defaultVal && key in this.defaultVal) {
-        return this.defaultVal[key];
-      }
-      throw new Error(`Key "${String(key)}" not found and no default provided.`);
+      return this.getDefault(key);
     }
+    let result: T[K];
     try {
-      return JSON.parse(raw) as T[K];
+      result = JSON.parse(raw) as T[K];
     } catch {
-      return raw as T[K];
+      result = raw as T[K];
     }
+
+    this.validate(key, result);
+
+    return result;
+  }
+
+  /**
+   * Retrieves the default value by key.
+   * @param key The key to retrieve.
+   * @returns The default value associated with the key.
+   * @throws Will throw an error if the default value is not provided.
+   */
+  getDefault<K extends keyof T>(key: K): T[K] {
+    if (this.defaultVal && key in this.defaultVal) {
+      return this.defaultVal[key];
+    }
+    throw new Error(`Key "${String(key)}" not found.`);
   }
 
   /**
@@ -79,6 +143,10 @@ export class ScopedStorage<T extends Record<string, any>> {
    * @param value The value to store. It will be serialized to JSON.
    */
   set<K extends keyof T>(key: K, value: T[K]): void {
+    if (this.setInterceptor) {
+      value = this.setInterceptor(key, value);
+    }
+    this.validate(key, value);
     this.storage.setItem(this.getScopedKey(key), JSON.stringify(value));
   }
 

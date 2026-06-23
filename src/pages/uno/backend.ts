@@ -1,4 +1,3 @@
-import { getPlayerDefs, getRounds, resetRounds, storeRound } from './database';
 import {
   type GameStatistics,
   Player,
@@ -6,6 +5,7 @@ import {
   type RoundData,
   type RoundResult,
 } from './models';
+import { unoStorage, storeRound } from './storage';
 
 export const players: Player[] = [];
 export const rounds: RoundResult[] = [];
@@ -14,7 +14,7 @@ export let currentRound: RoundData | null = null;
 export let lastRound: RoundData | null = null;
 
 function definePlayers(): void {
-  const playerDefs = getPlayerDefs();
+  const playerDefs = unoStorage.get('playerDefs');
   for (const def of playerDefs) {
     players.push(new Player(def.id, def.name));
   }
@@ -28,7 +28,7 @@ export function resetGame(sync = true): void {
   lastRound = null;
 
   if (sync) {
-    resetRounds();
+    unoStorage.set('roundResults', []);
   }
 
   definePlayers();
@@ -143,14 +143,10 @@ export function getSortedPlayers(): PlayerSortingResult {
 export function restoreRounds(): void {
   resetGame(false);
 
-  const pastRounds = getRounds();
+  const pastRounds = unoStorage.get('roundResults');
   if (pastRounds) {
     for (const round of pastRounds) {
       newRound(round, false);
     }
   }
-}
-
-export default function (): void {
-  restoreRounds();
 }

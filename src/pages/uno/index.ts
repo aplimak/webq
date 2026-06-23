@@ -1,4 +1,4 @@
-import { getLocalItem, StorageCategory, setupInputNavigation, scrollToBottom } from '@shell/utils';
+import { setupInputNavigation, scrollToBottom } from '@shell/utils';
 import { toast } from '@shell/components';
 
 import main from './main.html';
@@ -6,8 +6,8 @@ import { Page } from '@shell/page';
 import './style.css';
 
 import * as backend from './backend';
-import * as database from './database';
 import type { RoundResult, RoundScore } from './models';
+import { removeLastRound, unoStorage } from './storage';
 
 export let endScore = 300;
 
@@ -207,7 +207,7 @@ function onUndoConfirm(content: Element, index: number): void {
     return;
   }
 
-  database.removeLastRound();
+  removeLastRound();
   // its just resets the backend but without syncing and also reloads all stored rounds
   backend.restoreRounds();
   toast.success('Last round is removed');
@@ -249,15 +249,7 @@ function onResetConfirm(content: Element, index: number): void {
 }
 
 export function loadSettings(): void {
-  const maxScore = getLocalItem(StorageCategory.Uno, 'maxScore');
-  if (maxScore) {
-    const valNum = parseInt(maxScore, 10);
-    if (!Number.isNaN(valNum)) {
-      endScore = valNum;
-    } else {
-      console.error('maxScore value is not a number, using default value');
-    }
-  }
+  endScore = unoStorage.get('endScore');
 }
 
 export function reloadPage(content: Element): void {
@@ -437,7 +429,7 @@ async function route(content: HTMLDivElement): Promise<void> {
   content.innerHTML = main;
 
   // it initializes the whole backend and restores existing rounds
-  backend.default();
+  backend.restoreRounds();
 
   const newRoundBtn = content.querySelector('#new-round');
   if (newRoundBtn) {
