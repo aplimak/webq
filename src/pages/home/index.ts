@@ -1,5 +1,5 @@
 import { Page } from '@shell/page';
-import { navigateTo } from '@/shell/utils';
+import { navigateTo } from '@/shell/router';
 
 import main from './main.html';
 

@@ -1,4 +1,3 @@
-import { navigateTo } from './utils';
 import { shellStorage } from './storage';
 import { Page } from './page';
 
@@ -10,8 +9,63 @@ export function inMainPage(): boolean {
   return window.location.hash.slice(1) === DEFAULT_ROUTE;
 }
 
+export function navigateTo(route: string): void {
+  window.location.hash = route;
+}
+
+function addHelperBtns(
+  container: HTMLDivElement,
+  options: { refresh?: boolean; home?: boolean; resetData?: boolean }
+): void {
+  if (options.refresh) {
+    container.innerHTML += `
+    <button id="router-refresh"
+      class="button filled flex-row center padded gapped bold primary">
+      <span class="material-icons">replay</span>
+      <span>Refresh Page</span>
+    </button>`;
+  }
+  if (options.home) {
+    container.innerHTML += `
+    <button id="router-home"
+      class="button filled flex-row center padded gapped bold primary">
+      <span class="material-icons">home</span>
+      <span>Return to Home</span>
+    </button>`;
+  }
+  if (options.resetData) {
+    container.innerHTML += `
+    <button id="router-reset-data"
+      class="button filled flex-row center padded gapped bold primary">
+      <span class="material-icons">delete</span>
+      <span>Clear Data</span>
+    </button>`;
+  }
+
+  container.querySelector('#router-refresh')?.addEventListener('click', () => {
+    window.location.reload();
+  });
+
+  container.querySelector('#router-home')?.addEventListener('click', () => {
+    navigateTo(DEFAULT_ROUTE);
+  });
+
+  container.querySelector('#router-reset-data')?.addEventListener('click', () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.reload();
+  });
+}
+
 function handleNotFound(root: Element, route: string): void {
   root.innerHTML = `<h1>Page Not Found: ${route}</h1>`;
+
+  const btnContainer = document.createElement('div');
+  btnContainer.classList.add('flex-row', 'gapped');
+  addHelperBtns(btnContainer, {
+    home: true,
+  });
+  root.appendChild(btnContainer);
 }
 
 function handlePageCrash(root: Element, route: string, page: Page, error: unknown): void {
@@ -31,6 +85,15 @@ function handlePageCrash(root: Element, route: string, page: Page, error: unknow
   }
 
   root.innerHTML = html;
+
+  const btnContainer = document.createElement('div');
+  btnContainer.classList.add('flex-row', 'gapped', 'padded');
+  addHelperBtns(btnContainer, {
+    refresh: true,
+    home: true,
+    resetData: true,
+  });
+  root.appendChild(btnContainer);
 }
 
 async function initRoute(): Promise<void> {
