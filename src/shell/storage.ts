@@ -94,6 +94,15 @@ export class ScopedStorage<T extends Record<string, any>> {
     }
   }
 
+  private cloneValue<T>(value: T): T {
+    // Use structuredClone if available, otherwise fallback to JSON
+    if (typeof structuredClone === 'function') {
+      return structuredClone(value);
+    }
+    // For simple JSON‑serializable data
+    return JSON.parse(JSON.stringify(value));
+  }
+
   /**
    * Retrieves a value from storage by key. If the key is not found, it returns the provided fallback value or the default value from the constructor if available. If neither is provided, it throws an error.
    * @param key The key to retrieve.
@@ -107,10 +116,14 @@ export class ScopedStorage<T extends Record<string, any>> {
       raw = this.getInterceptor(key, raw);
     }
     if (raw === null) {
+      let value: T[K];
       if (fallback !== undefined) {
-        return fallback;
+        value = fallback;
+      } else {
+        value = this.getDefault(key);
       }
-      return this.getDefault(key);
+      // Clone before returning
+      return this.cloneValue(value);
     }
     let result: T[K];
     try {
