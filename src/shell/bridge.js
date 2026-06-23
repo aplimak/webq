@@ -33,4 +33,5 @@ function updateStatusBarColor(color, isDark) {
 
 module.exports = {
   updateStatusBarColor,
+  isProduction: process.env.NODE_ENV === 'production',
 };
