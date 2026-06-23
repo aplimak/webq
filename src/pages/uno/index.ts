@@ -1,11 +1,5 @@
-import {
-  getLocalItem,
-  StorageCategory,
-  setupInputNavigation,
-  showErrorToast,
-  showSuccessToast,
-  scrollToBottom,
-} from '@shell/utils';
+import { getLocalItem, StorageCategory, setupInputNavigation, scrollToBottom } from '@shell/utils';
+import { toast } from '@shell/components';
 
 import main from './main.html';
 import { Page } from '@shell/page';
@@ -126,7 +120,7 @@ function submitRound(content: Element): void {
       }
 
       if (scoreNum.toString().length > endScore.toString().length + 1) {
-        showErrorToast(`Too large number: ${scoreNum}`);
+        toast.error(`Too large number: ${scoreNum}`);
         return;
       }
     }
@@ -138,7 +132,7 @@ function submitRound(content: Element): void {
   }
 
   if (nanPlayers.length > 1 || (nanPlayers.length === 1 && winnerId)) {
-    showErrorToast('All players scores must be numeric');
+    toast.error('All players scores must be numeric');
     return;
   }
 
@@ -152,12 +146,12 @@ function submitRound(content: Element): void {
   }
 
   if (!winnerId) {
-    showErrorToast('You must select a winner');
+    toast.error('You must select a winner');
     return;
   }
 
   if (!backend.currentRound) {
-    showErrorToast('Invalid Round');
+    toast.error('Invalid Round');
     return;
   }
 
@@ -170,7 +164,7 @@ function submitRound(content: Element): void {
   try {
     backend.newRound(round);
   } catch (e) {
-    showErrorToast(`Error while saving round results: ${e instanceof Error ? e.message : e}`);
+    toast.error(`Error while saving round results: ${e instanceof Error ? e.message : e}`);
     return;
   }
 
@@ -180,7 +174,7 @@ function submitRound(content: Element): void {
   }
 
   content.querySelector('#new-round')?.classList.remove('uno-apply');
-  showSuccessToast('Round Scoores Saved');
+  toast.success('Round Scoores Saved');
   refresh(content, true);
 }
 
@@ -216,7 +210,7 @@ function onUndoConfirm(content: Element, index: number): void {
   database.removeLastRound();
   // its just resets the backend but without syncing and also reloads all stored rounds
   backend.restoreRounds();
-  showSuccessToast('Last round is removed');
+  toast.success('Last round is removed');
   reloadPage(content);
 }
 
@@ -250,7 +244,7 @@ function onResetConfirm(content: Element, index: number): void {
   }
 
   backend.resetGame();
-  showSuccessToast('Game Progress is Reset');
+  toast.success('Game Progress is Reset');
   reloadPage(content);
 }
 

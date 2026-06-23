@@ -151,15 +151,17 @@ module.exports = {
           maxSize: 100000,
         },
 
-        shell: {
-          test: /[\\/]src[\\/](?!pages[\\/])[\\/]/, // everything EXCEPT pages
-          name: 'shell',
-          priority: 5,
+        components: {
+          test: /[\\/]src[\\/]shell[\\/]components[\\/]/,
+          chunks: 'all',
+          name: 'components',
+          priority: 10,
           minSize: 0,
         },
       },
     },
     runtimeChunk: 'single',
+    mergeDuplicateChunks: true,
   },
   devtool: isProduction ? false : 'inline-source-map',
   devServer: {

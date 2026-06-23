@@ -1,12 +1,6 @@
 import * as database from './database';
-import { Dialog } from '@/shell/utils';
-import {
-  StorageCategory,
-  setLocalItem,
-  setupInputNavigation,
-  showErrorToast,
-  showSuccessToast,
-} from '@/shell/utils';
+import { Dialog, toast } from '@/shell/components';
+import { StorageCategory, setLocalItem, setupInputNavigation } from '@/shell/utils';
 import * as backend from './backend';
 import { PlayerDefinition } from './models';
 import { endScore, loadSettings, refresh, reloadPage } from '.';
@@ -75,7 +69,7 @@ export default function (content: Element): void {
         }
         setLocalItem(StorageCategory.Uno, 'maxScore', numVal.toString());
       } catch (e) {
-        showErrorToast(`Error while updating max score: ${e instanceof Error ? e.message : e}`);
+        toast.error(`Error while updating max score: ${e instanceof Error ? e.message : e}`);
         return;
       }
     }
@@ -88,7 +82,7 @@ export default function (content: Element): void {
         needReload = true;
       }
     } catch (e) {
-      showErrorToast(`Error while saving players data: ${e instanceof Error ? e.message : e}`);
+      toast.error(`Error while saving players data: ${e instanceof Error ? e.message : e}`);
       return;
     }
 
@@ -98,7 +92,7 @@ export default function (content: Element): void {
       loadSettings();
       refresh(content);
     }
-    showSuccessToast('Settings Saved Successfully');
+    toast.success('Settings Saved Successfully');
     dialog.close();
   }
 
@@ -124,22 +118,22 @@ export default function (content: Element): void {
         innerDialog.body.querySelector('#player-id') as HTMLInputElement
       ).value.toUpperCase();
       if (!playerId) {
-        showErrorToast('Player ID is required');
+        toast.error('Player ID is required');
         return;
       } else if (playerId.length > 1) {
-        showErrorToast('Player ID Must be one character');
+        toast.error('Player ID Must be one character');
         return;
       } else {
         const exists = playerDefs.filter((item) => item.id === playerId).length !== 0;
         if (exists) {
-          showErrorToast('Player with this ID Already exists');
+          toast.error('Player with this ID Already exists');
           return;
         }
       }
 
       const playerName = (innerDialog.body.querySelector('#player-name') as HTMLInputElement).value;
       if (!playerName) {
-        showErrorToast('Player name is required');
+        toast.error('Player name is required');
         return;
       }
 

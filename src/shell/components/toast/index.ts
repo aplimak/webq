@@ -1,6 +1,8 @@
 import './style.css';
 
-export class ToastService {
+export type ToastType = 'info' | 'success' | 'error';
+
+class ToastService {
   container: Element;
   observer: MutationObserver;
 
@@ -42,7 +44,7 @@ export class ToastService {
     this.observer.observe(this.container, config);
   }
 
-  show(message: string, type = 'info', duration = 8000): void {
+  show(message: string, type: ToastType = 'info', duration = 8000): void {
     const toast = this.createToast(message, type);
     this.container.appendChild(toast);
 
@@ -53,7 +55,7 @@ export class ToastService {
     }
   }
 
-  private createToast(message: string, type: string): HTMLDivElement {
+  private createToast(message: string, type: ToastType): HTMLDivElement {
     const toast = document.createElement('div');
     toast.classList.add('toast', 'flex-row', 'center');
     toast.classList.add(type);
@@ -101,3 +103,5 @@ export class ToastService {
     }, 300);
   }
 }
+
+export const service = new ToastService();

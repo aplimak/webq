@@ -1,5 +1,4 @@
-import { Dialog } from '@/shell/utils';
-import { showErrorToast } from '@/shell/utils';
+import { Dialog, toast } from '@/shell/components';
 import { Player } from './models';
 
 function playAudio(audioCtx: AudioContext): void {
@@ -94,7 +93,7 @@ export default function (winner: Player): void {
       audioCtx.close();
     });
   } catch (err) {
-    showErrorToast(`Web Audio couldn't play: ${err}`);
+    toast.error(`Web Audio couldn't play: ${err}`);
     // Fallback: if Web Audio fails, at least the vibration works.
   }
 }

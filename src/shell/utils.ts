@@ -1,20 +1,3 @@
-import { ToastService } from './components/toast';
-export { Dialog } from './components/dialog';
-
-export const sharedToastService = new ToastService();
-
-export function showSuccessToast(message: string, duration?: number): void {
-  sharedToastService.show(message, 'success', duration);
-}
-
-export function showErrorToast(message: string, duration?: number): void {
-  sharedToastService.show(message, 'error', duration);
-}
-
-export function showInfoToast(message: string, duration?: number): void {
-  sharedToastService.show(message, 'info', duration);
-}
-
 export function navigateTo(route: string): void {
   window.location.hash = route;
 }

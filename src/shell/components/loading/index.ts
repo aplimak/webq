@@ -2,7 +2,7 @@ import './style.css';
 
 const loadingContainer = document.getElementById('loading-container');
 
-export function showLoading(useOverlay = true): void {
+export function show(useOverlay = true): void {
   if (!loadingContainer) {
     throw Error('loading-container div is not exists');
   }
@@ -14,7 +14,7 @@ export function showLoading(useOverlay = true): void {
   }
 }
 
-export function hideLoading(): void {
+export function hide(): void {
   if (!loadingContainer) {
     throw Error('loading-container div is not exists');
   }
