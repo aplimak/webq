@@ -14,6 +14,25 @@ function handleNotFound(root: Element, route: string): void {
   root.innerHTML = `<h1>Page Not Found: ${route}</h1>`;
 }
 
+function handlePageCrash(root: Element, route: string, page: Page, error: unknown): void {
+  let html = `
+  <h1>Page ${route} Crashed</h1>
+  <h2>
+  <code>Page ID: ${page.id}</code>
+  <br>
+  <code>${error instanceof Error ? `name: ${error.name}, cause: ${error.cause}, message: ${error.message}` : error}</code>
+  </h2>
+  `;
+
+  if (error instanceof Error && error.stack) {
+    for (const stack of error.stack.split('\n')) {
+      html += `<code>${stack}</code>`;
+    }
+  }
+
+  root.innerHTML = html;
+}
+
 async function initRoute(): Promise<void> {
   async function navigate(route: string): Promise<void> {
     if (route.startsWith('#')) {
@@ -35,10 +54,18 @@ async function initRoute(): Promise<void> {
         console.warn(`Error while exiting page: ${currentPage?.id}`, error);
       }
 
+      let page: Page;
+
       try {
         const module = await import(`../pages/${route}`);
-        const page = module.default as Page;
+        page = module.default as Page;
+      } catch (error) {
+        console.error(`Page "${route}" not found:`, error);
+        handleNotFound(content!, route);
+        return;
+      }
 
+      try {
         if (typeof page.route !== 'function') {
           throw Error('Page is not routable');
         }
@@ -54,8 +81,9 @@ async function initRoute(): Promise<void> {
           previousRoute: prevPage?.id,
         });
       } catch (error) {
-        console.error(`Page "${route}" not found:`, error);
-        handleNotFound(content!, route);
+        console.error(`Page "${route}" crashed:`, error);
+        handlePageCrash(content, route, page, error);
+        return;
       }
     });
   }
