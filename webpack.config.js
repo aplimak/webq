@@ -145,10 +145,15 @@ module.exports = {
         pages: {
           test: /[\\/]src[\\/]pages[\\/]/,
           chunks: 'all',
-          name: 'pages',
+          name(module) {
+            const id = module.identifier() || '';
+            // Extract the folder name right after 'src/pages/'
+            const match = id.match(/[\\/]src[\\/]pages[\\/]([^\\/]+)/);
+            return match ? `pages-${match[1]}` : 'pages';
+          },
           priority: 20,
           minSize: 0,
-          maxSize: 100000,
+          enforce: true,
         },
 
         components: {
