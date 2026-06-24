@@ -106,7 +106,7 @@ module.exports = {
       filename: 'index.html',
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
+      filename: '[name].[contenthash:8].css',
     }),
     new ForkTsCheckerWebpackPlugin({
       typescript: {
@@ -137,7 +137,7 @@ module.exports = {
       skipWaiting: true, // Force update on new version
 
       // Exclude source maps and the manifest from precaching
-      exclude: [/\.map$/, /manifest.*\.js$/],
+      exclude: [/\.map$/, /manifest.*\.json$/],
 
       // IMPORTANT: Tell Workbox not to add cache-busting query params
       // to your hashed files (they're already uniquely versioned)
