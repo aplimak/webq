@@ -21,6 +21,9 @@ document.addEventListener('deviceready', () => {
 });
 
 function updateStatusBarColor(color, isDark) {
+  const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+  metaThemeColor.content = color;
+
   if (window.StatusBar) {
     window.StatusBar.backgroundColorByHexString(color);
     if (isDark) {
