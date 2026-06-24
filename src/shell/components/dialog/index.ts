@@ -1,3 +1,4 @@
+import { stack } from './stack';
 import './style.css';
 
 export interface DialogButton {
@@ -6,19 +7,20 @@ export interface DialogButton {
 }
 
 export class Dialog {
+  readonly id: string;
   autoCloseAfterClickingButton: boolean;
   allowUnexpectedClosing: boolean;
   resolvePromiseOnUnexpectedClose: boolean;
-  promise: Promise<void>;
+  readonly promise: Promise<void>;
   promiseAccept!: (value: void | PromiseLike<void>) => void;
   promiseReject!: (reason?: string) => void;
-  parent: Element;
-  container: HTMLDivElement | null;
-  dialog: HTMLDivElement;
-  overlay: HTMLDivElement;
-  body: HTMLDivElement;
-  header: HTMLDivElement;
-  footer: HTMLDivElement;
+  readonly parent: Element;
+  readonly container: HTMLDivElement | null;
+  readonly dialog: HTMLDivElement;
+  readonly overlay: HTMLDivElement;
+  readonly body: HTMLDivElement;
+  readonly header: HTMLDivElement;
+  readonly footer: HTMLDivElement;
   isOpen: boolean;
 
   constructor(
@@ -27,6 +29,7 @@ export class Dialog {
     footerButtons: DialogButton[] = [],
     parent: Element = document.body
   ) {
+    this.id = stack.generateId();
     this.parent = parent;
     const existingContainer = this.parent.querySelector(`#${containerId}`);
     if (existingContainer) {
@@ -56,40 +59,11 @@ export class Dialog {
     html += '<div class="dialog-overlay fade-in" aria-hidden="false"></div>';
     this.container.innerHTML = html;
 
-    const dialog = this.container.querySelector('.dialog');
-    if (dialog instanceof HTMLDivElement) {
-      this.dialog = dialog;
-    } else {
-      throw Error("Can't find dialog div");
-    }
-
-    const overlay = this.container.querySelector('.dialog-overlay');
-    if (overlay instanceof HTMLDivElement) {
-      this.overlay = overlay;
-    } else {
-      throw Error("Can't find dialog overlay div");
-    }
-
-    const body = this.dialog.querySelector('.dialog-body');
-    if (body instanceof HTMLDivElement) {
-      this.body = body;
-    } else {
-      throw Error("Can't find dialog body div");
-    }
-
-    const header = this.dialog.querySelector('.dialog-header');
-    if (header instanceof HTMLDivElement) {
-      this.header = header;
-    } else {
-      throw Error("Can't find dialog header div");
-    }
-
-    const footer = this.dialog.querySelector('.dialog-footer');
-    if (footer instanceof HTMLDivElement) {
-      this.footer = footer;
-    } else {
-      throw Error("Can't find dialog footer div");
-    }
+    this.dialog = this.container.querySelector<HTMLDivElement>('.dialog')!;
+    this.overlay = this.container.querySelector<HTMLDivElement>('.dialog-overlay')!;
+    this.body = this.dialog.querySelector<HTMLDivElement>('.dialog-body')!;
+    this.header = this.dialog.querySelector<HTMLDivElement>('.dialog-header')!;
+    this.footer = this.dialog.querySelector<HTMLDivElement>('.dialog-footer')!;
 
     if (Array.isArray(footerButtons)) {
       footerButtons.forEach((button) => {
@@ -98,8 +72,9 @@ export class Dialog {
     }
 
     this.isOpen = false;
+    stack.push(this);
 
-    this.overlay.addEventListener('click', this.onUnexpectedClose.bind(this));
+    this.overlay.addEventListener('click', this.handleUnexpectedClose.bind(this, false));
   }
 
   addButton(button: DialogButton): void {
@@ -132,14 +107,16 @@ export class Dialog {
     return this.promise;
   }
 
-  close(acceptPromise = true): void {
+  close(acceptPromise = true, fromStack = false): void {
+    if (!this.isOpen) {
+      return;
+    }
+
     if (!this.container) {
       throw Error('Dialog container is null');
     }
 
-    if (!this.isOpen) {
-      return;
-    }
+    this.isOpen = false;
 
     if (acceptPromise) {
       this.promiseAccept();
@@ -151,23 +128,28 @@ export class Dialog {
       if (this.container) {
         this.parent.removeChild(this.container);
       }
-      this.container = null;
     }, 300);
 
-    this.isOpen = false;
+    if (!fromStack) {
+      stack.close(this.id);
+    }
   }
 
-  private onUnexpectedClose(): void {
-    if (!this.allowUnexpectedClosing) {
+  handleUnexpectedClose(fromStack = false): void {
+    if (!this.isOpen) {
+      return;
+    }
+
+    if (!fromStack && !this.allowUnexpectedClosing) {
       return;
     }
 
     if (this.resolvePromiseOnUnexpectedClose) {
-      this.close();
+      this.close(true, fromStack);
       return;
     }
 
     this.promiseReject('Dialog Closed Unexpectedly');
-    this.close(false);
+    this.close(false, fromStack);
   }
 }
