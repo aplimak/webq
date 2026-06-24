@@ -1,6 +1,7 @@
 import { isProduction } from './shell/bridge';
 import './shell/router';
 import './shell/themeManager';
+import './shell/pwa';
 
 import './shell/style.css';
 

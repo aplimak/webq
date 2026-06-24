@@ -37,4 +37,6 @@ function updateStatusBarColor(color, isDark) {
 module.exports = {
   updateStatusBarColor,
   isProduction: process.env.NODE_ENV === 'production',
+  isPWA:
+    window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true,
 };

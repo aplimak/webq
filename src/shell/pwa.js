@@ -1,0 +1,40 @@
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/service-worker.js')
+      .then((reg) => console.log('SW registered:', reg))
+      .catch((err) => console.error('SW registration failed:', err));
+  });
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent the browser's default mini-infobar from showing
+  e.preventDefault();
+
+  // Save the event so we can trigger it later
+  let deferredPrompt = e;
+
+  const installBtn = document.querySelector('header #install-pwa');
+  if (installBtn) {
+    installBtn.classList.remove('hide');
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+
+      installBtn.classList.add('hide');
+
+      // Show the native install prompt
+      deferredPrompt.prompt();
+
+      // Wait for the user's response
+      const result = await deferredPrompt.userChoice;
+
+      if (result.outcome === 'accepted') {
+        console.log('User accepted the install');
+      } else {
+        console.log('User dismissed the install');
+      }
+
+      deferredPrompt = null;
+    });
+  }
+});
