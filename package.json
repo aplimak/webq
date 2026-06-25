@@ -6,13 +6,14 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "build:prod": "npm run lint && NODE_ENV=production webpack --config webpack.config.js --progress --fail-on-warnings && cordova build android --release -- --packageType=apk",
-    "build:dev": "NODE_ENV=development webpack --config webpack.config.js --progress && cordova build android --debug",
-    "start": "NODE_ENV=development webpack serve --config webpack.config.js --progress",
-    "start:prod": "NODE_ENV=production webpack serve --config webpack.config.js --progress",
-    "run:prod": "npm run build:prod && cordova run android --release --noprepare --nobuild -- --packageType=apk",
-    "run:dev": "npm run build:dev && cordova run android --debug --noprepare --nobuild",
-    "emulate": "npm run build:dev && PATH=$ANDROID_HOME/emulator:$PATH cordova emulate android --debug --noprepare --nobuild",
+    "bundle:prod": "npm run lint && NODE_ENV=production WEBQ_TARGET=${WEBQ_TARGET:-browser} webpack --config webpack.config.js --progress --fail-on-warnings",
+    "bundle:dev": "NODE_ENV=development WEBQ_TARGET=${WEBQ_TARGET:-browser} webpack --config webpack.config.js --progress",
+    "build:cordova:prod": "npm run lint && WEBQ_TARGET=cordova npm run bundle:prod && cordova build android --release -- --packageType=apk",
+    "build:cordova:dev": "WEBQ_TARGET=cordova npm run bundle:dev && cordova build android --debug",
+    "start": "NODE_ENV=development WEBQ_TARGET=browser webpack serve --config webpack.config.js --progress",
+    "start:prod": "NODE_ENV=production WEBQ_TARGET=browser webpack serve --config webpack.config.js --progress",
+    "run:cordova:prod": "npm run build:cordova:prod && cordova run android --release --noprepare --nobuild -- --packageType=apk",
+    "run:cordova:dev": "npm run build:cordova:dev && cordova run android --debug --noprepare --nobuild",
     "lint": "eslint --ext .ts,.js src --max-warnings 0",
     "lint:fix": "eslint --ext .ts,.js src --fix --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,js,css,scss,html,json,md}\"",
@@ -77,5 +78,9 @@
   },
   "dependencies": {
     "material-design-icons": "^3.0.1"
-  }
+  },
+  "browserslist": [
+    "defaults and supports es6-module",
+    "not op_mini all"
+  ]
 }

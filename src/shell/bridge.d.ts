@@ -20,3 +20,13 @@ export const isPWA: boolean;
  * Whether the project served by webpack dev server.
  */
 export const isWebpackServe: boolean;
+
+/**
+ * Supported compilation platforms.
+ */
+export type TargetPlatform = 'browser' | 'cordova';
+
+/**
+ * Indicates the target platform at compile time.
+ */
+export const targetPlatform: TargetPlatform;

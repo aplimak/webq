@@ -11,65 +11,73 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 const isWebpackServe = Boolean(process.env.WEBPACK_SERVE || false);
+const targetPlatform = process.env.WEBQ_TARGET;
+if (!['browser', 'cordova'].includes(targetPlatform)) {
+  throw Error(`Unknown target platform: ${targetPlatform}`);
+}
 
-const pwaPlugins = !isWebpackServe
-  ? [
-      new WebpackPwaManifest({
-        name: 'WebQ',
-        short_name: 'WebQ',
-        description: 'A suite of simple web apps.',
-        display: 'standalone',
-        start_url: '/',
-        // This injects the manifest link into your HTML automatically
-        inject: true,
-        // Fingerprint the manifest file itself
-        fingerprint: true,
-        icons: [
-          {
-            src: path.resolve('assets/icon.png'),
-            sizes: [192, 512],
-            destination: path.join('icons'),
-          },
-        ],
-      }),
-      new GenerateSW({
-        swDest: 'service-worker.js',
-        clientsClaim: true, // Take control of pages immediately
-        skipWaiting: true, // Force update on new version
-
-        // Exclude source maps and the manifest from precaching
-        exclude: [/\.map$/, /manifest.*\.json$/],
-
-        // IMPORTANT: Tell Workbox not to add cache-busting query params
-        // to your hashed files (they're already uniquely versioned)
-        // This saves bandwidth and avoids unnecessary re-downloads[reference:0]
-        dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
-
-        // Define runtime caching rules for external resources
-        runtimeCaching: [
-          {
-            // cache Google Fonts
-            urlPattern: /^https:\/\/fonts\.googleapis\.com/,
-            handler: 'StaleWhileRevalidate',
-            options: {
-              cacheName: 'google-fonts-stylesheets',
+const pwaPlugins =
+  targetPlatform === 'browser' && !isWebpackServe
+    ? [
+        new WebpackPwaManifest({
+          name: 'WebQ',
+          short_name: 'WebQ',
+          description: 'A suite of simple web apps.',
+          display: 'standalone',
+          start_url: '/',
+          // This injects the manifest link into your HTML automatically
+          inject: true,
+          // Fingerprint the manifest file itself
+          fingerprint: true,
+          icons: [
+            {
+              src: path.resolve('assets/icon.png'),
+              sizes: [192, 512],
+              destination: path.join('icons'),
             },
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-webfonts',
-              expiration: {
-                maxEntries: 30,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+          ],
+        }),
+        new GenerateSW({
+          swDest: 'service-worker.js',
+          clientsClaim: true, // Take control of pages immediately
+          skipWaiting: true, // Force update on new version
+
+          // Exclude source maps and the manifest from precaching
+          exclude: [/\.map$/, /manifest.*\.json$/],
+
+          // IMPORTANT: Tell Workbox not to add cache-busting query params
+          // to your hashed files (they're already uniquely versioned)
+          // This saves bandwidth and avoids unnecessary re-downloads[reference:0]
+          dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
+
+          // Define runtime caching rules for external resources
+          runtimeCaching: [
+            {
+              // cache Google Fonts
+              urlPattern: /^https:\/\/fonts\.googleapis\.com/,
+              handler: 'StaleWhileRevalidate',
+              options: {
+                cacheName: 'google-fonts-stylesheets',
               },
             },
-          },
-        ],
-      }),
-    ]
-  : [];
+            {
+              urlPattern: /^https:\/\/fonts\.gstatic\.com/,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'google-fonts-webfonts',
+                expiration: {
+                  maxEntries: 30,
+                  maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+                },
+              },
+            },
+          ],
+        }),
+      ]
+    : [];
+
+const iconPlugin =
+  targetPlatform === 'browser' ? [new FaviconsWebpackPlugin('assets/icon.png')] : [];
 
 module.exports = {
   context: __dirname,
@@ -163,6 +171,7 @@ module.exports = {
     new DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.WEBPACK_SERVE': JSON.stringify(isWebpackServe),
+      'process.env.WEBQ_TARGET': JSON.stringify(process.env.WEBQ_TARGET),
     }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
@@ -176,7 +185,7 @@ module.exports = {
         configFile: path.resolve(__dirname, 'tsconfig.json'),
       },
     }),
-    new FaviconsWebpackPlugin('assets/icon.png'),
+    ...iconPlugin,
     ...pwaPlugins,
   ],
   optimization: {
