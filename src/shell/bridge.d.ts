@@ -30,3 +30,8 @@ export type TargetPlatform = 'browser' | 'cordova' | 'electron';
  * Indicates the target platform at compile time.
  */
 export const targetPlatform: TargetPlatform;
+
+/**
+ * Compile time target platform.
+ */
+export const platform: Record<TargetPlatform, boolean>;

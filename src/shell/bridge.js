@@ -6,46 +6,30 @@ const info = {
     window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true,
 };
 
-if (info.targetPlatform === 'electron') {
+const platform = {
+  browser: info.targetPlatform === 'browser',
+  cordova: info.targetPlatform === 'cordova',
+  electron: info.targetPlatform === 'electron',
+};
+
+if (platform.cordova) {
+  require('./cordova');
+} else if (platform.electron) {
   require('./electron');
 }
-
-document.addEventListener('deviceready', async () => {
-  const themeMgr = await import('./themeManager');
-  themeMgr.applyTheme();
-
-  const router = await import('./router');
-  // handle back button, if we are in the main page, exit app, otherwise go back
-  document.addEventListener('backbutton', () => {
-    if (router.inMainPage()) {
-      navigator.app.exitApp();
-    } else {
-      window.history.back();
-    }
-  });
-
-  // show toast when error happens
-  window.addEventListener('cordovacallbackerror', async (event) => {
-    const { toast } = await import('./components');
-    toast.error(`Error: ${event.message}`);
-  });
-});
 
 function updateStatusBarColor(color, isDark) {
   const metaThemeColor = document.querySelector('meta[name="theme-color"]');
   metaThemeColor.content = color;
 
-  if (window.StatusBar) {
-    window.StatusBar.backgroundColorByHexString(color);
-    if (isDark) {
-      window.StatusBar.styleLightContent();
-    } else {
-      window.StatusBar.styleDefault();
-    }
+  if (platform.cordova) {
+    const cordova = require('./cordova');
+    cordova.updateStatusBarColor(color, isDark);
   }
 }
 
 module.exports = {
   updateStatusBarColor,
   ...info,
+  platform,
 };
