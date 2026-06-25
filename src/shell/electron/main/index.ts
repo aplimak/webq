@@ -22,7 +22,13 @@ function createWindow(): void {
   if (process.env.NODE_ENV === 'development') {
     mainWindow.webContents.openDevTools();
   } else {
-    app.applicationMenu = null;
+    mainWindow.webContents.on('before-input-event', (event, input) => {
+      // Ctrl+Q to quit the app
+      if (input.control && input.key === 'q') {
+        event.preventDefault();
+        app.quit();
+      }
+    });
   }
 }
 
