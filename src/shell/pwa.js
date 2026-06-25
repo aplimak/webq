@@ -20,11 +20,12 @@ function registerHandler(e) {
 
       // Wait for the user's response
       const result = await deferredPrompt.userChoice;
+      const { toast } = await import('./components');
 
       if (result.outcome === 'accepted') {
-        console.log('User accepted the install');
+        toast.success('App Installed Successfully');
       } else {
-        console.log('User dismissed the install');
+        toast.error('App Installation Cancelled');
       }
 
       deferredPrompt = null;
