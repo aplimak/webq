@@ -249,6 +249,14 @@ module.exports = {
           priority: 10,
           minSize: 0,
         },
+
+        utils: {
+          test: /[\\/]src[\\/]shell[\\/]utils\.ts/,
+          chunks: 'all',
+          name: 'utils',
+          priority: 10,
+          minSize: 0,
+        },
       },
     },
     runtimeChunk: 'single',

@@ -1,10 +1,8 @@
-const utils = require('./utils');
-const themeMgr = require('./themeManager');
-const router = require('./router');
-
-document.addEventListener('deviceready', () => {
+document.addEventListener('deviceready', async () => {
+  const themeMgr = await import('./themeManager');
   themeMgr.applyTheme();
 
+  const router = await import('./router');
   // handle back button, if we are in the main page, exit app, otherwise go back
   document.addEventListener('backbutton', () => {
     if (router.inMainPage()) {
@@ -15,8 +13,9 @@ document.addEventListener('deviceready', () => {
   });
 
   // show toast when error happens
-  window.addEventListener('cordovacallbackerror', (event) => {
-    utils.showToast(`Error: ${event.message}`);
+  window.addEventListener('cordovacallbackerror', async (event) => {
+    const { toast } = await import('./components');
+    toast.error(`Error: ${event.message}`);
   });
 });
 

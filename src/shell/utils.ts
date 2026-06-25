@@ -1,17 +1,3 @@
-export enum StorageCategory {
-  remotePortal = 'rp',
-  Uno = 'uno',
-  configuration = 'config',
-}
-
-export function getLocalItem(category: StorageCategory, key: string): string | null {
-  return localStorage.getItem(`als_${category}_${key}`);
-}
-
-export function setLocalItem(category: StorageCategory, key: string, value: string): void {
-  localStorage.setItem(`als_${category}_${key}`, value);
-}
-
 export function setupInputNavigation(
   container: HTMLElement,
   onLastElement: (elem: HTMLInputElement) => void
