@@ -19,31 +19,13 @@ if (!['browser', 'cordova'].includes(targetPlatform)) {
 const pwaPlugins =
   targetPlatform === 'browser' && !isWebpackServe
     ? [
-        new WebpackPwaManifest({
-          name: 'WebQ',
-          short_name: 'WebQ',
-          description: 'A suite of simple web apps.',
-          display: 'standalone',
-          start_url: '/',
-          // This injects the manifest link into your HTML automatically
-          inject: true,
-          // Fingerprint the manifest file itself
-          fingerprint: true,
-          icons: [
-            {
-              src: path.resolve('assets/icon.png'),
-              sizes: [192, 512],
-              destination: path.join('icons'),
-            },
-          ],
-        }),
         new GenerateSW({
           swDest: 'service-worker.js',
           clientsClaim: true, // Take control of pages immediately
           skipWaiting: true, // Force update on new version
 
           // Exclude source maps and the manifest from precaching
-          exclude: [/\.map$/, /manifest.*\.json$/],
+          exclude: [/\.map$/, /manifest.webmanifest$/],
 
           // IMPORTANT: Tell Workbox not to add cache-busting query params
           // to your hashed files (they're already uniquely versioned)
@@ -77,7 +59,14 @@ const pwaPlugins =
     : [];
 
 const iconPlugin =
-  targetPlatform === 'browser' ? [new FaviconsWebpackPlugin('assets/icon.png')] : [];
+  targetPlatform === 'browser'
+    ? [
+        new FaviconsWebpackPlugin({
+          logo: 'assets/icon.png',
+          manifest: './manifest.webmanifest',
+        }),
+      ]
+    : [];
 
 module.exports = {
   context: __dirname,

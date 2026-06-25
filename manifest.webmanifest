@@ -1,0 +1,9 @@
+{
+  "name": "WebQ",
+  "short_name": "WebQ",
+  "orientation": "portrait",
+  "display": "standalone",
+  "start_url": "/",
+  "description": "A suite of simple web apps.",
+  "fingerprint": true
+}
