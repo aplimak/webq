@@ -10,3 +10,8 @@ export function updateStatusBarColor(color: string, isDark: boolean): void;
  * Whether the project compiled as production.
  */
 export const isProduction: boolean;
+
+/**
+ * Whether the project running as installed PWA.
+ */
+export const isPWA: boolean;
