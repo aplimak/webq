@@ -4,18 +4,24 @@
   "version": "1.0.0",
   "description": "A suite of simple web apps.",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "www/electron-main.js",
   "scripts": {
     "bundle:prod": "npm run lint && NODE_ENV=production WEBQ_TARGET=${WEBQ_TARGET:-browser} webpack --config webpack.config.js --progress --fail-on-warnings",
     "bundle:dev": "NODE_ENV=development WEBQ_TARGET=${WEBQ_TARGET:-browser} webpack --config webpack.config.js --progress",
+    "bundle:electron": "NODE_ENV=${NODE_ENV:-development} WEBQ_TARGET=electron webpack --progress --fail-on-warnings --config",
     "build:cordova:prod": "npm run lint && WEBQ_TARGET=cordova npm run bundle:prod && cordova build android --release -- --packageType=apk",
     "build:cordova:dev": "WEBQ_TARGET=cordova npm run bundle:dev && cordova build android --debug",
+    "build:electron:prod": "npm run lint && WEBQ_TARGET=electron npm run bundle:prod && NODE_ENV=production concurrently \"npm run bundle:electron webpack.electron.main.js\" \"npm run bundle:electron webpack.electron.preload.js\"",
+    "build:electron:dev": "WEBQ_TARGET=electron npm run bundle:dev && NODE_ENV=development concurrently \"npm run bundle:electron webpack.electron.main.js\" \"npm run bundle:electron webpack.electron.preload.js\"",
     "start": "NODE_ENV=development WEBQ_TARGET=browser webpack serve --config webpack.config.js --progress",
     "start:prod": "NODE_ENV=production WEBQ_TARGET=browser webpack serve --config webpack.config.js --progress",
     "run:cordova:prod": "npm run build:cordova:prod && cordova run android --release --noprepare --nobuild -- --packageType=apk",
     "run:cordova:dev": "npm run build:cordova:dev && cordova run android --debug --noprepare --nobuild",
-    "lint": "eslint --ext .ts,.js src --max-warnings 0",
-    "lint:fix": "eslint --ext .ts,.js src --fix --max-warnings 0",
+    "run:electron:prod": "npm run build:electron:prod && electron ./www/electron-main.js",
+    "run:electron:dev": "npm run build:electron:dev && NODE_ENV=development electron ./www/electron-main.js",
+    "pack:electron": "electron-builder --dir",
+    "lint": "eslint --ext .ts src --max-warnings 0",
+    "lint:fix": "eslint --ext .ts src --fix --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,js,css,scss,html,json,md}\"",
     "clean": "rm -rf www && mkdir www"
   },
@@ -30,11 +36,13 @@
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^10.0.1",
     "@types/cordova": "^11.0.3",
+    "@types/electron": "^1.4.38",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^26.0.0",
     "@typescript-eslint/eslint-plugin": "^8.61.1",
     "@typescript-eslint/parser": "^8.61.1",
     "babel-loader": "^10.1.1",
+    "concurrently": "^10.0.3",
     "copy-webpack-plugin": "^14.0.0",
     "cordova": "^13.0.0",
     "cordova-android": "^15.0.0",
@@ -43,6 +51,8 @@
     "cordova-plugin-statusbar": "^4.0.0",
     "css-loader": "^7.1.4",
     "css-minimizer-webpack-plugin": "^8.0.0",
+    "electron": "^42.5.0",
+    "electron-builder": "^26.15.3",
     "eslint": "^10.5.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
@@ -63,7 +73,6 @@
     "webpack": "^5.107.2",
     "webpack-cli": "^7.0.3",
     "webpack-dev-server": "^5.2.5",
-    "webpack-pwa-manifest": "^4.3.0",
     "workbox-webpack-plugin": "^7.4.1"
   },
   "cordova": {
@@ -77,10 +86,33 @@
     }
   },
   "dependencies": {
-    "material-design-icons": "^3.0.1"
+    "material-design-icons": "^3.0.1",
+    "material-symbols": "^0.45.4"
   },
   "browserslist": [
     "defaults and supports es6-module",
     "not op_mini all"
-  ]
+  ],
+  "desktopName": "ir.aeliux.webq.desktop",
+  "build": {
+    "appId": "ir.aeliux.webq",
+    "productName": "webq",
+    "directories": {
+      "output": "pack"
+    },
+    "files": [
+      "www/**/*"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "**/node_modules/**/*"
+    ],
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Utility",
+      "syncDesktopName": true
+    }
+  }
 }

@@ -24,7 +24,7 @@ export const isWebpackServe: boolean;
 /**
  * Supported compilation platforms.
  */
-export type TargetPlatform = 'browser' | 'cordova';
+export type TargetPlatform = 'browser' | 'cordova' | 'electron';
 
 /**
  * Indicates the target platform at compile time.

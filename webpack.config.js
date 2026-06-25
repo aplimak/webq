@@ -6,14 +6,17 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
-const WebpackPwaManifest = require('webpack-pwa-manifest');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 const isWebpackServe = Boolean(process.env.WEBPACK_SERVE || false);
 const targetPlatform = process.env.WEBQ_TARGET;
-if (!['browser', 'cordova'].includes(targetPlatform)) {
+if (!['browser', 'cordova', 'electron'].includes(targetPlatform)) {
   throw Error(`Unknown target platform: ${targetPlatform}`);
+}
+
+if (targetPlatform === 'electron' && isWebpackServe) {
+  throw Error("Can't serve electron target with webpack");
 }
 
 const pwaPlugins =
@@ -70,7 +73,8 @@ const iconPlugin =
 
 module.exports = {
   context: __dirname,
-  target: isWebpackServe ? 'web' : 'browserslist',
+  target:
+    targetPlatform === 'electron' ? 'electron-renderer' : isWebpackServe ? 'web' : 'browserslist',
   mode: isProduction ? 'production' : 'development',
   entry: {
     shell: './src/index.ts',
@@ -80,6 +84,7 @@ module.exports = {
     filename: '[name].[contenthash:8].js',
     chunkFilename: '[name].[contenthash:8].chunk.js',
     publicPath: '',
+    globalObject: 'window',
     clean: true,
   },
   module: {

@@ -1,3 +1,15 @@
+const info = {
+  isProduction: process.env.NODE_ENV === 'production',
+  isWebpackServe: process.env.WEBPACK_SERVE,
+  targetPlatform: process.env.WEBQ_TARGET,
+  isPWA:
+    window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true,
+};
+
+if (info.targetPlatform === 'electron') {
+  require('./electron');
+}
+
 document.addEventListener('deviceready', async () => {
   const themeMgr = await import('./themeManager');
   themeMgr.applyTheme();
@@ -35,9 +47,5 @@ function updateStatusBarColor(color, isDark) {
 
 module.exports = {
   updateStatusBarColor,
-  isProduction: process.env.NODE_ENV === 'production',
-  isWebpackServe: process.env.WEBPACK_SERVE,
-  targetPlatform: process.env.WEBQ_TARGET,
-  isPWA:
-    window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true,
+  ...info,
 };

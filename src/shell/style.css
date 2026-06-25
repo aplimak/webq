@@ -7,6 +7,8 @@
 @import 'styles/form.css';
 @import 'styles/material-icons.css';
 
+@import 'material-symbols';
+
 * {
   -webkit-tap-highlight-color: transparent;
 }
@@ -99,6 +101,7 @@ body {
 
 /* Header */
 .header {
+  -webkit-app-region: drag;
   background-color: var(--header-primary-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 16px 24px;
@@ -108,6 +111,11 @@ body {
   top: 0;
   z-index: 100;
   /* Ensure it's above other content */
+
+  * {
+    -webkit-app-region: no-drag;
+    /* Allows buttons to be clickable */
+  }
 
   .header-title {
     font-size: 20px;
@@ -173,7 +181,8 @@ h3 {
   margin-bottom: 16px;
 }
 
-.material-icons {
+.material-icons,
+.material-symbols-outlined {
   font-size: inherit !important;
 }
 
