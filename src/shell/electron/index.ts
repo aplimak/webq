@@ -26,3 +26,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.electron.mainWindow.minimize();
   });
 });
+
+window.electron.events.onEscape(async () => {
+  const router = await import('@shell/router');
+
+  if (router.inMainPage()) {
+    window.electron.mainWindow.close();
+  } else {
+    window.history.back();
+  }
+});

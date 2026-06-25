@@ -30,6 +30,16 @@ function createWindow(): void {
       }
     });
   }
+
+  mainWindow.webContents.on('before-input-event', (event, input) => {
+    if (input.type !== 'keyDown') return;
+    // Escape to send a custom event to the renderer
+    if (input.key === 'Escape') {
+      event.preventDefault();
+      // Send an IPC message to the renderer
+      mainWindow?.webContents.send('escape-pressed');
+    }
+  });
 }
 
 app.whenReady().then(() => {

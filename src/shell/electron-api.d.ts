@@ -6,6 +6,9 @@ export interface ElectronAPI {
     maximize: () => Promise<void>;
     isMaximized: () => Promise<boolean | undefined>;
   };
+  events: {
+    onEscape: (callback: () => void) => () => void;
+  };
 }
 
 declare global {

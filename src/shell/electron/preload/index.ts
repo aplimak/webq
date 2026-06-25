@@ -10,4 +10,14 @@ contextBridge.exposeInMainWorld('electron', {
     maximize: () => ipcRenderer.invoke('window:maximize'),
     isMaximized: () => ipcRenderer.invoke('window:maximized'),
   },
+  events: {
+    onEscape: (callback: () => void) => {
+      // Listen for the 'escape-pressed' event from main
+      ipcRenderer.on('escape-pressed', callback);
+      // Return a cleanup function to remove the listener
+      return (): void => {
+        ipcRenderer.removeListener('escape-pressed', callback);
+      };
+    },
+  },
 } as ElectronAPI);
