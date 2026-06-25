@@ -108,12 +108,16 @@ body {
   top: 0;
   z-index: 100;
   /* Ensure it's above other content */
-}
 
-.header-title {
-  font-size: 20px;
-  font-weight: 500;
-  color: var(--header-primary-text-color);
+  .header-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--header-primary-text-color);
+  }
+
+  .header-actions button {
+    min-height: 34px;
+  }
 }
 
 /* Main Content */
