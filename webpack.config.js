@@ -34,6 +34,7 @@ const pwaPlugins =
           // to your hashed files (they're already uniquely versioned)
           // This saves bandwidth and avoids unnecessary re-downloads[reference:0]
           dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
+          maximumFileSizeToCacheInBytes: 10000000,
 
           // Define runtime caching rules for external resources
           runtimeCaching: [
