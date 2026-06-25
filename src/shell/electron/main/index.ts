@@ -31,6 +31,10 @@ function createWindow(): void {
     });
   }
 
+  mainWindow.on('resize', () => {
+    mainWindow?.webContents.send('window-resized');
+  });
+
   mainWindow.webContents.on('before-input-event', (event, input) => {
     if (input.type !== 'keyDown') return;
     // Escape to send a custom event to the renderer

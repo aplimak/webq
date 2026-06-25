@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateMaxBtnIcon(maxBtn);
   maxBtn.addEventListener('click', () => {
     window.electron.mainWindow.maximize();
-    updateMaxBtnIcon(maxBtn);
   });
 
   const minBtn = document.querySelector('#window-minimize')!;
@@ -35,4 +34,9 @@ window.electron.events.onEscape(async () => {
   } else {
     window.history.back();
   }
+});
+
+window.electron.events.onResize(() => {
+  const maxBtn = document.querySelector('#window-maximize')!;
+  updateMaxBtnIcon(maxBtn);
 });

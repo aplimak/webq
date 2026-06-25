@@ -8,6 +8,7 @@ export interface ElectronAPI {
   };
   events: {
     onEscape: (callback: () => void) => () => void;
+    onResize: (callback: () => void) => () => void;
   };
 }
 

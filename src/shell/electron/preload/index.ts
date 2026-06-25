@@ -1,6 +1,13 @@
 import { ElectronAPI } from '@/shell/electron-api';
 import { contextBridge, ipcRenderer } from 'electron';
 
+function embedEvent(event: string, callback: () => void): () => void {
+  ipcRenderer.on(event, callback);
+  return (): void => {
+    ipcRenderer.removeListener('escape-pressed', callback);
+  };
+}
+
 // Expose protected methods that allow the renderer to use
 // the ipcRenderer without exposing the entire object.
 contextBridge.exposeInMainWorld('electron', {
@@ -11,13 +18,7 @@ contextBridge.exposeInMainWorld('electron', {
     isMaximized: () => ipcRenderer.invoke('window:maximized'),
   },
   events: {
-    onEscape: (callback: () => void) => {
-      // Listen for the 'escape-pressed' event from main
-      ipcRenderer.on('escape-pressed', callback);
-      // Return a cleanup function to remove the listener
-      return (): void => {
-        ipcRenderer.removeListener('escape-pressed', callback);
-      };
-    },
+    onEscape: (callback: () => void) => embedEvent('escape-pressed', callback),
+    onResize: (callback: () => void) => embedEvent('window-resized', callback),
   },
 } as ElectronAPI);
