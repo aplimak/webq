@@ -19,7 +19,7 @@
     "run:cordova:dev": "npm run build:cordova:dev && cordova run android --debug --noprepare --nobuild",
     "run:electron:prod": "npm run build:electron:prod && electron ./www/electron-main.js",
     "run:electron:dev": "npm run build:electron:dev && NODE_ENV=development electron ./www/electron-main.js",
-    "pack:electron": "electron-builder --dir",
+    "dist:electron": "electron-builder",
     "lint": "eslint --ext .ts src --max-warnings 0",
     "lint:fix": "eslint --ext .ts src --fix --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,js,css,scss,html,json,md}\"",
