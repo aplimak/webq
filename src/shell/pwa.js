@@ -1,13 +1,6 @@
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register('/service-worker.js')
-      .then((reg) => console.log('SW registered:', reg))
-      .catch((err) => console.error('SW registration failed:', err));
-  });
-}
+const { isWebpackServe, isPWA } = require('./bridge');
 
-window.addEventListener('beforeinstallprompt', (e) => {
+function registerHandler(e) {
   // Prevent the browser's default mini-infobar from showing
   e.preventDefault();
 
@@ -37,4 +30,18 @@ window.addEventListener('beforeinstallprompt', (e) => {
       deferredPrompt = null;
     });
   }
-});
+}
+
+if (!isWebpackServe && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/service-worker.js')
+      .then((reg) => {
+        console.log('SW registered:', reg);
+        if (!isPWA) {
+          window.addEventListener('beforeinstallprompt', registerHandler);
+        }
+      })
+      .catch((err) => console.error('SW registration failed:', err));
+  });
+}

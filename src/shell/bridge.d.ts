@@ -15,3 +15,8 @@ export const isProduction: boolean;
  * Whether the project running as installed PWA.
  */
 export const isPWA: boolean;
+
+/**
+ * Whether the project served by webpack dev server.
+ */
+export const isWebpackServe: boolean;
