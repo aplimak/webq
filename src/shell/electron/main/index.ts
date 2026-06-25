@@ -8,6 +8,7 @@ function createWindow(): void {
     width: 1200,
     height: 700,
     frame: process.env.NODE_ENV === 'development',
+    hasShadow: true,
     webPreferences: {
       preload: path.join(__dirname, './electron-preload.js'), // Webpack output
       contextIsolation: true,
