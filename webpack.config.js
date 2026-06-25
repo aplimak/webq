@@ -7,6 +7,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 const isWebpackServe = Boolean(process.env.WEBPACK_SERVE || false);
@@ -175,6 +176,7 @@ module.exports = {
         configFile: path.resolve(__dirname, 'tsconfig.json'),
       },
     }),
+    new FaviconsWebpackPlugin('assets/icon.png'),
     ...pwaPlugins,
   ],
   optimization: {
