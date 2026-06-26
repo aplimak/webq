@@ -2,7 +2,7 @@ const pkg = require('./package.json');
 
 module.exports = {
   appId: pkg.name,
-  artifactName: '${productName}.${ext}',
+  artifactName: '${os}.${ext}',
   asar: true,
   detectUpdateChannel: false,
   electronLanguages: 'en',
