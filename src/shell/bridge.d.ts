@@ -35,3 +35,26 @@ export const targetPlatform: TargetPlatform;
  * Compile time target platform.
  */
 export const platform: Record<TargetPlatform, boolean>;
+
+interface ApplicationInformation {
+  /**
+   * Application name.
+   * It's usally the package name.
+   */
+  name: string;
+
+  /**
+   * Application friendly name.
+   */
+  title: string;
+
+  /**
+   * Application version.
+   */
+  version: string;
+}
+
+/**
+ * Application info.
+ */
+export const app: ApplicationInformation;

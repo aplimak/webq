@@ -8,6 +8,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
+const pkg = require('./package.json');
 const isProduction = process.env.NODE_ENV === 'production';
 const isWebpackServe = Boolean(process.env.WEBPACK_SERVE || false);
 const targetPlatform = process.env.WEBQ_TARGET;
@@ -159,7 +160,6 @@ module.exports = {
     alias: {
       '@': path.resolve(__dirname, 'src'),
       '@shell': path.resolve(__dirname, 'src', 'shell'),
-      '@shell': path.resolve(__dirname, 'src', 'shell'),
     },
   },
   plugins: [
@@ -167,6 +167,9 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.WEBPACK_SERVE': JSON.stringify(isWebpackServe),
       'process.env.WEBQ_TARGET': JSON.stringify(process.env.WEBQ_TARGET),
+      __WEBQ_APP_NAME__: JSON.stringify(pkg.name),
+      __WEBQ_APP_TITLE__: JSON.stringify(pkg.displayName),
+      __WEBQ_APP_VERSION__: JSON.stringify(pkg.version),
     }),
     new HtmlWebpackPlugin({
       template: './src/index.html',

@@ -423,6 +423,7 @@ function refreshNewRoundBtn(newRoundBtn: Element): void {
 }
 
 async function route(content: HTMLDivElement): Promise<void> {
+  document.title = 'Uno Score Counter';
   content.innerHTML = main;
 
   // it initializes the whole backend and restores existing rounds
