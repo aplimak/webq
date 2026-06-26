@@ -3,6 +3,16 @@
   "displayName": "WebQ",
   "version": "1.0.0",
   "description": "A suite of simple web apps.",
+  "keywords": [
+    "ecosystem:cordova",
+    "ecosystem:electron"
+  ],
+  "author": {
+    "name": "Aeliux",
+    "email": "itsaeliux@gmail.com",
+    "url": "https://github.com/Aeliux"
+  },
+  "license": "MIT",
   "type": "commonjs",
   "main": "www/electron-main.js",
   "scripts": {
@@ -21,8 +31,9 @@
     "run:cordova:dev": "npm run build:cordova:dev && cordova run android --debug --noprepare --nobuild",
     "run:electron:prod": "npm run build:electron:prod && electron ./www/electron-main.js",
     "run:electron:dev": "npm run build:electron:dev && NODE_ENV=development electron ./www/electron-main.js",
+    "sync:cordova": "node scripts/update-cordova.js",
     "dist:browser": "npm run build:browser:prod && rimraf dist/browser && shx mkdir -p dist && shx cp -r www dist/browser",
-    "dist:cordova": "npm run build:cordova:prod && shx mkdir -p dist && shx cp platforms/android/app/build/outputs/apk/release/app-release.apk dist/android.apk",
+    "dist:cordova": "npm run sync:cordova && npm run build:cordova:prod && shx mkdir -p dist && shx cp platforms/android/app/build/outputs/apk/release/app-release.apk dist/android.apk",
     "dist:electron": "npm run build:electron:prod && electron-builder",
     "dist": "npm run dist:browser && npm run dist:cordova && npm run dist:electron ",
     "lint": "eslint --ext .ts src --max-warnings 0",
@@ -30,11 +41,6 @@
     "format": "prettier --write \"src/**/*.{ts,js,css,scss,html,json,md}\"",
     "clean": "rimraf www && shx mkdir -p www"
   },
-  "keywords": [
-    "ecosystem:cordova"
-  ],
-  "author": "Apache Cordova Team",
-  "license": "Apache-2.0",
   "devDependencies": {
     "@babel/core": "^8.0.1",
     "@babel/preset-env": "^8.0.2",
@@ -81,7 +87,8 @@
     "webpack": "^5.107.2",
     "webpack-cli": "^7.0.3",
     "webpack-dev-server": "^5.2.5",
-    "workbox-webpack-plugin": "^7.4.1"
+    "workbox-webpack-plugin": "^7.4.1",
+    "xml2js": "^0.6.2"
   },
   "cordova": {
     "platforms": [
