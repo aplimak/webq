@@ -297,7 +297,6 @@ module.exports = {
     : {
         hot: false,
       },
-  cache: false,
   performance: {
     hints: false,
   },
