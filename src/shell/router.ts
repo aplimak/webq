@@ -1,5 +1,6 @@
 import { shellStorage } from './storage';
 import { Page } from './page';
+import { shellEvents } from './event';
 
 const DEFAULT_ROUTE = shellStorage.get('defaultRoute');
 
@@ -116,6 +117,11 @@ async function initRoute(): Promise<void> {
       } catch (error) {
         console.warn(`Error while exiting page: ${currentPage?.id}`, error);
       }
+
+      shellEvents.emit('router:page-change', {
+        previousPage: currentPage?.id || null,
+        newPage: route,
+      });
 
       let page: Page;
 
