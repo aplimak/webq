@@ -41,7 +41,8 @@
     "lint:fix": "eslint --ext .ts src --fix --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,js,css,scss,html,json,md}\"",
     "clean": "npm run clean:staging dist",
-    "clean:staging": "rimraf www bundle"
+    "clean:staging": "rimraf www bundle",
+    "clean:all": "npm run clean node_modules platforms"
   },
   "devDependencies": {
     "@babel/core": "^8.0.1",
