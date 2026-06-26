@@ -496,6 +496,7 @@ const page: Page = {
   route: async (context) => {
     await route(context.content);
   },
+  storage: unoStorage,
 };
 
 export default page;

@@ -1,3 +1,5 @@
+import { GenericScopedStorage } from './storage';
+
 /**
  * Represents a page in the application.
  * Each page has a unique id, routing logic, and optional cleanup logic.
@@ -22,6 +24,11 @@ export interface Page {
    * @param nextRoute The route that is being navigated to after exiting the page.
    */
   exit?: (nextRoute: string) => Promise<void>;
+
+  /**
+   * Page's scoped storage instance. mostly used for page reset after page crash.
+   */
+  storage?: GenericScopedStorage;
 }
 
 /**
