@@ -188,3 +188,7 @@ async function initRoute(): Promise<void> {
 }
 
 document.addEventListener('DOMContentLoaded', initRoute);
+
+shellEvents.on('router:page-change', (data) => {
+  document.body.setAttribute('data-page', data.newPage);
+});
