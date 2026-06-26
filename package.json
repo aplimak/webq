@@ -42,7 +42,7 @@
     "format": "prettier --write \"src/**/*.{ts,js,css,scss,html,json,md}\"",
     "clean": "npm run clean:staging dist",
     "clean:staging": "rimraf www bundle",
-    "clean:all": "npm run clean node_modules platforms"
+    "clean:all": "npm run clean node_modules platforms plugins"
   },
   "devDependencies": {
     "@babel/core": "^8.0.1",
