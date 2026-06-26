@@ -97,7 +97,6 @@ module.exports = {
     chunkFilename: '[name].[contenthash:8].chunk.js',
     publicPath: '',
     globalObject: 'window',
-    clean: true,
   },
   module: {
     rules: [
