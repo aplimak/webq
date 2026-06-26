@@ -6,24 +6,29 @@
   "type": "commonjs",
   "main": "www/electron-main.js",
   "scripts": {
-    "bundle:prod": "npm run lint && NODE_ENV=production WEBQ_TARGET=${WEBQ_TARGET:-browser} webpack --config webpack.config.js --progress --fail-on-warnings",
-    "bundle:dev": "NODE_ENV=development WEBQ_TARGET=${WEBQ_TARGET:-browser} webpack --config webpack.config.js --progress",
-    "bundle:electron": "NODE_ENV=${NODE_ENV:-development} WEBQ_TARGET=electron webpack --progress --fail-on-warnings --config",
-    "build:cordova:prod": "npm run lint && WEBQ_TARGET=cordova npm run bundle:prod && cordova build android --release -- --packageType=apk",
-    "build:cordova:dev": "WEBQ_TARGET=cordova npm run bundle:dev && cordova build android --debug",
-    "build:electron:prod": "npm run lint && WEBQ_TARGET=electron npm run bundle:prod && NODE_ENV=production concurrently \"npm run bundle:electron webpack.electron.main.js\" \"npm run bundle:electron webpack.electron.preload.js\"",
-    "build:electron:dev": "WEBQ_TARGET=electron npm run bundle:dev && NODE_ENV=development concurrently \"npm run bundle:electron webpack.electron.main.js\" \"npm run bundle:electron webpack.electron.preload.js\"",
-    "start": "NODE_ENV=development WEBQ_TARGET=browser webpack serve --config webpack.config.js --progress",
-    "start:prod": "NODE_ENV=production WEBQ_TARGET=browser webpack serve --config webpack.config.js --progress",
+    "bundle": "node scripts/webpack-runner.js",
+    "bundle:electron": "WEBQ_TARGET=electron concurrently \"npm run bundle webpack.electron.main.js\" \"npm run bundle webpack.electron.preload.js\"",
+    "serve": "node scripts/webpack-serve.js",
+    "build:browser:dev": "cross-env WEBQ_TARGET=browser npm run bundle",
+    "build:browser:prod": "npm run lint && cross-env NODE_ENV=production WEBQ_TARGET=browser npm run bundle",
+    "build:cordova:dev": "cross-env WEBQ_TARGET=cordova npm run bundle && cordova build android --debug",
+    "build:cordova:prod": "npm run lint && cross-env NODE_ENV=production WEBQ_TARGET=cordova npm run bundle && cordova build android --release -- --packageType=apk",
+    "build:electron:dev": "cross-env WEBQ_TARGET=electron npm run bundle && npm run bundle:electron",
+    "build:electron:prod": "npm run lint && cross-env NODE_ENV=production WEBQ_TARGET=electron npm run bundle && cross-env NODE_ENV=production npm run bundle:electron",
+    "start": "npm run serve",
+    "start:prod": "cross-env NODE_ENV=production npm run serve",
     "run:cordova:prod": "npm run build:cordova:prod && cordova run android --release --noprepare --nobuild -- --packageType=apk",
     "run:cordova:dev": "npm run build:cordova:dev && cordova run android --debug --noprepare --nobuild",
     "run:electron:prod": "npm run build:electron:prod && electron ./www/electron-main.js",
     "run:electron:dev": "npm run build:electron:dev && NODE_ENV=development electron ./www/electron-main.js",
-    "dist:electron": "electron-builder",
+    "dist:browser": "npm run build:browser:prod && rimraf dist/browser && shx mkdir -p dist && shx cp -r www dist/browser",
+    "dist:cordova": "npm run build:cordova:prod && shx mkdir -p dist && shx cp platforms/android/app/build/outputs/apk/release/app-release.apk dist/android.apk",
+    "dist:electron": "npm run build:electron:prod && electron-builder",
+    "dist": "npm run dist:browser && npm run dist:cordova && npm run dist:electron ",
     "lint": "eslint --ext .ts src --max-warnings 0",
     "lint:fix": "eslint --ext .ts src --fix --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,js,css,scss,html,json,md}\"",
-    "clean": "rm -rf www && mkdir www"
+    "clean": "rimraf www && shx mkdir -p www"
   },
   "keywords": [
     "ecosystem:cordova"
@@ -49,6 +54,7 @@
     "cordova-plugin-device": "^3.0.0",
     "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-statusbar": "^4.0.0",
+    "cross-env": "^10.1.0",
     "css-loader": "^7.1.4",
     "css-minimizer-webpack-plugin": "^8.0.0",
     "electron": "^42.5.0",
@@ -64,8 +70,10 @@
     "html-webpack-plugin": "^5.6.7",
     "mini-css-extract-plugin": "^2.10.2",
     "prettier": "^3.8.4",
+    "rimraf": "^6.1.3",
     "sass": "^1.101.0",
     "sass-loader": "^17.0.0",
+    "shx": "^0.4.0",
     "style-loader": "^4.0.0",
     "terser-webpack-plugin": "^5.6.1",
     "ts-loader": "^9.6.1",
@@ -98,7 +106,7 @@
     "appId": "ir.aeliux.webq",
     "productName": "webq",
     "directories": {
-      "output": "pack"
+      "output": "dist"
     },
     "files": [
       "www/**/*"
