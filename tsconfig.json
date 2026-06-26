@@ -18,5 +18,5 @@
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "www"]
+  "exclude": ["node_modules", "www", "dist", "bundle"]
 }

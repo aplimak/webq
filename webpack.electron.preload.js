@@ -9,8 +9,8 @@ module.exports = {
     electron_preload: './src//shell/electron/preload/index.ts',
   },
   output: {
-    path: path.resolve(__dirname, './www'),
-    filename: 'electron-preload.js',
+    path: path.resolve(process.env.WEBQ_OUTPUT, 'preload'),
+    filename: 'index.js',
   },
   resolve: {
     extensions: ['.ts', '.js'],

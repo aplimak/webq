@@ -10,13 +10,13 @@ function createWindow(): void {
     frame: process.env.NODE_ENV === 'development',
     hasShadow: true,
     webPreferences: {
-      preload: path.join(__dirname, './electron-preload.js'), // Webpack output
+      preload: path.join(__dirname, '../preload/index.js'),
       contextIsolation: true,
       nodeIntegration: false,
     },
   });
 
-  mainWindow.loadFile(path.join(__dirname, './index.html'));
+  mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
 
   // Open DevTools in development
   if (process.env.NODE_ENV === 'development') {

@@ -12,7 +12,7 @@ const pkg = require('./package.json');
 const isProduction = process.env.NODE_ENV === 'production';
 const isWebpackServe = Boolean(process.env.WEBPACK_SERVE || false);
 const targetPlatform = process.env.WEBQ_TARGET;
-if (!['browser', 'cordova', 'electron'].includes(targetPlatform)) {
+if (!targetPlatform || !['browser', 'cordova', 'electron'].includes(targetPlatform)) {
   throw Error(`Unknown target platform: ${targetPlatform}`);
 }
 
@@ -89,7 +89,10 @@ module.exports = {
     shell: './src/index.ts',
   },
   output: {
-    path: path.resolve(__dirname, 'www'),
+    path:
+      targetPlatform === 'electron'
+        ? path.resolve(process.env.WEBQ_OUTPUT, 'renderer')
+        : process.env.WEBQ_OUTPUT,
     filename: '[name].[contenthash:8].js',
     chunkFilename: '[name].[contenthash:8].chunk.js',
     publicPath: '',

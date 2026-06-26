@@ -9,8 +9,8 @@ module.exports = {
     electron_main: './src/shell/electron/main/index.ts',
   },
   output: {
-    path: path.resolve(__dirname, './www'),
-    filename: 'electron-main.js',
+    path: path.resolve(process.env.WEBQ_OUTPUT, 'main'),
+    filename: 'index.js',
   },
   resolve: {
     extensions: ['.ts', '.js'],

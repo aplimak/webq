@@ -11,7 +11,7 @@ module.exports = {
     buildResources: 'assets',
     output: 'dist',
   },
-  files: ['www/**/*', '!node_modules/**/*'],
+  files: ['bundle/electron/**/*', '!node_modules/**/*'],
   appImage: {
     compression: 'zstd',
   },
