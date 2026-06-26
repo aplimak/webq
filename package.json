@@ -109,12 +109,10 @@
       "output": "dist"
     },
     "files": [
-      "www/**/*"
+      "www/**/*",
+      "!node_modules/**/*"
     ],
     "asar": true,
-    "asarUnpack": [
-      "**/node_modules/**/*"
-    ],
     "linux": {
       "target": [
         "AppImage"
