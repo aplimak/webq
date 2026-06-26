@@ -69,6 +69,13 @@ const iconPlugin =
         new FaviconsWebpackPlugin({
           logo: 'assets/icon.png',
           manifest: './manifest.webmanifest',
+          favicons: {
+            appName: pkg.displayName,
+            appDescription: pkg.description,
+            developerName: pkg.author.name,
+            developerURL: pkg.author.url,
+            version: pkg.version,
+          },
         }),
       ]
     : [];

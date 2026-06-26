@@ -1,6 +1,7 @@
 {
   "name": "ir.aeliux.webq",
   "displayName": "WebQ",
+  "desktopName": "ir.aeliux.webq.desktop",
   "version": "1.0.0",
   "description": "A suite of simple web apps.",
   "keywords": [
@@ -108,7 +109,6 @@
     "defaults and supports es6-module",
     "not op_mini all"
   ],
-  "desktopName": "ir.aeliux.webq.desktop",
   "build": {
     "appId": "ir.aeliux.webq",
     "productName": "webq",
