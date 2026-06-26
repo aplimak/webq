@@ -35,12 +35,13 @@
     "sync:cordova": "node scripts/update-cordova.js",
     "dist:browser": "npm run build:browser:prod && rimraf dist/browser && shx mkdir -p dist && shx cp -r bundle/browser dist/browser",
     "dist:cordova": "npm run sync:cordova && npm run build:cordova:prod && shx mkdir -p dist && shx cp platforms/android/app/build/outputs/apk/release/app-release.apk dist/android.apk",
-    "dist:electron": "npm run build:electron:prod && electron-builder --config electron-builder.config.js",
+    "dist:electron": "npm run build:electron:prod && electron-builder --config electron-builder.config.js && shx rm -rf dist/*-unpacked dist/*.y*ml dist/.icon-ico",
     "dist": "concurrently \"npm run dist:browser\" \"npm run dist:cordova\" \"npm run dist:electron\"",
     "lint": "eslint --ext .ts src --max-warnings 0",
     "lint:fix": "eslint --ext .ts src --fix --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,js,css,scss,html,json,md}\"",
-    "clean": "rimraf www dist bundle"
+    "clean": "npm run clean:staging dist",
+    "clean:staging": "rimraf www bundle"
   },
   "devDependencies": {
     "@babel/core": "^8.0.1",
