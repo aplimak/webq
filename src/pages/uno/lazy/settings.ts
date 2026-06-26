@@ -1,5 +1,5 @@
 import { Dialog, toast } from '@/shell/components';
-import { setupInputNavigation } from '@/shell/utils';
+import { setupInputNavigation, toNumber } from '@/shell/utils';
 
 import { unoStorage } from '../storage';
 import { restoreRounds } from '../backend';
@@ -64,7 +64,7 @@ export default function (content: Element): void {
     if (maxScoreInput && maxScoreInput instanceof HTMLInputElement) {
       try {
         const val = maxScoreInput.value;
-        const numVal = parseInt(val, 10);
+        const numVal = toNumber(val);
         if (Number.isNaN(numVal)) {
           throw Error('Not a number');
         }

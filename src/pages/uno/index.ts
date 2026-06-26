@@ -1,4 +1,4 @@
-import { setupInputNavigation, scrollToBottom } from '@shell/utils';
+import { setupInputNavigation, scrollToBottom, toNumber } from '@shell/utils';
 import { toast } from '@shell/components';
 
 import main from './main.html';
@@ -109,10 +109,7 @@ function submitRound(content: Element): void {
     }
 
     const score = card.querySelector<HTMLInputElement>('#round-score')?.value;
-    let scoreNum = NaN;
-    if (score) {
-      scoreNum = parseInt(score, 10);
-    }
+    const scoreNum = toNumber(score);
     if (!isWinner) {
       if (Number.isNaN(scoreNum)) {
         nanPlayers.push(playerId);

@@ -1,5 +1,6 @@
 import { ScopedStorage } from '@/shell/storage';
 import { PlayerDefinition, RoundResult } from './models';
+import { toNumber } from '@/shell/utils';
 
 function verifyPlayerDefs(players: PlayerDefinition[]): void {
   if (players.length < 2) {
@@ -121,12 +122,6 @@ export const unoStorage = new ScopedStorage<UnoState>({
     ],
     roundResults: [],
   },
-  getInterceptor: (key, value): string | null => {
-    if (key === 'endScore') {
-      return value ? String(parseInt(value, 10)) : null;
-    }
-    return value;
-  },
   validator: (key, value): boolean => {
     switch (key) {
       case 'playerDefs': {
@@ -138,7 +133,7 @@ export const unoStorage = new ScopedStorage<UnoState>({
         return true;
       }
       case 'endScore': {
-        const result = !Number.isNaN(parseInt(String(value), 10));
+        const result = !Number.isNaN(toNumber(String(value)));
         return result;
       }
     }

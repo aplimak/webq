@@ -157,3 +157,7 @@ export function scrollToBottom(element: Element): void {
     top: element.scrollHeight,
   });
 }
+
+export function toNumber(text?: string | null): number {
+  return text ? Number(text) : NaN;
+}
