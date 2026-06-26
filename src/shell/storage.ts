@@ -170,6 +170,15 @@ export class ScopedStorage<T extends Record<string, any>> {
   remove<K extends keyof T>(key: K): void {
     this.storage.removeItem(this.getScopedKey(key));
   }
+
+  /**
+   * Resets all values to the default.
+   */
+  reset(): void {
+    for (const key in this.defaultVal) {
+      this.remove(key);
+    }
+  }
 }
 
 /**
