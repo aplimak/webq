@@ -1,6 +1,10 @@
-function updateStatusBarColor(color, isDark) {
+const { shellEvents } = require('../event');
+
+let ready = false;
+
+function updateStatusBarColor(color, useDarkTheme) {
   window.StatusBar.backgroundColorByHexString(color);
-  if (isDark) {
+  if (useDarkTheme) {
     window.StatusBar.styleLightContent();
   } else {
     window.StatusBar.styleDefault();
@@ -8,8 +12,8 @@ function updateStatusBarColor(color, isDark) {
 }
 
 document.addEventListener('deviceready', async () => {
-  const themeMgr = await import('@shell/themeManager');
-  themeMgr.applyTheme();
+  ready = true;
+  shellEvents.emit('bridge:cordova-ready');
 
   const router = await import('@shell/router');
   // handle back button, if we are in the main page, exit app, otherwise go back
@@ -28,6 +32,11 @@ document.addEventListener('deviceready', async () => {
   });
 });
 
-module.exports = {
-  updateStatusBarColor,
-};
+shellEvents.on('ui:theme-change', async (data) => {
+  if (!ready) {
+    await shellEvents.waitFor('bridge:cordova-ready');
+  }
+
+  const { getHeaderColor } = require('../header');
+  updateStatusBarColor(getHeaderColor(), data.useDarkTheme);
+});

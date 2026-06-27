@@ -24,18 +24,7 @@ if (platform.cordova) {
   require('./electron');
 }
 
-function updateStatusBarColor(color, isDark) {
-  const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-  metaThemeColor.content = color;
-
-  if (platform.cordova) {
-    const cordova = require('./cordova');
-    cordova.updateStatusBarColor(color, isDark);
-  }
-}
-
 module.exports = {
-  updateStatusBarColor,
   ...info,
   platform,
   app,

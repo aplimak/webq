@@ -1,12 +1,4 @@
 /**
- * Update status bar color.
- * Works on Android and IOS cordova.
- * @param color Color hex code.
- * @param isDark Is the requested color considered dark? if true, icons would become light and vise versa.
- */
-export function updateStatusBarColor(color: string, isDark: boolean): void;
-
-/**
  * Whether the project compiled as production.
  */
 export const isProduction: boolean;

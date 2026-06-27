@@ -107,6 +107,11 @@ interface ShellEvents {
     previousPage: string | null;
     newPage: string;
   };
+  'ui:theme-change': {
+    useDarkTheme: boolean;
+    initial: boolean;
+  };
+  'bridge:cordova-ready': null;
 }
 
 /**
