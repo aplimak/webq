@@ -59,10 +59,6 @@ export interface StorageOptions<T> {
   validator?: <K extends keyof T>(key: K, value: T[K]) => boolean;
 }
 
-export interface GenericScopedStorage {
-  reset: () => void;
-}
-
 /**
  * A scoped storage utility that provides a simple interface for storing and retrieving key-value pairs with a specific scope to avoid collisions.
  * It supports JSON serialization for complex data types and allows for default values when keys are not found.

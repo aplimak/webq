@@ -1,4 +1,6 @@
-import { GenericScopedStorage } from './storage';
+interface GenericScopedStorage {
+  reset: () => void;
+}
 
 /**
  * Represents a page in the application.
