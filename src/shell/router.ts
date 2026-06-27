@@ -1,5 +1,5 @@
 import { shellStorage } from './storage';
-import { Page } from './page';
+import { Page, PageContext } from './page';
 import { shellEvents } from './event';
 
 const DEFAULT_ROUTE = shellStorage.get('defaultRoute');
@@ -150,9 +150,31 @@ async function initRoute(): Promise<void> {
         const prevPage = currentPage;
         currentPage = page;
 
+        let api: PageContext['api'];
+        {
+          const { shellEvents: events } = await import('./event');
+          const { shellStorage: storage } = await import('./storage');
+          const header = await import('./header');
+          const { setTitle } = header;
+          api = {
+            header: {
+              show(): void {
+                header.setVisibility(true);
+              },
+              hide(): void {
+                header.setVisibility(false);
+              },
+              setTitle,
+            },
+            storage,
+            events,
+          };
+        }
+
         await currentPage.route({
           content: content,
           previousRoute: prevPage?.id,
+          api,
         });
       } catch (error) {
         console.error(`Page "${route}" crashed:`, error);

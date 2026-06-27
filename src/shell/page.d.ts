@@ -1,3 +1,6 @@
+import { EventBus } from './event';
+import { ScopedStorage, ShellState } from './storage';
+
 interface GenericScopedStorage {
   reset: () => void;
 }
@@ -46,4 +49,39 @@ export interface PageContext {
    * The previous route that was navigated from, if available. This can be used for navigation history or to determine how the page should render based on where the user came from.
    */
   readonly previousRoute?: string;
+
+  /**
+   * Shell's public api.
+   * NOTE: this api is mostly created for non-webpack pages, as they cant access the shell api directly. webpack pages better to use the exported functions on shell modules.
+   */
+  readonly api: {
+    /**
+     * Provides header control.
+     * All changed done using the specified functions will be automatically reset upon page change and no cleanup needed.
+     */
+    header: {
+      /**
+       * Show the header area.
+       */
+      show: () => void;
+      /**
+       * Hide the header area.
+       */
+      hide: () => void;
+      /**
+       * Change the current header title.
+       */
+      setTitle: (title: string) => void;
+    };
+    /**
+     * Shell's storage.
+     * NOTE: it meant to be used only by shell modules or updated by shell or pages. dont add new values to it.
+     */
+    storage: ScopedStorage<ShellState>;
+    /**
+     * Shell's event bus.
+     * NOTE: registered events won't be cleaned up automatically. make sure to clear all registered event handlers at page exit.
+     */
+    events: EventBus;
+  };
 }
