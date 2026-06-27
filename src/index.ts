@@ -1,24 +1,12 @@
-import { isProduction, app } from './shell/bridge';
+import { app } from './shell/bridge';
+import './shell/pwa';
 import './shell/router';
 import './shell/themeManager';
-import './shell/pwa';
-
-import './shell/style.css';
+import './shell/header';
 import { shellEvents } from './shell/event';
 
-function setTitle(): void {
-  document.title = app.title;
-
-  const headerTitle = document.querySelector('header .header-title');
-  if (headerTitle) {
-    let title = app.title;
-    if (!isProduction) {
-      title += ' (dev)';
-    }
-    headerTitle.innerHTML = title;
-  }
-}
+import './shell/style.css';
 
 shellEvents.on('router:page-change', (_) => {
-  setTitle();
+  document.title = app.title;
 });
