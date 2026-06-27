@@ -97,6 +97,7 @@ module.exports = {
     chunkFilename: '[name].[contenthash:8].chunk.js',
     publicPath: '',
     globalObject: 'window',
+    clean: true,
   },
   module: {
     rules: [
@@ -198,13 +199,9 @@ module.exports = {
   optimization: {
     minimizer: isProduction
       ? [
-          `...`,
           new TerserPlugin({
             terserOptions: {
-              ecma: 2020, // output ES2020 syntax
-              output: {
-                ecma: 2020, // ensure output uses ES2020
-              },
+              ecma: 2020,
               compress: {
                 drop_console: true,
                 drop_debugger: true,
