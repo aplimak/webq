@@ -19,9 +19,12 @@
   --md-primary-text-color: #212121;
   --md-icon-color: #777;
 
-  --md-green: rgba(76, 175, 80, 0.5); /* Lighter, more subtle */
-  --md-yellow: rgba(255, 235, 59, 0.5); /* Softer, less harsh */
-  --md-red: rgba(231, 76, 60, 0.5); /* Less aggressive */
+  --md-green: rgba(76, 175, 80, 0.5);
+  /* Lighter, more subtle */
+  --md-yellow: rgba(255, 235, 59, 0.5);
+  /* Softer, less harsh */
+  --md-red: rgba(231, 76, 60, 0.5);
+  /* Less aggressive */
 
   --primary-color: var(--md-background);
   --primary-text-color: var(--md-on-background);
@@ -58,4 +61,8 @@
   --object-background-hover: rgba(0, 0, 0, 0.1);
   --object-border: rgba(99, 102, 241, 0.3);
   --object-border-focus: rgba(99, 102, 241, 0.6);
+
+  header .header-icon {
+    filter: invert(1);
+  }
 }
