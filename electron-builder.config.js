@@ -16,7 +16,7 @@ module.exports = {
     compression: 'zstd',
   },
   linux: {
-    icon: 'assets/icon.png',
+    icon: 'assets/icon_round.png',
     target: ['AppImage'],
     category: 'Utility',
     syncDesktopName: true,

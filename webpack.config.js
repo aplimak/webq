@@ -67,7 +67,7 @@ const iconPlugin =
   targetPlatform === 'browser'
     ? [
         new FaviconsWebpackPlugin({
-          logo: 'assets/icon.png',
+          logo: 'assets/icon_round.png',
           manifest: './manifest.webmanifest',
           favicons: {
             appName: pkg.displayName,

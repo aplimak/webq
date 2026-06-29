@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -24,6 +25,16 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          from: 'assets/icon_round.png',
+          to: 'icon.png',
+        },
+      ],
+    }),
+  ],
   node: {
     __dirname: false, // Keep __dirname as actual path
     __filename: false,

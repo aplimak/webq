@@ -7,6 +7,7 @@ function createWindow(): void {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 700,
+    icon: path.join(__dirname, 'icon.png'),
     frame: process.env.NODE_ENV === 'development',
     hasShadow: true,
     webPreferences: {
