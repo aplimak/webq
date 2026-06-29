@@ -100,7 +100,7 @@ body {
 }
 
 /* Header */
-.header {
+#header {
   -webkit-app-region: drag;
   background-color: var(--header-primary-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -113,18 +113,20 @@ body {
   /* Ensure it's above other content */
 
   * {
-    -webkit-app-region: no-drag;
     /* Allows buttons to be clickable */
+    -webkit-app-region: no-drag;
+    max-height: 34px;
   }
 
-  .header-title {
+  #icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  #title {
     font-size: 20px;
     font-weight: 500;
     color: var(--header-primary-text-color);
-  }
-
-  .header-actions button {
-    min-height: 34px;
   }
 }
 

@@ -62,7 +62,7 @@
   --object-border: rgba(99, 102, 241, 0.3);
   --object-border-focus: rgba(99, 102, 241, 0.6);
 
-  header .header-icon {
+  #header #icon {
     filter: invert(1);
   }
 }

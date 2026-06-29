@@ -10,13 +10,12 @@
     <script src="cordova.js"></script>
   </head>
   <body data-theme="dark">
-    <header id="header" class="header flex-row center">
-      <div class="flex-row center">
-        <img class="header-icon" src="../assets/icon_monochrome.png"
-          style="width: 34px; height: 34px;" />
-        <div class="header-title"></div>
+    <header id="header" class="flex-row center">
+      <div id="branding" class="flex-row center">
+        <img id="icon" src="../assets/icon_monochrome.png" />
+        <div id="title"></div>
       </div>
-      <div class="header-actions flex-row center gapped">
+      <div class="flex-row center gapped">
         <button id="install-pwa" class="button bordered padded center hide">
           <span>Install</span>
         </button>

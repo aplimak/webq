@@ -200,10 +200,10 @@ async function initRoute(): Promise<void> {
     doNavigate();
   });
 
-  const headerTitle = document.querySelector('.header-title');
-  if (headerTitle && headerTitle instanceof HTMLDivElement) {
-    headerTitle.style.cursor = 'pointer';
-    headerTitle.addEventListener('click', () => {
+  const headerBranding = document.querySelector('#header #branding');
+  if (headerBranding && headerBranding instanceof HTMLDivElement) {
+    headerBranding.style.cursor = 'pointer';
+    headerBranding.addEventListener('click', () => {
       navigateTo('home');
     });
   }

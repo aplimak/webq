@@ -2,7 +2,7 @@ import { isProduction, app } from './bridge';
 import { shellEvents } from './event';
 
 export function setTitle(title: string): void {
-  const headerTitle = document.querySelector('header .header-title');
+  const headerTitle = document.querySelector('#header #title');
   if (headerTitle) {
     headerTitle.innerHTML = title;
   } else {
