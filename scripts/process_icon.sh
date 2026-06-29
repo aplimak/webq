@@ -27,7 +27,7 @@ read -r W H <<<$(identify -format "%w %h" icon.png)
 # This avoids possible border effects.
 x=$((W / 10))
 y=$((H / 10))
-fuzz="5%"
+fuzz="15%"
 bgcolor=$(magick icon.png -format "%[pixel:p{$x,$y}]" info:-)
 
 magick icon.png -fuzz "$fuzz" -transparent "$bgcolor" "icon_foreground.png"
