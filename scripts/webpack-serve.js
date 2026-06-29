@@ -12,4 +12,11 @@ const child = spawn('npx', ['webpack', ...args], {
   env: { ...process.env, NODE_ENV: env, WEBQ_TARGET: target },
 });
 
-child.on('exit', (code) => process.exit(code));
+// Handle SIGINT (Ctrl+C) gracefully
+process.on('SIGINT', () => {
+  child.kill('SIGINT'); // forward the signal
+});
+
+child.on('exit', (code) => {
+  process.exit(code);
+});
