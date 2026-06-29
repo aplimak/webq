@@ -9,6 +9,7 @@ fi
 
 readonly BASE_ICON="icon.png"
 readonly FOREGROUND="icon_foreground.png"
+readonly MONOCHROME="icon_monochrome.png"
 readonly BACKGROUND="icon_background.png"
 
 ICON_PATH="$(realpath "$1")"
@@ -38,6 +39,7 @@ fuzz="15%"
 bgcolor=$(magick "$BASE_ICON" -format "%[pixel:p{$x,$y}]" info:-)
 
 magick "$BASE_ICON" -fuzz "$fuzz" -transparent "$bgcolor" "$FOREGROUND"
+magick "$FOREGROUND" -fill white -colorize 100% "$MONOCHROME"
 
 cx=$((W / 2))
 cy=$((H / 2))
