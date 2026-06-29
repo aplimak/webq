@@ -24,7 +24,7 @@ magick "$ICON_PATH" "$BASE_ICON"
 
 echo "Creating round icon"
 min_size=$(identify -format "%[fx:min(w,h)]" "$BASE_ICON")
-magick "$BASE_ICON" -resize "${min_size}x${min_size}^" -gravity center -extent "${min_size}x${min_size}" \( +clone -threshold -1 -draw "circle $((min_size / 2)),$((min_size / 2)) $((min_size / 2)),0" -negate \) -alpha off -compose copy_opacity -composite icon_round.png
+magick "$BASE_ICON" -resize "${min_size}x${min_size}^" -resize 125% -gravity center -extent "${min_size}x${min_size}" \( +clone -threshold -1 -draw "circle $((min_size / 2)),$((min_size / 2)) $((min_size / 2)),0" -negate \) -alpha off -compose copy_opacity -composite icon_round.png
 
 echo "Extracting background and foreground"
 # shellcheck disable=SC2046
