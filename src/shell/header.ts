@@ -100,12 +100,11 @@ shellEvents.on('ui:theme-change', (data) => {
   updateStatusBarColor(getHeaderColor());
 });
 
-document.addEventListener('DOMContentLoaded', async () => {
-  const { isDark, setTheme } = await import('./themeManager');
-
+document.addEventListener('DOMContentLoaded', () => {
   const switchThemeButton = document.querySelector('header #switch-theme');
   if (switchThemeButton) {
-    switchThemeButton.addEventListener('click', () => {
+    switchThemeButton.addEventListener('click', async () => {
+      const { isDark, setTheme } = await import('./themeManager');
       setTheme(!isDark());
     });
   }
