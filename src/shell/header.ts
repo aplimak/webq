@@ -1,4 +1,4 @@
-import { isProduction, app } from './bridge';
+import { isProduction, app } from './env';
 import { shellEvents } from './event';
 
 export function setTitle(title: string): void {

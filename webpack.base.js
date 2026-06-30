@@ -38,9 +38,6 @@ module.exports = {
       __WEBQ_NODE_ENV__: JSON.stringify(process.env.NODE_ENV),
       __WEBQ_WEBPACK_SERVE__: JSON.stringify(isWebpackServe),
       __WEBQ_TARGET__: JSON.stringify(targetPlatform),
-      __WEBQ_APP_NAME__: JSON.stringify(pkg.name),
-      __WEBQ_APP_TITLE__: JSON.stringify(pkg.displayName),
-      __WEBQ_APP_VERSION__: JSON.stringify(pkg.version),
     }),
     new ForkTsCheckerWebpackPlugin({
       typescript: {

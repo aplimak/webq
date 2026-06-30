@@ -1,9 +1,10 @@
-import { app } from './shell/bridge';
+import './shell/bridge';
 import './shell/pwa';
 import './shell/router';
 import './shell/themeManager';
 import './shell/header';
 import { shellEvents } from './shell/event';
+import { app } from './shell/env';
 
 import './shell/style.css';
 

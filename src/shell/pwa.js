@@ -1,4 +1,4 @@
-const { isWebpackServe, isPWA, targetPlatform } = require('./bridge');
+const { isWebpackServe, isPWA, platform } = require('./env');
 
 function registerHandler(e) {
   // Prevent the browser's default mini-infobar from showing
@@ -33,7 +33,7 @@ function registerHandler(e) {
   }
 }
 
-if (targetPlatform === 'browser' && !isWebpackServe && 'serviceWorker' in navigator) {
+if (platform.browser && !isWebpackServe && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
       .register('/service-worker.js')
