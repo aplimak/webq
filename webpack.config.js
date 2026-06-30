@@ -107,8 +107,8 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
+        test: /\.([cm]?ts|tsx)$/,
+        loader: 'ts-loader',
         exclude: /node_modules/,
       },
       {
@@ -152,7 +152,12 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.ts', '.js', '.jsx', '.css', '.scss'],
+    extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
+    extensionAlias: {
+      '.js': ['.js', '.ts'],
+      '.cjs': ['.cjs', '.cts'],
+      '.mjs': ['.mjs', '.mts'],
+    },
     alias: {
       '@': path.resolve(__dirname, 'src'),
       'package.json': path.resolve(__dirname, 'package.json'),
