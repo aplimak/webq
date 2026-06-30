@@ -107,20 +107,6 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.js$/, // Target .js files
-        exclude: /node_modules/, // CRITICAL: Don't process node_modules (huge performance boost)
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              '@babel/preset-env', // Transpiles ES6+ to ES5
-              // '@babel/preset-react', // Uncomment if using React
-              // '@babel/preset-typescript', // Uncomment if using TS
-            ],
-          },
-        },
-      },
-      {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
@@ -201,11 +187,9 @@ module.exports = {
       ? [
           new TerserPlugin({
             terserOptions: {
-              ecma: 2020,
               compress: {
                 drop_console: true,
                 drop_debugger: true,
-                ecma: 2020, // compress using ES2020 rules
               },
               format: {
                 comments: false,

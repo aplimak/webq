@@ -51,8 +51,6 @@
     "clean:all": "npm run clean node_modules platforms plugins"
   },
   "devDependencies": {
-    "@babel/core": "^8.0.1",
-    "@babel/preset-env": "^8.0.2",
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^10.0.1",
     "@types/cordova": "^11.0.3",
@@ -62,7 +60,6 @@
     "@types/node": "^26.0.0",
     "@typescript-eslint/eslint-plugin": "^8.61.1",
     "@typescript-eslint/parser": "^8.61.1",
-    "babel-loader": "^10.1.1",
     "concurrently": "^10.0.3",
     "copy-webpack-plugin": "^14.0.0",
     "cordova": "^13.0.0",
