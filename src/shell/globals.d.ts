@@ -1,7 +1,4 @@
-/**
- * Supported compilation platforms.
- */
-export type TargetPlatform = 'browser' | 'cordova' | 'electron';
+import { TargetPlatform } from './env';
 
 export declare global {
   const __WEBQ_NODE_ENV__: string;

@@ -1,5 +1,9 @@
-import { TargetPlatform } from './globals';
 import pkg from 'package.json';
+
+/**
+ * Supported compilation platforms.
+ */
+export type TargetPlatform = 'browser' | 'cordova' | 'electron';
 
 interface ApplicationInformation {
   /**
