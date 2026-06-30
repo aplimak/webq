@@ -1,6 +1,7 @@
-const { isWebpackServe, isPWA, platform } = require('./env');
+import { isWebpackServe, isPWA, platform } from './env';
 
-function registerHandler(e) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function registerHandler(e: any): void {
   // Prevent the browser's default mini-infobar from showing
   e.preventDefault();
 
