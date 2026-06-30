@@ -1,3 +1,22 @@
+export interface ElectronAPI {
+  mainWindow: {
+    close: () => Promise<void>;
+    minimize: () => Promise<void>;
+    maximize: () => Promise<void>;
+    isMaximized: () => Promise<boolean | undefined>;
+  };
+  events: {
+    onEscape: (callback: () => void) => () => void;
+    onResize: (callback: () => void) => () => void;
+  };
+}
+
+declare global {
+  interface Window {
+    electron: ElectronAPI;
+  }
+}
+
 async function updateMaxBtnIcon(maxBtn: Element): Promise<void> {
   const span = maxBtn.querySelector('span')!;
   span.innerHTML = (await window.electron.mainWindow.isMaximized())

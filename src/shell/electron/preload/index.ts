@@ -1,5 +1,5 @@
-import { ElectronAPI } from '@/shell/electron-api';
 import { contextBridge, ipcRenderer } from 'electron';
+import { ElectronAPI } from '..';
 
 function embedEvent(event: string, callback: () => void): () => void {
   ipcRenderer.on(event, callback);
