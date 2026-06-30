@@ -19,6 +19,10 @@ declare global {
   }
 }
 
+export interface ElectronBridge {
+  quit(): Promise<void>;
+}
+
 export async function quit(): Promise<void> {
   await window.electron.mainWindow.close();
 }

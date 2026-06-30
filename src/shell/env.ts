@@ -1,9 +1,11 @@
 import pkg from 'package.json';
 
+const PLATFORMS = ['browser', 'cordova', 'electron'] as const;
+
 /**
  * Supported compilation platforms.
  */
-export type TargetPlatform = 'browser' | 'cordova' | 'electron';
+export type TargetPlatform = (typeof PLATFORMS)[number];
 
 interface ApplicationInformation {
   /**
@@ -49,10 +51,14 @@ export const targetPlatform: TargetPlatform = __WEBQ_TARGET__;
 /**
  * Compile time target platform.
  */
-export const platform: Record<TargetPlatform, boolean> = {
-  browser: targetPlatform === 'browser',
-  cordova: targetPlatform === 'cordova',
-  electron: targetPlatform === 'electron',
+export const platform = PLATFORMS.reduce(
+  (acc, name) => {
+    acc[name] = targetPlatform === name;
+    return acc;
+  },
+  {} as Record<TargetPlatform, boolean>
+) as {
+  [K in TargetPlatform]: K extends typeof targetPlatform ? true : false;
 };
 
 /**

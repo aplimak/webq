@@ -1,9 +1,18 @@
 import { TargetPlatform } from './env';
+import { CordovaBridge } from './cordova';
+import { ElectronBridge } from './electron';
+
+interface BrowserBridge {}
+
+type NativeBridgeFor<T extends TargetPlatform> = T extends 'browser'
+  ? BrowserBridge
+  : T extends 'cordova'
+    ? CordovaBridge
+    : ElectronBridge;
 
 export declare global {
   interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    nativeBridge: any;
+    nativeBridge: NativeBridgeFor<TargetPlatform>;
   }
 
   const __WEBQ_NODE_ENV__: string;
