@@ -32,8 +32,7 @@ const pwaPlugins =
           exclude: [/\.map$/, /manifest.webmanifest$/],
 
           // IMPORTANT: Tell Workbox not to add cache-busting query params
-          // to your hashed files (they're already uniquely versioned)
-          // This saves bandwidth and avoids unnecessary re-downloads[reference:0]
+          // to hashed files (they're already uniquely versioned)
           dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
           maximumFileSizeToCacheInBytes: 10000000,
 
@@ -112,8 +111,12 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        test: /\.(css|sass|scss)$/,
+        use: [
+          isProduction ? MiniCssExtractPlugin.loader : 'style-loader', // Injects CSS into the DOM
+          'css-loader', // Resolves @import and url() inside CSS
+          'sass-loader', // Compiles Sass to CSS
+        ],
       },
       {
         test: /\.module\.css$/,
@@ -128,19 +131,27 @@ module.exports = {
         ],
       },
       {
-        test: /\.scss$/,
-        use: [
-          isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
-          'css-loader',
-          'sass-loader',
-        ],
+        test: /\.(png|jpe?g|gif|webp|avif|svg)$/i,
+        type: 'asset',
+        parser: {
+          dataUrlCondition: {
+            maxSize: 8 * 1024, // Inline images < 8kb as base64 data URLs
+          },
+        },
+        generator: {
+          filename: 'images/[name].[contenthash:8][ext]',
+        },
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
+        test: /\.(woff|woff2|ttf|otf|eot)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'fonts/[name][ext]', // e.g. fonts/MyFont.woff2
+          filename: 'fonts/[name][ext]',
         },
+      },
+      {
+        test: /\.(txt|xml)$/i,
+        type: 'asset/source',
       },
       {
         test: /cordova\.js$/,

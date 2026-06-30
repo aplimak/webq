@@ -113,7 +113,7 @@
     "material-symbols": "^0.45.4"
   },
   "browserslist": [
-    "defaults and supports es6-module",
-    "not op_mini all"
+    "last 2 Chrome versions",
+    "last 2 Firefox versions"
   ]
 }
