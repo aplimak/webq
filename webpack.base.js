@@ -1,0 +1,51 @@
+const path = require('path');
+const { DefinePlugin } = require('webpack');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+
+const pkg = require('./package.json');
+const { isProduction, isWebpackServe, targetPlatform } = require('./scripts/webpack-env.mjs');
+
+module.exports = {
+  context: __dirname,
+  mode: isProduction ? 'production' : 'development',
+  devtool: isProduction ? false : 'source-map',
+  performance: {
+    hints: false,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.([cm]?ts|tsx)$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
+    extensionAlias: {
+      '.js': ['.js', '.ts'],
+      '.cjs': ['.cjs', '.cts'],
+      '.mjs': ['.mjs', '.mts'],
+    },
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+      'package.json': path.resolve(__dirname, 'package.json'),
+    },
+  },
+  plugins: [
+    new DefinePlugin({
+      __WEBQ_NODE_ENV__: JSON.stringify(process.env.NODE_ENV),
+      __WEBQ_WEBPACK_SERVE__: JSON.stringify(isWebpackServe),
+      __WEBQ_TARGET__: JSON.stringify(targetPlatform),
+      __WEBQ_APP_NAME__: JSON.stringify(pkg.name),
+      __WEBQ_APP_TITLE__: JSON.stringify(pkg.displayName),
+      __WEBQ_APP_VERSION__: JSON.stringify(pkg.version),
+    }),
+    new ForkTsCheckerWebpackPlugin({
+      typescript: {
+        configFile: path.resolve(__dirname, 'tsconfig.json'),
+      },
+    }),
+  ],
+};

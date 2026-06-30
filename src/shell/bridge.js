@@ -1,7 +1,7 @@
 const info = {
-  isProduction: process.env.NODE_ENV === 'production',
-  isWebpackServe: process.env.WEBPACK_SERVE,
-  targetPlatform: process.env.WEBQ_TARGET,
+  isProduction: __WEBQ_NODE_ENV__ === 'production',
+  isWebpackServe: __WEBQ_WEBPACK_SERVE__,
+  targetPlatform: __WEBQ_TARGET__,
   isPWA:
     window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true,
 };

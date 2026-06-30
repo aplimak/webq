@@ -8,7 +8,7 @@ function createWindow(): void {
     width: 1200,
     height: 700,
     icon: path.join(__dirname, 'icon.png'),
-    frame: process.env.NODE_ENV === 'development',
+    frame: __WEBQ_NODE_ENV__ === 'development',
     hasShadow: true,
     webPreferences: {
       preload: path.join(__dirname, '../preload/index.js'),
@@ -20,7 +20,7 @@ function createWindow(): void {
   mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
 
   // Open DevTools in development
-  if (process.env.NODE_ENV === 'development') {
+  if (__WEBQ_NODE_ENV__ === 'development') {
     mainWindow.webContents.openDevTools();
   } else {
     mainWindow.webContents.on('before-input-event', (event, input) => {

@@ -1,9 +1,9 @@
+const base = require('./webpack.base');
+
 const path = require('path');
+const { merge } = require('webpack-merge');
 
-const isProduction = process.env.NODE_ENV === 'production';
-
-module.exports = {
-  mode: isProduction ? 'production' : 'development',
+const config = {
   target: 'electron-preload',
   entry: {
     electron_preload: './src//shell/electron/preload/index.ts',
@@ -12,17 +12,6 @@ module.exports = {
     path: path.resolve(process.env.WEBQ_OUTPUT, 'preload'),
     filename: 'index.js',
   },
-  resolve: {
-    extensions: ['.ts', '.js'],
-  },
-  module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
-    ],
-  },
-  devtool: isProduction ? false : 'source-map',
 };
+
+module.exports = merge(base, config);

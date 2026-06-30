@@ -1,24 +1,15 @@
+const pkg = require('./package.json');
+const base = require('./webpack.base');
+const { isProduction, isWebpackServe, targetPlatform } = require('./scripts/webpack-env.mjs');
+
 const path = require('path');
-const { DefinePlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
-
-const pkg = require('./package.json');
-const isProduction = process.env.NODE_ENV === 'production';
-const isWebpackServe = Boolean(process.env.WEBPACK_SERVE || false);
-const targetPlatform = process.env.WEBQ_TARGET;
-if (!targetPlatform || !['browser', 'cordova', 'electron'].includes(targetPlatform)) {
-  throw Error(`Unknown target platform: ${targetPlatform}`);
-}
-
-if (targetPlatform === 'electron' && isWebpackServe) {
-  throw Error("Can't serve electron target with webpack");
-}
+const { merge } = require('webpack-merge');
 
 const pwaPlugins =
   targetPlatform === 'browser' && !isWebpackServe
@@ -79,11 +70,9 @@ const iconPlugin =
       ]
     : [];
 
-module.exports = {
-  context: __dirname,
+const config = {
   target:
     targetPlatform === 'electron' ? 'electron-renderer' : isWebpackServe ? 'web' : 'browserslist',
-  mode: isProduction ? 'production' : 'development',
   entry: {
     shell: './src/index.ts',
   },
@@ -103,11 +92,6 @@ module.exports = {
       {
         test: /\.html?$/,
         use: 'html-loader',
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.([cm]?ts|tsx)$/,
-        loader: 'ts-loader',
         exclude: /node_modules/,
       },
       {
@@ -162,38 +146,13 @@ module.exports = {
       },
     ],
   },
-  resolve: {
-    extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
-    extensionAlias: {
-      '.js': ['.js', '.ts'],
-      '.cjs': ['.cjs', '.cts'],
-      '.mjs': ['.mjs', '.mts'],
-    },
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-      'package.json': path.resolve(__dirname, 'package.json'),
-    },
-  },
   plugins: [
-    new DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.WEBPACK_SERVE': JSON.stringify(isWebpackServe),
-      'process.env.WEBQ_TARGET': JSON.stringify(process.env.WEBQ_TARGET),
-      __WEBQ_APP_NAME__: JSON.stringify(pkg.name),
-      __WEBQ_APP_TITLE__: JSON.stringify(pkg.displayName),
-      __WEBQ_APP_VERSION__: JSON.stringify(pkg.version),
-    }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: 'index.html',
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash:8].css',
-    }),
-    new ForkTsCheckerWebpackPlugin({
-      typescript: {
-        configFile: path.resolve(__dirname, 'tsconfig.json'),
-      },
     }),
     ...iconPlugin,
     ...pwaPlugins,
@@ -277,7 +236,6 @@ module.exports = {
     runtimeChunk: 'single',
     mergeDuplicateChunks: true,
   },
-  devtool: isProduction ? false : 'inline-source-map',
   devServer: isWebpackServe
     ? {
         hot: true,
@@ -294,7 +252,6 @@ module.exports = {
     : {
         hot: false,
       },
-  performance: {
-    hints: false,
-  },
 };
+
+module.exports = merge(base, config);
