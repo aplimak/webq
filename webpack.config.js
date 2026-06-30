@@ -169,7 +169,7 @@ module.exports = {
     extensions: ['.ts', '.js', '.jsx', '.css', '.scss'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      '@shell': path.resolve(__dirname, 'src', 'shell'),
+      'package.json': path.resolve(__dirname, 'package.json'),
     },
   },
   plugins: [

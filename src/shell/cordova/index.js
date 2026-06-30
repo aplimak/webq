@@ -15,7 +15,7 @@ document.addEventListener('deviceready', async () => {
   ready = true;
   shellEvents.emit('bridge:cordova-ready');
 
-  const router = await import('@shell/router');
+  const router = await import('@/shell/router');
   // handle back button, if we are in the main page, exit app, otherwise go back
   document.addEventListener('backbutton', () => {
     if (router.inMainPage()) {
@@ -27,7 +27,7 @@ document.addEventListener('deviceready', async () => {
 
   // show toast when error happens
   window.addEventListener('cordovacallbackerror', async (event) => {
-    const { toast } = await import('@shell/components');
+    const { toast } = await import('@/shell/components');
     toast.error(`Error: ${event.message}`);
   });
 });

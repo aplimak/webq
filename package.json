@@ -16,6 +16,12 @@
   "license": "MIT",
   "type": "commonjs",
   "main": "bundle/electron/main/index.js",
+  "webq": {
+    "shell": {
+      "useDarkTheme": true,
+      "defaultRoute": "home"
+    }
+  },
   "scripts": {
     "bundle": "node scripts/webpack-runner.js",
     "bundle:electron": "cross-env WEBQ_TARGET=electron concurrently \"npm run bundle webpack.electron.main.js\" \"npm run bundle webpack.electron.preload.js\"",

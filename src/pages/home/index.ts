@@ -1,4 +1,4 @@
-import { Page } from '@shell/page';
+import { Page } from '@/shell/page';
 import { navigateTo } from '@/shell/router';
 
 import main from './main.html';

@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import pkg from 'package.json';
+
 /**
  * Interface representing a storage backend that provides methods for getting, setting, and removing items by key. This allows for different storage implementations (e.g., localStorage, sessionStorage, or custom backends) to be used interchangeably with the ScopedStorage class.
  */
@@ -220,7 +222,4 @@ export interface ShellState {
   defaultRoute: string;
 }
 
-export const shellStorage = createPersistentStorage<ShellState>('shell', {
-  useDarkTheme: true,
-  defaultRoute: 'home',
-});
+export const shellStorage = createPersistentStorage<ShellState>('shell', pkg.webq.shell);

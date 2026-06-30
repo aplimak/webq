@@ -1,8 +1,8 @@
-import { setupInputNavigation, scrollToBottom, toNumber } from '@shell/utils';
-import { toast } from '@shell/components';
+import { setupInputNavigation, scrollToBottom, toNumber } from '@/shell/utils';
+import { toast } from '@/shell/components';
 
 import main from './main.html';
-import { Page } from '@shell/page';
+import { Page } from '@/shell/page';
 import './style.css';
 
 import * as backend from './backend';

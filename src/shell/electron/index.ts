@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 window.electron.events.onEscape(async () => {
-  const router = await import('@shell/router');
+  const router = await import('@/shell/router');
 
   if (router.inMainPage()) {
     window.electron.mainWindow.close();
