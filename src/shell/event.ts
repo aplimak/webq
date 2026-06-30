@@ -112,6 +112,7 @@ interface ShellEvents {
     initial: boolean;
   };
   'bridge:cordova-ready': null;
+  'bridge:back-pressed': null;
 }
 
 /**

@@ -2,6 +2,10 @@ const { shellEvents } = require('../event');
 
 let ready = false;
 
+function quit() {
+  navigator.app.exitApp();
+}
+
 function updateStatusBarColor(color, useDarkTheme) {
   window.StatusBar.backgroundColorByHexString(color);
   if (useDarkTheme) {
@@ -11,18 +15,12 @@ function updateStatusBarColor(color, useDarkTheme) {
   }
 }
 
-document.addEventListener('deviceready', async () => {
+document.addEventListener('deviceready', () => {
   ready = true;
   shellEvents.emit('bridge:cordova-ready');
 
-  const router = await import('@/shell/router');
-  // handle back button, if we are in the main page, exit app, otherwise go back
   document.addEventListener('backbutton', () => {
-    if (router.inMainPage()) {
-      navigator.app.exitApp();
-    } else {
-      window.history.back();
-    }
+    shellEvents.emit('bridge:back-pressed');
   });
 
   // show toast when error happens
@@ -40,3 +38,7 @@ shellEvents.on('ui:theme-change', async (data) => {
   const { getHeaderColor } = require('../header');
   updateStatusBarColor(getHeaderColor(), data.useDarkTheme);
 });
+
+module.exports = {
+  quit,
+};

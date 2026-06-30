@@ -1,7 +1,9 @@
 const { platform } = require('./env');
 
+window.nativeBridge = {};
+
 if (platform.cordova) {
-  require('./cordova');
+  window.nativeBridge = require('./cordova');
 } else if (platform.electron) {
-  require('./electron');
+  window.nativeBridge = require('./electron');
 }

@@ -1,3 +1,5 @@
+import { shellEvents } from '../event';
+
 export interface ElectronAPI {
   mainWindow: {
     close: () => Promise<void>;
@@ -15,6 +17,10 @@ declare global {
   interface Window {
     electron: ElectronAPI;
   }
+}
+
+export async function quit(): Promise<void> {
+  await window.electron.mainWindow.close();
 }
 
 async function updateMaxBtnIcon(maxBtn: Element): Promise<void> {
@@ -45,14 +51,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 });
 
-window.electron.events.onEscape(async () => {
-  const router = await import('@/shell/router');
-
-  if (router.inMainPage()) {
-    window.electron.mainWindow.close();
-  } else {
-    window.history.back();
-  }
+window.electron.events.onEscape(() => {
+  shellEvents.emit('bridge:back-pressed');
 });
 
 window.electron.events.onResize(() => {

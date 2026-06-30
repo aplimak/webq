@@ -214,3 +214,11 @@ document.addEventListener('DOMContentLoaded', initRoute);
 shellEvents.on('router:page-change', (data) => {
   document.body.setAttribute('data-page', data.newPage);
 });
+
+shellEvents.on('bridge:back-pressed', async () => {
+  if (inMainPage() && 'quit' in window.nativeBridge) {
+    await window.nativeBridge.quit();
+  } else {
+    window.history.back();
+  }
+});
