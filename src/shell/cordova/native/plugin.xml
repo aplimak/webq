@@ -7,7 +7,7 @@
   <asset src="www/index.js" target="js/webq.js"/>
 
   <js-module src="www/index.js" name="webq">
-    <clobbers target="WebQ" />
+    <clobbers target="webq" />
   </js-module>
 
   <platform name="android">

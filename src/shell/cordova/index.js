@@ -2,8 +2,31 @@ const { shellEvents } = require('../event');
 
 let ready = false;
 
+function isReady() {
+  return ready;
+}
+
+async function whenReady() {
+  if (isReady()) {
+    return;
+  }
+  await shellEvents.waitFor('bridge:cordova-ready');
+}
+
 function quit() {
   navigator.app.exitApp();
+}
+
+function toast(message, isLong = false) {
+  window.webq.toast(
+    message,
+    isLong,
+    () => {},
+    async (error) => {
+      const { toast } = await import('@/shell/components');
+      toast.error('Toast error:', error);
+    }
+  );
 }
 
 function updateStatusBarColor(color, useDarkTheme) {
@@ -31,9 +54,7 @@ document.addEventListener('deviceready', () => {
 });
 
 shellEvents.on('ui:theme-change', async (data) => {
-  if (!ready) {
-    await shellEvents.waitFor('bridge:cordova-ready');
-  }
+  await whenReady();
 
   const { getHeaderColor } = require('../header');
   updateStatusBarColor(getHeaderColor(), data.useDarkTheme);
@@ -42,6 +63,12 @@ shellEvents.on('ui:theme-change', async (data) => {
 module.exports = {
   _bridge: {
     platform: 'cordova',
+    isReady,
+    whenReady,
     quit,
+    toast: async (message, duration = 3000) => {
+      await whenReady();
+      toast(message, duration > 1000);
+    },
   },
 };

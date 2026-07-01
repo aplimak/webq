@@ -7,6 +7,9 @@ var WebQPlugin = {
   openSettings: function (success, error) {
     exec(success, error, 'webq', 'openSettings', []);
   },
+  toast: function (message, isLong, success, error) {
+    exec(success, error, 'webq', 'showToast', [message, isLong || false]);
+  },
 };
 
 module.exports = WebQPlugin;

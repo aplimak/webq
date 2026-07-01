@@ -13,6 +13,10 @@ export async function quit(): Promise<void> {
 export const _bridge: ElectronBridge = {
   platform: 'electron',
   quit,
+  async toast(message: string, duration: number = 3000): Promise<void> {
+    const { toast } = await import('../components');
+    toast.info(message, duration);
+  },
 };
 
 async function updateMaxBtnIcon(maxBtn: Element): Promise<void> {

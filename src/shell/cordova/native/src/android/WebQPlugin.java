@@ -7,9 +7,9 @@ import org.json.JSONException;
 
 import android.content.Intent;
 import android.provider.Settings;
+import android.widget.Toast;
 
 public class WebQPlugin extends CordovaPlugin {
-
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if ("echo".equals(action)) {
@@ -18,6 +18,11 @@ public class WebQPlugin extends CordovaPlugin {
             return true;
         } else if ("openSettings".equals(action)) {
             openSettings(callbackContext);
+            return true;
+        } else if ("showToast".equals(action)) {
+            String message = args.getString(0);
+            boolean isLong = args.getBoolean(1);
+            showToast(message, isLong, callbackContext);
             return true;
         }
         callbackContext.error("Action not recognized");
@@ -34,5 +39,11 @@ public class WebQPlugin extends CordovaPlugin {
         } catch (Exception e) {
             callbackContext.error("Failed to open settings: " + e.getMessage());
         }
+    }
+
+    private void showToast(String message, boolean isLong, CallbackContext callbackContext) {
+        int duration = isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT;
+        Toast.makeText(this.cordova.getActivity(), message, duration).show();
+        callbackContext.success("Toast shown");
     }
 }

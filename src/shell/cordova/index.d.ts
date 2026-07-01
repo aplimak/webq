@@ -2,7 +2,9 @@ import { NativeBridge } from '../nativeBridge';
 
 export interface CordovaBridge extends NativeBridge {
   readonly platform: 'cordova';
-  quit(): Promise<void>;
+  isReady(): boolean;
+  whenReady(): Promise<void>;
+  quit(): void;
 }
 
 export const _bridge: CordovaBridge;
