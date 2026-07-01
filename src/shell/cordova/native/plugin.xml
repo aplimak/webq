@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-webq" version="1.0.1">
+  <name>WebQ Native Plugin</name>
+  <description>WebQ Native Plugin</description>
+  <license>MIT</license>
+
+  <asset src="www/index.js" target="js/webq.js"/>
+
+  <js-module src="www/index.js" name="webq">
+    <clobbers target="WebQ" />
+  </js-module>
+
+  <platform name="android">
+    <source-file src="src/android/WebQPlugin.java" target-dir="src/ir/aeliux/webq" />
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="webq">
+        <param name="android-package" value="ir.aeliux.webq.WebQPlugin"/>
+      </feature>
+    </config-file>
+
+    <!-- Optionally add permissions, config changes, etc. -->
+    <!-- <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.INTERNET" />
+        </config-file> -->
+  </platform>
+</plugin>
