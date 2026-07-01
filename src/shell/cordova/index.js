@@ -40,5 +40,8 @@ shellEvents.on('ui:theme-change', async (data) => {
 });
 
 module.exports = {
-  quit,
+  _bridge: {
+    platform: 'cordova',
+    quit,
+  },
 };

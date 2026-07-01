@@ -1,12 +1,19 @@
 import { shellEvents } from '../event';
+import { NativeBridge } from '../nativeBridge';
 
-export interface ElectronBridge {
+export interface ElectronBridge extends NativeBridge {
+  readonly platform: 'electron';
   quit(): Promise<void>;
 }
 
 export async function quit(): Promise<void> {
   await window.electron.mainWindow.close();
 }
+
+export const _bridge: ElectronBridge = {
+  platform: 'electron',
+  quit,
+};
 
 async function updateMaxBtnIcon(maxBtn: Element): Promise<void> {
   const span = maxBtn.querySelector('span')!;

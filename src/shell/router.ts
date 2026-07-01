@@ -216,7 +216,7 @@ shellEvents.on('router:page-change', (data) => {
 });
 
 shellEvents.on('bridge:back-pressed', async () => {
-  if (inMainPage() && 'quit' in window.nativeBridge) {
+  if (inMainPage() && window.nativeBridge.platform !== 'browser') {
     await window.nativeBridge.quit();
   } else {
     window.history.back();

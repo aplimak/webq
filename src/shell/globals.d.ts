@@ -1,8 +1,7 @@
 import { TargetPlatform } from './env';
+import { BrowserBridge } from './browser';
 import { CordovaBridge } from './cordova';
 import { ElectronBridge } from './electron';
-
-interface BrowserBridge {}
 
 type NativeBridgeFor<T extends TargetPlatform> = T extends 'browser'
   ? BrowserBridge
