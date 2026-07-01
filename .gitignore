@@ -7,8 +7,8 @@ node_modules/
 /plugins/
 /platforms/
 
-www/
-dist/
-bundle/
+/www/
+/dist/
+/bundle/
 
-build.json
+/build.json
