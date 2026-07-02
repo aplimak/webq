@@ -38,12 +38,12 @@ export default function (content: Element): void {
   let playerDefs = unoStorage.get('playerDefs');
 
   function refreshPlayerDefsCards(): void {
-    const playersContainer = dialog.body.querySelector('.uno-config-players');
+    const playersContainer = dialog.body.querySelector('.config-players');
     if (playersContainer) {
       playersContainer.innerHTML = '';
       for (const playerDef of playerDefs) {
         const card = document.createElement('div');
-        card.classList.add('uno-config-player-item', 'card', 'flat', 'flex-row', 'center');
+        card.classList.add('card', 'flat', 'flex-row', 'center');
         card.innerHTML = `
                       <span class="text middle bold" style="font-size: 1.2em; min-width: 2.5em;border-radius: 50%;background-color: var(--object-background);min-height: 2.5em;align-content: center;">${playerDef.id}</span>
                       <span style="word-break: break-word;overflow-wrap: break-word;">${playerDef.name}</span>

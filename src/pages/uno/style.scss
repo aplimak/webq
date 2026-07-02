@@ -1,0 +1,104 @@
+[data-page='uno'] {
+  > #action-bar {
+    justify-content: center;
+    padding-bottom: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+
+  > .card-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    padding: 16px 0;
+
+    > .card {
+      flex-wrap: nowrap;
+      padding: 16px;
+    }
+  }
+
+  > #stats {
+    gap: 16px;
+    justify-content: center;
+  }
+
+  > #players {
+    padding-top: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+
+    > .card {
+      margin-left: 16px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      > .form-control[type='text'] {
+        padding: 0 0.1em;
+        height: 42px;
+        text-align: center;
+      }
+    }
+  }
+
+  > #rounds-wrapper {
+    overflow: scroll;
+    max-height: 24vh;
+    max-width: 90%;
+    margin: 0 auto;
+    border: 1px solid var(--table-cell-border);
+
+    > table {
+      border-collapse: collapse;
+      table-layout: fixed;
+      /* Important for scroll behavior */
+
+      .fixed-header {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        /* Ensure header stays on top */
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: center;
+        overflow: hidden;
+        /* Prevent content from overflowing cells */
+        border: 1px solid var(--table-cell-border);
+      }
+
+      th {
+        background-color: var(--table-header-background);
+        font-weight: bold;
+      }
+    }
+  }
+
+  .config-players {
+    gap: 8px;
+    margin: 5px 0 16px;
+
+    > .card {
+      gap: 16px;
+      padding: 12px 16px;
+    }
+  }
+}
+
+.uno-text {
+  text-align: center;
+}
+
+.uno-text.title {
+  padding-bottom: 8px;
+}
+
+.uno-text.bold {
+  font-weight: 600;
+  font-size: 2em;
+}

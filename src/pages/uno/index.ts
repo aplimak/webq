@@ -3,7 +3,7 @@ import { toast } from '@/shell/components';
 
 import main from './main.html';
 import { Page } from '@/shell/page';
-import './style.css';
+import './style.scss';
 
 import * as backend from './backend';
 import type { RoundResult, RoundScore } from './models';
@@ -53,7 +53,7 @@ function addRoundToTable(table: Element, round: RoundResult): void {
     row.innerHTML = html;
     body.appendChild(row);
 
-    const wrapper = table.closest('#uno-rounds-wrapper');
+    const wrapper = table.closest('#rounds-wrapper');
     scrollToBottom(wrapper!);
   }
 }
@@ -70,7 +70,7 @@ function fixPlayersContainerOverflow(playersContainer: Element): void {
 }
 
 function handleNewRound(content: Element, newRoundBtn: Element): void {
-  const playerCards = content.querySelectorAll<HTMLDivElement>('.uno-player-card');
+  const playerCards = content.querySelectorAll<HTMLDivElement>('#players > .card');
   let focused = false;
   for (const card of playerCards) {
     const scoreInput = card.querySelector<HTMLInputElement>('#round-score');
@@ -89,7 +89,7 @@ function handleNewRound(content: Element, newRoundBtn: Element): void {
     cancelBtn.classList.remove('hide');
   }
 
-  const playersContainer = content.querySelector('#uno-players');
+  const playersContainer = content.querySelector('#players');
   if (playersContainer) {
     fixPlayersContainerOverflow(playersContainer);
   }
@@ -100,7 +100,7 @@ function submitRound(content: Element): void {
   let winnerId: string | null = null;
   const nanPlayers: string[] = [];
 
-  const playerCards = content.querySelectorAll<HTMLDivElement>('.uno-player-card');
+  const playerCards = content.querySelectorAll<HTMLDivElement>('#players > .card');
   for (const card of playerCards) {
     const playerId = card.id.replace('player-card-', '');
     const isWinner = card.querySelector<HTMLInputElement>('#round-winner')?.checked;
@@ -165,7 +165,7 @@ function submitRound(content: Element): void {
     return;
   }
 
-  const roundsTable = content.querySelector('#uno-rounds');
+  const roundsTable = content.querySelector('#rounds-wrapper table');
   if (roundsTable) {
     addRoundToTable(roundsTable, round);
   }
@@ -252,7 +252,7 @@ export function loadSettings(): void {
 export function reloadPage(content: Element): void {
   loadSettings();
 
-  const roundsTable = content.querySelector('#uno-rounds');
+  const roundsTable = content.querySelector('#rounds-wrapper table');
   if (roundsTable) {
     drawTable(roundsTable);
     if (backend.rounds.length > 0) {
@@ -300,7 +300,7 @@ export function refresh(content: Element, checkWinner = false): void {
     }
   }
 
-  const roundsTableWrapper = content.querySelector('#uno-rounds-wrapper');
+  const roundsTableWrapper = content.querySelector('#rounds-wrapper');
   if (roundsTableWrapper) {
     if (backend.rounds.length > 0) {
       roundsTableWrapper.classList.remove('hide');
@@ -360,7 +360,7 @@ export function refresh(content: Element, checkWinner = false): void {
     maxScore.innerHTML = `of ${endScore}`;
   }
 
-  const playersContainer = content.querySelector('#uno-players');
+  const playersContainer = content.querySelector('#players');
   if (playersContainer) {
     let html = '';
     let topPlayerId: string = '';
@@ -374,7 +374,7 @@ export function refresh(content: Element, checkWinner = false): void {
     }
 
     for (const player of backend.players) {
-      let cls = 'uno-player-card card prime flex-col center';
+      let cls = 'card prime flex-col center';
       if (player.id === topPlayerId) {
         cls += ' green';
       } else if (player.id === lastPlayerId) {
@@ -482,7 +482,7 @@ async function route(content: HTMLDivElement): Promise<void> {
     });
   }
 
-  const playersContainer = content.querySelector('#uno-players');
+  const playersContainer = content.querySelector('#players');
   if (playersContainer) {
     setupInputNavigation(playersContainer as HTMLElement, (_) => {
       submitRound(content);
