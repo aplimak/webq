@@ -38,7 +38,7 @@ export default function (content: Element): void {
   let playerDefs = unoStorage.get('playerDefs');
 
   function refreshPlayerDefsCards(): void {
-    const playersContainer = dialog.body.querySelector('.config-players');
+    const playersContainer = dialog.body.querySelector('#players');
     if (playersContainer) {
       playersContainer.innerHTML = '';
       for (const playerDef of playerDefs) {
@@ -97,7 +97,7 @@ export default function (content: Element): void {
     dialog.close();
   }
 
-  const dialog = new Dialog('uno-config-dialog', 'Settings');
+  const dialog = new Dialog('config-dialog', 'Settings');
   dialog.autoCloseAfterClickingButton = false;
   dialog.resolvePromiseOnUnexpectedClose = true;
   dialog.body.innerHTML = settingsForm;
