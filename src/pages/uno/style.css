@@ -1,6 +1,8 @@
 #uno-action-bar {
   justify-content: center;
   padding-bottom: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
 }
 
 #uno-players,
@@ -58,14 +60,16 @@
 
 table {
   border-collapse: collapse;
-  table-layout: fixed; /* Important for scroll behavior */
+  table-layout: fixed;
+  /* Important for scroll behavior */
 }
 
 th,
 td {
   padding: 8px;
   text-align: center;
-  overflow: hidden; /* Prevent content from overflowing cells */
+  overflow: hidden;
+  /* Prevent content from overflowing cells */
 }
 
 .scrollable-table-wrapper,
@@ -90,7 +94,8 @@ th {
 .fixed-header {
   position: sticky;
   top: 0;
-  z-index: 1; /* Ensure header stays on top */
+  z-index: 1;
+  /* Ensure header stays on top */
 }
 
 .uno-config-players {

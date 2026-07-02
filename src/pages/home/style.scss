@@ -1,0 +1,39 @@
+[data-page='home'] {
+  .card-container {
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 16px;
+
+    .service-card {
+      gap: 8px;
+      padding: 24px;
+      transition: transform 0.2s ease-in-out;
+      /* Smooth hover effect */
+
+      &:hover {
+        transform: translateY(-2px);
+        /* Slight lift on hover */
+      }
+
+      .title-container {
+        gap: 8px;
+
+        .card-title {
+          font-size: 18px;
+          font-weight: 500;
+          color: var(--card-primary-text-color);
+        }
+      }
+
+      .card-text {
+        color: var(--card-secondary-text-color);
+      }
+
+      .button-container {
+        flex-wrap: wrap;
+        margin-top: 8px;
+        gap: 8px;
+      }
+    }
+  }
+}

@@ -2,6 +2,7 @@ import { Page } from '@/shell/page';
 import { navigateTo } from '@/shell/router';
 
 import main from './main.html';
+import './style.scss';
 
 const page: Page = {
   id: 'home',
