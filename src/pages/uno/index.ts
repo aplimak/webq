@@ -497,7 +497,7 @@ const page: Page = {
   route: async (context) => {
     await route(context.content);
   },
-  storage: unoStorage,
+  storageReset: unoStorage.reset.bind(unoStorage),
 };
 
 export default page;

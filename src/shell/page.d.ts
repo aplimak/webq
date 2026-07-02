@@ -1,10 +1,6 @@
 import { EventBus } from './event';
 import { ScopedStorage, ShellState } from './storage';
 
-interface GenericScopedStorage {
-  reset: () => void;
-}
-
 /**
  * Represents a page in the application.
  * Each page has a unique id, routing logic, and optional cleanup logic.
@@ -31,9 +27,9 @@ export interface Page {
   exit?: (nextRoute: string) => Promise<void>;
 
   /**
-   * Page's scoped storage instance. mostly used for page reset after page crash.
+   * Page's reset storage function. used for page reset after page crash.
    */
-  storage?: GenericScopedStorage;
+  storageReset?: () => void;
 }
 
 /**

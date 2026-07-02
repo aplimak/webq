@@ -39,7 +39,7 @@ function addHelperBtns(
     <button id="router-reset-data"
       class="button filled flex-row center padded gapped bold primary">
       <span class="material-icons">delete</span>
-      <span>${currentPage?.storage ? 'Reset Page' : 'Clear Data'}</span>
+      <span>${currentPage?.storageReset ? 'Reset Page' : 'Clear Data'}</span>
     </button>`;
   }
 
@@ -52,8 +52,8 @@ function addHelperBtns(
   });
 
   container.querySelector('#router-reset-data')?.addEventListener('click', () => {
-    if (currentPage?.storage) {
-      currentPage.storage.reset();
+    if (currentPage?.storageReset) {
+      currentPage.storageReset();
     } else {
       localStorage.clear();
       sessionStorage.clear();
