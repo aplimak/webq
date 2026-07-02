@@ -15,15 +15,13 @@ const page: Page = {
     }
 
     // Uno app
-    const unoCard = cardContainer.querySelector('#uno-card');
-    if (unoCard) {
-      const enterBtn = unoCard.querySelector('#uno-button');
-      if (enterBtn) {
-        enterBtn.addEventListener('click', async () => {
-          navigateTo('uno');
-        });
-      }
-    }
+    cardContainer.querySelector('#uno-card #uno-button')?.addEventListener('click', async () => {
+      navigateTo('uno');
+    });
+
+    cardContainer.querySelector('#test-card #toast-button')?.addEventListener('click', () => {
+      window.nativeBridge.toast('A Test message');
+    });
   },
 };
 
