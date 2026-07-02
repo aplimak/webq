@@ -13,7 +13,8 @@ async function whenReady() {
   await shellEvents.waitFor('bridge:cordova-ready');
 }
 
-function quit() {
+async function quit() {
+  await whenReady();
   navigator.app.exitApp();
 }
 
