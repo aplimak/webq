@@ -1,5 +1,18 @@
 [data-page='uno'] {
   > #content {
+    .uno-text {
+      text-align: center;
+
+      &.title {
+        padding-bottom: 8px;
+      }
+
+      &.bold {
+        font-weight: 600;
+        font-size: 2em;
+      }
+    }
+
     > #action-bar {
       justify-content: center;
       padding-bottom: 8px;
@@ -92,17 +105,4 @@
       }
     }
   }
-}
-
-.uno-text {
-  text-align: center;
-}
-
-.uno-text.title {
-  padding-bottom: 8px;
-}
-
-.uno-text.bold {
-  font-weight: 600;
-  font-size: 2em;
 }
