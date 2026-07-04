@@ -103,6 +103,74 @@ function handlePageCrash(root: Element, route: string, page: Page, error: unknow
 }
 
 async function initRoute(): Promise<void> {
+  async function processRoute(route: string) {
+    try {
+      if (currentPage?.exit) {
+        await currentPage.exit(route);
+      }
+    } catch (error) {
+      console.warn(`Error while exiting page: ${currentPage?.id}`, error);
+    }
+
+    shellEvents.emit('router:page-change', {
+      previousPage: currentPage?.id || null,
+      newPage: route,
+    });
+
+    let page: Page;
+
+    try {
+      const module = await import(`../pages/${route}`);
+      page = module.default as Page;
+    } catch (error) {
+      console.error(`Page "${route}" not found:`, error);
+      handleNotFound(content!, route);
+      return;
+    }
+
+    try {
+      if (typeof page.route !== 'function') {
+        throw Error('Page is not routable');
+      }
+      if (page.id !== route) {
+        throw Error(`Page id: ${page.id} does not match route: ${route}`);
+      }
+
+      const prevPage = currentPage;
+      currentPage = page;
+
+      let api: PageContext['api'];
+      {
+        const { shellEvents: events } = await import('./event');
+        const { shellStorage: storage } = await import('./storage');
+        const header = await import('./header');
+        const { setTitle } = header;
+        api = {
+          header: {
+            show(): void {
+              header.setVisibility(true);
+            },
+            hide(): void {
+              header.setVisibility(false);
+            },
+            setTitle,
+          },
+          storage,
+          events,
+        };
+      }
+
+      await currentPage.route({
+        content: content,
+        previousRoute: prevPage?.id,
+        api,
+      });
+    } catch (error) {
+      console.error(`Page "${route}" crashed:`, error);
+      handlePageCrash(content, route, page, error);
+      return;
+    }
+  }
   async function navigate(route: string): Promise<void> {
     if (route.startsWith('#')) {
       route = route.substring(1);
@@ -114,74 +182,11 @@ async function initRoute(): Promise<void> {
     window.location.hash = route;
 
     // Perform actions based on the route
-    document.startViewTransition(async () => {
-      try {
-        if (currentPage?.exit) {
-          await currentPage.exit(route);
-        }
-      } catch (error) {
-        console.warn(`Error while exiting page: ${currentPage?.id}`, error);
-      }
-
-      shellEvents.emit('router:page-change', {
-        previousPage: currentPage?.id || null,
-        newPage: route,
-      });
-
-      let page: Page;
-
-      try {
-        const module = await import(`../pages/${route}`);
-        page = module.default as Page;
-      } catch (error) {
-        console.error(`Page "${route}" not found:`, error);
-        handleNotFound(content!, route);
-        return;
-      }
-
-      try {
-        if (typeof page.route !== 'function') {
-          throw Error('Page is not routable');
-        }
-        if (page.id !== route) {
-          throw Error(`Page id: ${page.id} does not match route: ${route}`);
-        }
-
-        const prevPage = currentPage;
-        currentPage = page;
-
-        let api: PageContext['api'];
-        {
-          const { shellEvents: events } = await import('./event');
-          const { shellStorage: storage } = await import('./storage');
-          const header = await import('./header');
-          const { setTitle } = header;
-          api = {
-            header: {
-              show(): void {
-                header.setVisibility(true);
-              },
-              hide(): void {
-                header.setVisibility(false);
-              },
-              setTitle,
-            },
-            storage,
-            events,
-          };
-        }
-
-        await currentPage.route({
-          content: content,
-          previousRoute: prevPage?.id,
-          api,
-        });
-      } catch (error) {
-        console.error(`Page "${route}" crashed:`, error);
-        handlePageCrash(content, route, page, error);
-        return;
-      }
-    });
+    if ('startViewTransition' in document) {
+      document.startViewTransition(async () => await processRoute(route));
+    } else {
+      await processRoute(route);
+    }
   }
 
   function doNavigate(): void {
