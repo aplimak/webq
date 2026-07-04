@@ -1,9 +1,17 @@
 if (!process.env.BROWSERSLIST_ENV) {
   throw Error('BROWSERSLIST_ENV environment variable is not set');
 }
+const target = process.env.BROWSERSLIST_ENV;
 
 module.exports = {
-  presets: [['@babel/preset-env', {}]],
+  presets: [
+    [
+      '@babel/preset-env',
+      {
+        modules: target === 'cordova' ? 'commonjs' : false,
+      },
+    ],
+  ],
   plugins: [
     [
       'polyfill-corejs3',
