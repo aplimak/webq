@@ -103,7 +103,7 @@ function handlePageCrash(root: Element, route: string, page: Page, error: unknow
 }
 
 async function initRoute(): Promise<void> {
-  async function processRoute(route: string) {
+  async function processRoute(route: string): Promise<void> {
     try {
       if (currentPage?.exit) {
         await currentPage.exit(route);

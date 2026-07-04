@@ -4,14 +4,7 @@ if (!process.env.BROWSERSLIST_ENV) {
 const target = process.env.BROWSERSLIST_ENV;
 
 module.exports = {
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        modules: target === 'electron' ? false : 'commonjs',
-      },
-    ],
-  ],
+  presets: [['@babel/preset-env', {}]],
   plugins: [
     [
       'polyfill-corejs3',
