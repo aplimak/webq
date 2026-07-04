@@ -16,7 +16,13 @@ if (env === 'production') {
 console.log(`> webpack ${args.join(' ')} (NODE_ENV=${env}, WEBQ_TARGET=${target})`);
 const child = spawn('npx', ['webpack', ...args], {
   stdio: 'inherit',
-  env: { ...process.env, NODE_ENV: env, WEBQ_TARGET: target, WEBQ_OUTPUT: output },
+  env: {
+    ...process.env,
+    NODE_ENV: env,
+    WEBQ_TARGET: target,
+    WEBQ_OUTPUT: output,
+    BROWSERSLIST_ENV: target,
+  },
 });
 
 // Handle SIGINT (Ctrl+C) gracefully

@@ -72,7 +72,7 @@ const iconPlugin =
 
 const config = {
   target:
-    targetPlatform === 'electron' ? 'electron-renderer' : isWebpackServe ? 'web' : 'browserslist',
+    targetPlatform === 'electron' ? 'electron42-renderer' : isWebpackServe ? 'web' : 'browserslist',
   entry: {
     shell: './src/index.ts',
   },

@@ -4,7 +4,7 @@ const path = require('path');
 const { merge } = require('webpack-merge');
 
 const config = {
-  target: 'electron-preload',
+  target: 'electron42-preload',
   entry: {
     electron_preload: './src//shell/electron/preload/index.ts',
   },

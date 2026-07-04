@@ -5,7 +5,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const { merge } = require('webpack-merge');
 
 const config = {
-  target: 'electron-main',
+  target: 'electron42-main',
   entry: {
     electron_main: './src/shell/electron/main/index.ts',
   },
