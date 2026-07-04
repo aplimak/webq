@@ -72,7 +72,6 @@
     "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-statusbar": "^4.0.0",
     "cordova-plugin-webq": "file:src/shell/cordova/native",
-    "core-js": "^3.49.0",
     "cross-env": "^10.1.0",
     "css-loader": "^7.1.4",
     "css-minimizer-webpack-plugin": "^8.0.0",
@@ -116,12 +115,29 @@
     }
   },
   "dependencies": {
+    "core-js": "^3.49.0",
     "lodash": "^4.18.1",
     "material-design-icons": "^3.0.1",
     "material-symbols": "^0.45.4"
   },
   "browserslist": {
-    "browser": "last 2 versions, not dead, > 0.2%",
+    "browser": [
+      "last 2 Firefox versions",
+      "last 2 Chrome versions",
+      "last 2 ChromeAndroid versions",
+      "last 2 Safari versions",
+      "iOS > 10",
+      "last 2 Edge versions",
+      "Chrome 27",
+      "Chrome 38",
+      "Chrome 47",
+      "Chrome 53",
+      "Chrome 56",
+      "Chrome 63",
+      "Chrome 71",
+      "Edge 18",
+      "Firefox ESR"
+    ],
     "cordova": "chrome >= 51",
     "electron": "electron 42.0"
   },

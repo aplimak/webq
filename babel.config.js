@@ -8,7 +8,7 @@ module.exports = {
     [
       '@babel/preset-env',
       {
-        modules: target === 'cordova' ? 'commonjs' : false,
+        modules: target === 'electron' ? false : 'commonjs',
       },
     ],
   ],
