@@ -99,6 +99,7 @@ const config = {
         use: [
           isProduction ? MiniCssExtractPlugin.loader : 'style-loader', // Injects CSS into the DOM
           'css-loader', // Resolves @import and url() inside CSS
+          'postcss-loader',
           'sass-loader', // Compiles Sass to CSS
         ],
       },
@@ -112,6 +113,7 @@ const config = {
               modules: true,
             },
           },
+          'postcss-loader',
         ],
       },
       {

@@ -36,6 +36,7 @@ module.exports = {
     alias: {
       '@': path.resolve(__dirname, 'src'),
       'package.json': path.resolve(__dirname, 'package.json'),
+      '@node_modules': path.resolve(__dirname, 'node_modules'),
     },
   },
   plugins: [

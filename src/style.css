@@ -1,0 +1,6 @@
+@layer shell, page;
+
+@import '@node_modules/material-design-icons/iconfont/material-icons.css';
+@import '@node_modules/material-symbols/outlined.css';
+
+@import './shell/style.css'layer(shell);

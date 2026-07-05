@@ -6,7 +6,7 @@ import './shell/header';
 import { shellEvents } from './shell/event';
 import { app } from './shell/env';
 
-import './shell/style.css';
+import './style.css';
 
 shellEvents.on('router:page-change', (_) => {
   document.title = app.title;
