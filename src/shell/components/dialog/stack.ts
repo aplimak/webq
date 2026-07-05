@@ -2,7 +2,8 @@ import { Dialog } from '.';
 
 interface DialogStackEntry {
   id: string;
-  dialog: WeakRef<Dialog>;
+  dialog: WeakRef<Dialog> | Dialog;
+  getDialog: () => Dialog | null;
 }
 
 class DialogStack {
@@ -18,17 +19,29 @@ class DialogStack {
   }
 
   push(dialog: Dialog): void {
-    this.stack.push({
+    // Determine if we can use WeakRef
+    const useWeakRef = typeof WeakRef !== 'undefined';
+
+    const entry: DialogStackEntry = {
       id: dialog.id,
-      dialog: new WeakRef(dialog),
-    });
+      dialog: useWeakRef ? new WeakRef(dialog) : dialog,
+      getDialog: () => {
+        if (useWeakRef) {
+          return (entry.dialog as WeakRef<Dialog>).deref() || null;
+        } else {
+          // Direct reference
+          return entry.dialog as Dialog;
+        }
+      },
+    };
+    this.stack.push(entry);
 
     // Push a unique history state
     history.pushState({ dialogId: dialog.id }, '');
   }
 
   private doClose(entry: DialogStackEntry): void {
-    entry.dialog.deref()?.handleUnexpectedClose(true);
+    entry.getDialog()?.handleUnexpectedClose(true);
   }
 
   close(id: string): void {
