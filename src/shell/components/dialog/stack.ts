@@ -21,6 +21,9 @@ class DialogStack {
   push(dialog: Dialog): void {
     // Determine if we can use WeakRef
     const useWeakRef = typeof WeakRef !== 'undefined';
+    if (!useWeakRef) {
+      console.warn('WeakRef not avaiable, using strong references');
+    }
 
     const entry: DialogStackEntry = {
       id: dialog.id,
