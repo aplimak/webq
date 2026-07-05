@@ -182,7 +182,7 @@ async function initRoute(): Promise<void> {
     window.location.hash = route;
 
     // Perform actions based on the route
-    if ('startViewTransition' in document) {
+    if (currentPage && 'startViewTransition' in document) {
       document.startViewTransition(async () => await processRoute(route));
     } else {
       await processRoute(route);
