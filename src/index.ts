@@ -1,5 +1,5 @@
 import './style.css';
-import { _bridge } from './shell/bridge';
+import { _bridge } from 'webq.target.js';
 window.nativeBridge = _bridge;
 
 import './shell/pwa';

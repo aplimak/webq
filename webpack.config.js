@@ -89,7 +89,7 @@ const config = {
   },
   resolve: {
     alias: {
-      './shell/bridge': path.resolve(__dirname, 'src', 'shell', targetPlatform),
+      'webq.target.js': path.resolve(__dirname, 'src', 'shell', targetPlatform),
     },
   },
   module: {
