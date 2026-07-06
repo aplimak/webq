@@ -67,11 +67,11 @@ const iconPlugin =
             version: pkg.version,
             icons: {
               android: true,
+              favicons: true,
               appleIcon: false,
               appleStartup: false,
               yandex: false,
-              favicons: true,
-              windows: true,
+              windows: false,
             },
           },
         }),
