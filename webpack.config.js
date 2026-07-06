@@ -87,6 +87,11 @@ const config = {
     globalObject: 'window',
     clean: true,
   },
+  resolve: {
+    alias: {
+      './shell/bridge': path.resolve(__dirname, 'src', 'shell', targetPlatform),
+    },
+  },
   module: {
     rules: [
       {
