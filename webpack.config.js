@@ -65,6 +65,14 @@ const iconPlugin =
             developerName: pkg.author.name,
             developerURL: pkg.author.url,
             version: pkg.version,
+            icons: {
+              android: true,
+              appleIcon: false,
+              appleStartup: false,
+              yandex: false,
+              favicons: true,
+              windows: true,
+            },
           },
         }),
       ]
