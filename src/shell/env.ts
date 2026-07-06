@@ -57,9 +57,7 @@ export const platform = PLATFORMS.reduce(
     return acc;
   },
   {} as Record<TargetPlatform, boolean>
-) as {
-  [K in TargetPlatform]: K extends typeof targetPlatform ? true : false;
-};
+);
 
 /**
  * Application info.
