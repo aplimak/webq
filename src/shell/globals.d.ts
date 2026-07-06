@@ -3,15 +3,11 @@ import { BrowserBridge } from './browser';
 import { CordovaBridge } from './cordova';
 import { ElectronBridge } from './electron';
 
-type NativeBridgeFor<T extends TargetPlatform> = T extends 'browser'
-  ? BrowserBridge
-  : T extends 'cordova'
-    ? CordovaBridge
-    : ElectronBridge;
+export type NativeBridgeAPI = CordovaBridge | ElectronBridge | BrowserBridge;
 
 export declare global {
   interface Window {
-    nativeBridge: NativeBridgeFor<TargetPlatform>;
+    nativeBridge: NativeBridgeAPI;
   }
 
   const __WEBQ_NODE_ENV__: string;
