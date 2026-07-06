@@ -15,7 +15,7 @@
     "types": ["node"],
     "paths": {
       "@/*": ["./src/*"],
-      "webq.target.js": ["./src/shell/bridge.d.ts"],
+      "webq/target": ["./src/shell/bridges/index.d.ts"],
       "package.json": ["./package.json"]
     },
     "rootDir": "./src"

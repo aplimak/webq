@@ -1,7 +1,7 @@
-import { shellEvents } from '../event';
-import { NativeBridge } from '../nativeBridge';
+import { shellEvents } from '@/shell/event';
+import type { NativeBridgeBase } from '../base';
 
-export interface CordovaBridge extends NativeBridge {
+export interface CordovaBridge extends NativeBridgeBase {
   readonly platform: 'cordova';
   isReady(): boolean;
   whenReady(): Promise<void>;
@@ -71,7 +71,7 @@ document.addEventListener('deviceready', () => {
 shellEvents.on('ui:theme-change', async (data) => {
   await whenReady();
 
-  const { getHeaderColor } = await import('../header');
+  const { getHeaderColor } = await import('@/shell/header');
   updateStatusBarColor(getHeaderColor(), data.useDarkTheme);
 });
 

@@ -7,7 +7,7 @@ const { merge } = require('webpack-merge');
 const config = {
   target: 'electron42-main',
   entry: {
-    electron_main: './src/shell/electron/main/index.ts',
+    electron_main: './src/shell/bridges/electron/main/index.ts',
   },
   output: {
     path: path.resolve(process.env.WEBQ_OUTPUT, 'main'),

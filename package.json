@@ -71,7 +71,7 @@
     "cordova-plugin-device": "^3.0.0",
     "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-statusbar": "^4.0.0",
-    "cordova-plugin-webq": "file:src/shell/cordova/native",
+    "cordova-plugin-webq": "file:src/shell/bridges/cordova/native",
     "cross-env": "^10.1.0",
     "css-loader": "^7.1.4",
     "css-minimizer-webpack-plugin": "^8.0.0",

@@ -1,6 +1,6 @@
-import { TargetPlatform } from './env';
+import { TargetPlatform } from '@/shell/env';
 
-export interface NativeBridge {
+export interface NativeBridgeBase {
   readonly platform: TargetPlatform;
   toast(message: string, duration?: number): Promise<void>;
 }

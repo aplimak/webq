@@ -1,7 +1,7 @@
-import { shellEvents } from '../event';
-import { NativeBridge } from '../nativeBridge';
+import { shellEvents } from '@/shell/event';
+import type { NativeBridgeBase } from '../base';
 
-export interface ElectronBridge extends NativeBridge {
+export interface ElectronBridge extends NativeBridgeBase {
   readonly platform: 'electron';
   quit(): Promise<void>;
 }
@@ -9,15 +9,6 @@ export interface ElectronBridge extends NativeBridge {
 export async function quit(): Promise<void> {
   await window.electron.mainWindow.close();
 }
-
-export const _bridge: ElectronBridge = {
-  platform: 'electron',
-  quit,
-  async toast(message: string, duration: number = 3000): Promise<void> {
-    const { toast } = await import('../components');
-    toast.info(message, duration);
-  },
-};
 
 async function updateMaxBtnIcon(maxBtn: Element): Promise<void> {
   const span = maxBtn.querySelector('span')!;
@@ -55,3 +46,12 @@ window.electron.events.onResize(() => {
   const maxBtn = document.querySelector('#window-maximize')!;
   updateMaxBtnIcon(maxBtn);
 });
+
+export const _bridge: ElectronBridge = {
+  platform: 'electron',
+  quit,
+  async toast(message: string, duration: number = 3000): Promise<void> {
+    const { toast } = await import('@/shell/components');
+    toast.info(message, duration);
+  },
+};

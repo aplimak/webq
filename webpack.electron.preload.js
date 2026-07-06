@@ -6,7 +6,7 @@ const { merge } = require('webpack-merge');
 const config = {
   target: 'electron42-preload',
   entry: {
-    electron_preload: './src//shell/electron/preload/index.ts',
+    electron_preload: './src/shell/bridges/electron/preload/index.ts',
   },
   output: {
     path: path.resolve(process.env.WEBQ_OUTPUT, 'preload'),
