@@ -1,5 +1,5 @@
 import { shellStorage } from './storage';
-import { Page, PageContext } from './page';
+import type { Page, PageContext } from './page';
 import { shellEvents } from './event';
 
 const DEFAULT_ROUTE = shellStorage.get('defaultRoute');
@@ -112,6 +112,8 @@ async function initRoute(): Promise<void> {
       console.warn(`Error while exiting page: ${currentPage?.id}`, error);
     }
 
+    content.innerHTML = '';
+    document.body.setAttribute('data-page', route);
     shellEvents.emit('router:page-change', {
       previousPage: currentPage?.id || null,
       newPage: route,
@@ -170,11 +172,20 @@ async function initRoute(): Promise<void> {
       handlePageCrash(content, route, page, error);
       return;
     }
+
+    shellEvents.emit('router:page-changed', {
+      page: currentPage,
+    });
   }
   async function navigate(route: string): Promise<void> {
     if (route.startsWith('#')) {
       route = route.substring(1);
     }
+
+    shellEvents.emit('router:before-page-change', {
+      previousPage: currentPage?.id || null,
+      newPage: route,
+    });
 
     console.log(`Navigating to: ${route}`);
 
@@ -215,10 +226,6 @@ async function initRoute(): Promise<void> {
 }
 
 document.addEventListener('DOMContentLoaded', initRoute);
-
-shellEvents.on('router:page-change', (data) => {
-  document.body.setAttribute('data-page', data.newPage);
-});
 
 shellEvents.on('bridge:back-pressed', async () => {
   if (inMainPage() && window.nativeBridge.platform !== 'browser') {

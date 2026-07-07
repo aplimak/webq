@@ -1,3 +1,5 @@
+import type { Page } from './page';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type EventMap = Record<string, any>;
 
@@ -103,9 +105,16 @@ export class EventBus<T extends EventMap> {
 }
 
 interface ShellEvents {
+  'router:before-page-change': {
+    previousPage: string | null;
+    newPage: string;
+  };
   'router:page-change': {
     previousPage: string | null;
     newPage: string;
+  };
+  'router:page-changed': {
+    page: Page;
   };
   'ui:theme-change': {
     useDarkTheme: boolean;
