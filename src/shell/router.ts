@@ -112,6 +112,9 @@ async function initRoute(): Promise<void> {
       console.warn(`Error while exiting page: ${currentPage?.id}`, error);
     }
 
+    const comp = await import('./components');
+    comp.loading.show();
+
     shellEvents.emit('router:page-change', {
       previousPage: currentPage?.id || null,
       newPage: route,
@@ -177,6 +180,10 @@ async function initRoute(): Promise<void> {
     shellEvents.emit('router:page-changed', {
       page: currentPage,
     });
+
+    import('./components').then((comp) => {
+      comp.loading.hide();
+    });
   }
   async function navigate(route: string): Promise<void> {
     if (route.startsWith('#')) {
@@ -193,12 +200,10 @@ async function initRoute(): Promise<void> {
     // Update the URL in the browser's address bar
     window.location.hash = route;
 
-    // Perform actions based on the route
-    if (currentPage && 'startViewTransition' in document) {
-      document.startViewTransition(async () => await processRoute(route));
-    } else {
-      await processRoute(route);
-    }
+    await processRoute(route);
+
+    const comp = await import('./components');
+    comp.loading.hide();
   }
 
   function doNavigate(): void {
@@ -234,15 +239,4 @@ shellEvents.on('bridge:back-pressed', async () => {
   } else {
     window.history.back();
   }
-});
-
-// Honestly, there is no point on chunking components when we need it at the first route. but we may decrease the initial load time.
-shellEvents.on('router:page-change', async () => {
-  const { loading } = await import('./components');
-  loading.show();
-});
-
-shellEvents.on('router:page-changed', async () => {
-  const { loading } = await import('./components');
-  loading.hide();
 });
