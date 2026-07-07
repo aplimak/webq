@@ -112,12 +112,13 @@ async function initRoute(): Promise<void> {
       console.warn(`Error while exiting page: ${currentPage?.id}`, error);
     }
 
-    content.innerHTML = '';
-    document.body.setAttribute('data-page', route);
     shellEvents.emit('router:page-change', {
       previousPage: currentPage?.id || null,
       newPage: route,
     });
+
+    content.innerHTML = '';
+    document.body.setAttribute('data-page', route);
 
     let page: Page;
 
@@ -233,4 +234,15 @@ shellEvents.on('bridge:back-pressed', async () => {
   } else {
     window.history.back();
   }
+});
+
+// Honestly, there is no point on chunking components when we need it at the first route. but we may decrease the initial load time.
+shellEvents.on('router:page-change', async () => {
+  const { loading } = await import('./components');
+  loading.show();
+});
+
+shellEvents.on('router:page-changed', async () => {
+  const { loading } = await import('./components');
+  loading.hide();
 });
