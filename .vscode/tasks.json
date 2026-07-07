@@ -1,0 +1,12 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build browser dev",
+      "type": "npm",
+      "script": "build:browser:dev",
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

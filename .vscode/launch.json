@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch firefox",
+      "type": "firefox",
+      "request": "launch",
+      "reAttach": true,
+      "file": "${workspaceFolder}/bundle/browser/index.html",
+      "preLaunchTask": "build browser dev",
+      "pathMappings": [
+        {
+          "url": "webpack://ir.aeliux.webq",
+          "path": "${workspaceFolder}"
+        }
+      ]
+    }
+  ]
+}
