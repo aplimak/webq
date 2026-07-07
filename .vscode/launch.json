@@ -7,6 +7,45 @@
       "request": "launch",
       "reAttach": true,
       "file": "${workspaceFolder}/bundle/browser/index.html",
+      "clearConsoleOnReload": true,
+      "reloadOnAttach": true,
+      "keepProfileChanges": false,
+      "firefoxArgs": [
+        "--devtools" // Opens Developer Tools on startup
+      ],
+      "preferences": {
+        // ----- CACHE & NETWORK (Always fresh) -----
+        "browser.cache.disk.enable": false,
+        "browser.cache.memory.enable": false,
+        "browser.cache.offline.enable": false,
+        "network.http.use-cache": false,
+
+        // ----- SILENCE ALL ANNOYING POPUPS / WARNINGS -----
+        "app.update.auto": false,
+        "app.update.enabled": false,
+        "browser.safebrowsing.enabled": false,
+        "browser.safebrowsing.malware.enabled": false,
+        "browser.warnOnQuit": false,
+        "browser.warnOnRestart": false,
+
+        "identity.fxaccounts.enabled": false,
+        "toolkit.telemetry.enabled": false,
+        "datareporting.healthreport.uploadEnabled": false,
+
+        // Disable URL bar autocomplete/suggestions (reduces network chatter)
+        "browser.urlbar.autocomplete.enabled": false,
+        "browser.search.suggest.enabled": false,
+
+        // Disable Reader Mode (not needed for debugging)
+        "reader.parse-on-load.enabled": false,
+
+        "devtools.toolbox.host": "bottom",
+
+        // ----- SECURITY/PRIVACY (Reduce background overhead) -----
+        "privacy.trackingprotection.enabled": false,
+        "privacy.trackingprotection.pbmode.enabled": false,
+        "browser.send_pings": false
+      },
       "preLaunchTask": "build browser dev",
       "pathMappings": [
         {
