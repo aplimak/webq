@@ -42,6 +42,11 @@ export interface PageContext {
   readonly content: HTMLDivElement;
 
   /**
+   * Sub-Route specified after the page route followed by a slash.
+   */
+  readonly subRoute?: string;
+
+  /**
    * The previous route that was navigated from, if available. This can be used for navigation history or to determine how the page should render based on where the user came from.
    */
   readonly previousRoute?: string;

@@ -103,7 +103,7 @@ function handlePageCrash(root: Element, route: string, page: Page, error: unknow
 }
 
 async function initRoute(): Promise<void> {
-  async function processRoute(route: string): Promise<void> {
+  async function processRoute(route: string, subRoute?: string): Promise<void> {
     try {
       if (currentPage?.exit) {
         await currentPage.exit(route);
@@ -167,7 +167,8 @@ async function initRoute(): Promise<void> {
       }
 
       await currentPage.route({
-        content: content,
+        content,
+        subRoute,
         previousRoute: prevPage?.id,
         api,
       });
@@ -185,10 +186,17 @@ async function initRoute(): Promise<void> {
       comp.loading.hide();
     });
   }
-  async function navigate(route: string): Promise<void> {
-    if (route.startsWith('#')) {
-      route = route.substring(1);
+  async function navigate(path: string): Promise<void> {
+    if (path.startsWith('#')) {
+      path = path.substring(1);
     }
+
+    const subRouteIndex = path.indexOf('/');
+    const result =
+      subRouteIndex === -1 ? [path] : [path.slice(0, subRouteIndex), path.slice(subRouteIndex + 1)];
+
+    const route = result[0];
+    const subRoute = result.at(1);
 
     shellEvents.emit('router:before-page-change', {
       previousPage: currentPage?.id || null,
@@ -198,9 +206,9 @@ async function initRoute(): Promise<void> {
     console.log(`Navigating to: ${route}`);
 
     // Update the URL in the browser's address bar
-    window.location.hash = route;
+    window.location.hash = path;
 
-    await processRoute(route);
+    await processRoute(route, subRoute);
 
     const comp = await import('./components');
     comp.loading.hide();
