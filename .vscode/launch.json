@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch firefox",
+      "name": "Launch in Firefox",
       "type": "firefox",
       "request": "launch",
       "reAttach": true,
@@ -13,6 +13,10 @@
       "firefoxArgs": [
         "--devtools" // Opens Developer Tools on startup
       ],
+      "presentation": {
+        "order": 3,
+        "group": "browser"
+      },
       "preferences": {
         // ----- CACHE & NETWORK (Always fresh) -----
         "browser.cache.disk.enable": false,
@@ -55,10 +59,29 @@
       ]
     },
     {
+      "name": "Launch in integrated browser",
       "type": "editor-browser",
       "request": "launch",
-      "name": "Launch in integrated browser",
+      "presentation": {
+        "order": 1,
+        "group": "browser"
+      },
       "url": "file://${workspaceFolder}/bundle/browser/index.html",
+      "preLaunchTask": "build browser dev",
+      "pathMapping": {
+        "webpack://ir.aeliux.webq": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "Launch in Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "presentation": {
+        "order": 2,
+        "group": "browser"
+      },
+      "file": "${workspaceFolder}/bundle/browser/index.html",
+      "disableNetworkCache": true,
       "preLaunchTask": "build browser dev",
       "pathMapping": {
         "webpack://ir.aeliux.webq": "${workspaceFolder}"
