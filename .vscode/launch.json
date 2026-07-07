@@ -14,6 +14,16 @@
           "path": "${workspaceFolder}"
         }
       ]
+    },
+    {
+      "type": "editor-browser",
+      "request": "launch",
+      "name": "Launch in integrated browser",
+      "url": "file://${workspaceFolder}/bundle/browser/index.html",
+      "preLaunchTask": "build browser dev",
+      "pathMapping": {
+        "webpack://ir.aeliux.webq": "${workspaceFolder}"
+      }
     }
   ]
 }
