@@ -4,6 +4,7 @@ import { shellEvents } from './event';
 
 const DEFAULT_ROUTE = shellStorage.get('defaultRoute');
 
+let currentHash: string | null = null;
 export let currentPage: Page | null = null;
 
 export function inMainPage(): boolean {
@@ -215,7 +216,10 @@ async function initRoute(): Promise<void> {
   }
 
   function doNavigate(): void {
-    navigate(window.location.hash.slice(1) || DEFAULT_ROUTE);
+    const newHash = window.location.hash.slice(1) || DEFAULT_ROUTE;
+    if (currentHash === newHash) return;
+    currentHash = newHash;
+    navigate(newHash);
   }
 
   const _content = document.getElementById('content');
