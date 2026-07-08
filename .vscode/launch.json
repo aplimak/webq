@@ -2,6 +2,25 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug Android on device",
+      "type": "cordova",
+      "request": "launch",
+      "platform": "android",
+      "target": "device",
+      "port": 9222,
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "webpack://ir.aeliux.webq": "${workspaceFolder}"
+      },
+      "cwd": "${workspaceFolder}",
+      "livereload": false,
+      "presentation": {
+        "order": 4,
+        "group": "cordova"
+      },
+      "preLaunchTask": "bundle cordova dev"
+    },
+    {
       "name": "Launch in Firefox",
       "type": "firefox",
       "request": "launch",
@@ -13,10 +32,6 @@
       "firefoxArgs": [
         "--devtools" // Opens Developer Tools on startup
       ],
-      "presentation": {
-        "order": 3,
-        "group": "browser"
-      },
       "preferences": {
         // ----- CACHE & NETWORK (Always fresh) -----
         "browser.cache.disk.enable": false,
@@ -49,6 +64,10 @@
         "privacy.trackingprotection.enabled": false,
         "privacy.trackingprotection.pbmode.enabled": false,
         "browser.send_pings": false
+      },
+      "presentation": {
+        "order": 3,
+        "group": "browser"
       },
       "preLaunchTask": "build browser dev",
       "pathMappings": [

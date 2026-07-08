@@ -6,7 +6,35 @@
       "type": "npm",
       "script": "build:browser:dev",
       "group": "build",
-      "problemMatcher": []
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "bundle cordova dev",
+      "type": "npm",
+      "script": "bundle",
+      "group": "build",
+      "problemMatcher": [],
+      "options": {
+        "env": {
+          "WEBQ_TARGET": "cordova"
+        }
+      },
+      "presentation": {
+        "echo": false,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
     }
   ]
 }
