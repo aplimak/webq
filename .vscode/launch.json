@@ -1,6 +1,45 @@
 {
   "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "Debug Electron",
+      "configurations": ["Debug Electron Main Process", "Debug Electron Renderer Process"],
+      "preLaunchTask": "build electron dev",
+      "presentation": {
+        "group": "electron"
+      },
+      "stopAll": true
+    }
+  ],
   "configurations": [
+    {
+      "name": "Debug Electron Main Process",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+      },
+      "runtimeArgs": ["--remote-debugging-port=9222", "."],
+      "outputCapture": "std",
+      "presentation": {
+        "hidden": true
+      }
+    },
+    {
+      "name": "Debug Electron Renderer Process",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "disableNetworkCache": true,
+      "pathMapping": {
+        "webpack://": "${workspaceFolder}"
+      },
+      "presentation": {
+        "hidden": true
+      }
+    },
     {
       "name": "Debug Android on device",
       "type": "cordova",
@@ -19,44 +58,6 @@
         "group": "cordova"
       },
       "preLaunchTask": "bundle cordova dev"
-    },
-    {
-      "name": "Debug Electron Main Process",
-      "type": "node",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
-      "windows": {
-        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
-      },
-      "args": ["."],
-      "outputCapture": "std",
-      "presentation": {
-        "order": 5,
-        "group": "electron"
-      },
-      "preLaunchTask": "build electron dev"
-    },
-    {
-      "name": "Debug Electron Renderer Process",
-      "type": "chrome",
-      "request": "launch",
-      "presentation": {
-        "order": 5,
-        "group": "electron"
-      },
-      "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
-      "windows": {
-        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
-      },
-      "runtimeArgs": ["--remote-debugging-port=9222", "."],
-      "port": 9222,
-      "disableNetworkCache": true,
-      "preLaunchTask": "build electron dev",
-      "pathMapping": {
-        "webpack://": "${workspaceFolder}"
-      }
     },
     {
       "name": "Debug in Firefox",
