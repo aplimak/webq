@@ -9,9 +9,12 @@ const outDir = target === 'cordova' ? ['www'] : ['bundle', target];
 const output = path.resolve(__dirname, '..', ...outDir);
 const watch = process.env.WEBQ_WATCH === '1';
 
-const args = ['--config', config, watch ? '--watch' : '--progress', '--stats-error-details'];
+const args = ['--config', config, '--stats-error-details'];
 if (env === 'production') {
   args.push('--fail-on-warnings');
+}
+if (watch) {
+  args.push('--watch');
 }
 
 const wpEnv = {
