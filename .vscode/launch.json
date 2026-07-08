@@ -59,10 +59,10 @@
       }
     },
     {
-      "name": "Launch in Firefox",
+      "name": "Debug in Firefox",
       "type": "firefox",
       "request": "launch",
-      "file": "${workspaceFolder}/bundle/browser/index.html",
+      "url": "http://localhost:8088",
       "clearConsoleOnReload": true,
       "reloadOnAttach": true,
       "keepProfileChanges": false,
@@ -106,43 +106,43 @@
         "order": 3,
         "group": "browser"
       },
-      "preLaunchTask": "build browser dev",
       "pathMappings": [
         {
           "url": "webpack://",
           "path": "${workspaceFolder}"
         }
-      ]
+      ],
+      "preLaunchTask": "launch dev server"
     },
     {
-      "name": "Launch in integrated browser",
+      "name": "Debug",
       "type": "editor-browser",
       "request": "launch",
       "presentation": {
         "order": 1,
         "group": "browser"
       },
-      "url": "file://${workspaceFolder}/bundle/browser/index.html",
-      "preLaunchTask": "build browser dev",
+      "url": "http://localhost:8088",
       "pathMapping": {
         "webpack://": "${workspaceFolder}"
-      }
+      },
+      "preLaunchTask": "launch dev server"
     },
     {
-      "name": "Launch in Chrome",
+      "name": "Debug in Chrome",
       "type": "chrome",
       "request": "launch",
       "presentation": {
         "order": 2,
         "group": "browser"
       },
-      "file": "${workspaceFolder}/bundle/browser/index.html",
+      "url": "http://localhost:8088",
       "disableNetworkCache": true,
       "cleanUp": "wholeBrowser",
-      "preLaunchTask": "build browser dev",
       "pathMapping": {
         "webpack://": "${workspaceFolder}"
-      }
+      },
+      "preLaunchTask": "launch dev server"
     }
   ]
 }

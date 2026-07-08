@@ -254,6 +254,7 @@ const config = {
   },
   devServer: isWebpackServe
     ? {
+        port: 8088,
         hot: true,
         compress: false,
         client: {

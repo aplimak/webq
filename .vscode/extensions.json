@@ -4,6 +4,7 @@
     "firefox-devtools.vscode-firefox-debug",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "typescriptteam.native-preview"
+    "typescriptteam.native-preview",
+    "amodio.tsl-problem-matcher"
   ]
 }

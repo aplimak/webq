@@ -2,11 +2,10 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "build browser dev",
+      "label": "launch dev server",
       "type": "npm",
-      "script": "build:browser:dev",
-      "group": "build",
-      "problemMatcher": [],
+      "script": "start",
+      "problemMatcher": "$ts-checker-webpack-watch",
       "presentation": {
         "echo": false,
         "reveal": "silent",
@@ -14,6 +13,11 @@
         "panel": "shared",
         "showReuseMessage": false,
         "clear": true
+      },
+      "isBackground": true,
+      "runOptions": {
+        "instanceLimit": 1,
+        "instancePolicy": "warn"
       }
     },
     {
