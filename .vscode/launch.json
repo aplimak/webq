@@ -62,7 +62,6 @@
       "name": "Launch in Firefox",
       "type": "firefox",
       "request": "launch",
-      "reAttach": true,
       "file": "${workspaceFolder}/bundle/browser/index.html",
       "clearConsoleOnReload": true,
       "reloadOnAttach": true,
@@ -139,6 +138,7 @@
       },
       "file": "${workspaceFolder}/bundle/browser/index.html",
       "disableNetworkCache": true,
+      "cleanUp": "wholeBrowser",
       "preLaunchTask": "build browser dev",
       "pathMapping": {
         "webpack://": "${workspaceFolder}"
