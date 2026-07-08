@@ -8,7 +8,7 @@ const { isProduction, isWebpackServe, targetPlatform } = require('./scripts/webp
 module.exports = {
   context: __dirname,
   mode: isProduction ? 'production' : 'development',
-  devtool: isProduction ? false : 'eval-source-map',
+  devtool: isProduction ? false : 'eval-cheap-module-source-map',
   performance: {
     hints: false,
   },

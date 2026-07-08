@@ -10,7 +10,7 @@
       "port": 9222,
       "sourceMaps": true,
       "sourceMapPathOverrides": {
-        "webpack://ir.aeliux.webq": "${workspaceFolder}"
+        "webpack://": "${workspaceFolder}"
       },
       "cwd": "${workspaceFolder}",
       "livereload": false,
@@ -55,7 +55,7 @@
       "disableNetworkCache": true,
       "preLaunchTask": "build electron dev",
       "pathMapping": {
-        "webpack://ir.aeliux.webq": "${workspaceFolder}"
+        "webpack://": "${workspaceFolder}"
       }
     },
     {
@@ -110,7 +110,7 @@
       "preLaunchTask": "build browser dev",
       "pathMappings": [
         {
-          "url": "webpack://ir.aeliux.webq",
+          "url": "webpack://",
           "path": "${workspaceFolder}"
         }
       ]
@@ -126,7 +126,7 @@
       "url": "file://${workspaceFolder}/bundle/browser/index.html",
       "preLaunchTask": "build browser dev",
       "pathMapping": {
-        "webpack://ir.aeliux.webq": "${workspaceFolder}"
+        "webpack://": "${workspaceFolder}"
       }
     },
     {
@@ -141,7 +141,7 @@
       "disableNetworkCache": true,
       "preLaunchTask": "build browser dev",
       "pathMapping": {
-        "webpack://ir.aeliux.webq": "${workspaceFolder}"
+        "webpack://": "${workspaceFolder}"
       }
     }
   ]

@@ -91,6 +91,7 @@ const config = {
         : process.env.WEBQ_OUTPUT,
     filename: '[name].[contenthash:8].js',
     chunkFilename: '[name].[contenthash:8].chunk.js',
+    devtoolModuleFilenameTemplate: 'webpack:///[resource-path]?[loaders]',
     publicPath: '',
     globalObject: 'window',
     clean: true,
