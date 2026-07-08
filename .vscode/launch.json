@@ -132,6 +132,7 @@
       },
       "url": "http://localhost:8088",
       "disableNetworkCache": true,
+      "runtimeArgs": ["--auto-open-devtools-for-tabs", "--start-maximized"],
       "cleanUp": "wholeBrowser",
       "pathMapping": {
         "webpack://": "${workspaceFolder}"
