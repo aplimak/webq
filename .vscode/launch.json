@@ -133,11 +133,14 @@
       "url": "http://localhost:8088",
       "disableNetworkCache": true,
       "runtimeArgs": ["--auto-open-devtools-for-tabs", "--start-maximized"],
+      "cwd": "${workspaceFolder}",
+      "userDataDir": "${workspaceFolder}/.chrome-data",
       "cleanUp": "wholeBrowser",
       "pathMapping": {
         "webpack://": "${workspaceFolder}"
       },
-      "preLaunchTask": "launch dev server"
+      "preLaunchTask": "launch dev server",
+      "postDebugTask": "Clear Chrome data"
     }
   ]
 }

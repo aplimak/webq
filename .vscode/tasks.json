@@ -54,6 +54,21 @@
         "showReuseMessage": false,
         "clear": true
       }
+    },
+    {
+      "label": "Clear Chrome data",
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "command": "npx",
+      "args": ["rimraf", ".chrome-data"],
+      "hide": true,
+      "presentation": {
+        "reveal": "never",
+        "focus": false,
+        "close": true
+      }
     }
   ]
 }

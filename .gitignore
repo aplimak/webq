@@ -7,8 +7,11 @@ node_modules/
 /plugins/
 /platforms/
 
+# artifacts
 /www/
 /dist/
 /bundle/
+
+.chrome-data
 
 /build.json
