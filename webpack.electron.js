@@ -1,10 +1,11 @@
 const base = require('./webpack.base');
+const rendererConfig = require('./webpack.config');
 
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const { merge } = require('webpack-merge');
 
-const config = {
+const mainConfig = merge(base, {
   target: 'electron42-main',
   entry: {
     electron_main: './src/shell/bridges/electron/main/index.ts',
@@ -27,6 +28,17 @@ const config = {
     __dirname: false, // Keep __dirname as actual path
     __filename: false,
   },
-};
+});
 
-module.exports = merge(base, config);
+const preloadConfig = merge(base, {
+  target: 'electron42-preload',
+  entry: {
+    electron_preload: './src/shell/bridges/electron/preload/index.ts',
+  },
+  output: {
+    path: path.resolve(process.env.WEBQ_OUTPUT, 'preload'),
+    filename: 'index.js',
+  },
+});
+
+module.exports = [mainConfig, preloadConfig, rendererConfig];
