@@ -106,12 +106,6 @@
         "order": 3,
         "group": "browser"
       },
-      "pathMappings": [
-        {
-          "url": "webpack://",
-          "path": "${workspaceFolder}"
-        }
-      ],
       "preLaunchTask": "launch dev server"
     },
     {

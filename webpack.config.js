@@ -92,7 +92,7 @@ const config = {
     filename: '[name].[contenthash:8].js',
     chunkFilename: '[name].[contenthash:8].chunk.js',
     devtoolModuleFilenameTemplate: 'webpack:///[resource-path]?[loaders]',
-    publicPath: '',
+    publicPath: '/',
     globalObject: 'window',
     clean: true,
   },
