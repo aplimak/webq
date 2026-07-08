@@ -10,6 +10,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const { merge } = require('webpack-merge');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const pwaPlugins =
   targetPlatform === 'browser' && !isWebpackServe
@@ -169,6 +170,11 @@ const config = {
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash:8].css',
+    }),
+    new ForkTsCheckerWebpackPlugin({
+      typescript: {
+        configFile: path.resolve(__dirname, 'tsconfig.json'),
+      },
     }),
     ...iconPlugin,
     ...pwaPlugins,

@@ -1,8 +1,6 @@
 const path = require('path');
 const { DefinePlugin } = require('webpack');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-const pkg = require('./package.json');
 const { isProduction, isWebpackServe, targetPlatform } = require('./scripts/webpack-env.mjs');
 
 module.exports = {
@@ -44,11 +42,6 @@ module.exports = {
       __WEBQ_NODE_ENV__: JSON.stringify(process.env.NODE_ENV),
       __WEBQ_WEBPACK_SERVE__: JSON.stringify(isWebpackServe),
       __WEBQ_TARGET__: JSON.stringify(targetPlatform),
-    }),
-    new ForkTsCheckerWebpackPlugin({
-      typescript: {
-        configFile: path.resolve(__dirname, 'tsconfig.json'),
-      },
     }),
   ],
 };
