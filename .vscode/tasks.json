@@ -21,16 +21,10 @@
       }
     },
     {
-      "label": "bundle cordova dev",
+      "label": "browser bundle daemon",
       "type": "npm",
-      "script": "bundle",
-      "group": "build",
-      "problemMatcher": [],
-      "options": {
-        "env": {
-          "WEBQ_TARGET": "cordova"
-        }
-      },
+      "script": "watch:browser",
+      "problemMatcher": "$ts-checker-webpack-watch",
       "presentation": {
         "echo": false,
         "reveal": "silent",
@@ -38,14 +32,18 @@
         "panel": "shared",
         "showReuseMessage": false,
         "clear": true
+      },
+      "isBackground": true,
+      "runOptions": {
+        "instanceLimit": 1,
+        "instancePolicy": "warn"
       }
     },
     {
-      "label": "build electron dev",
+      "label": "cordova bundle daemon",
       "type": "npm",
-      "script": "build:electron:dev",
-      "group": "build",
-      "problemMatcher": [],
+      "script": "watch:cordova",
+      "problemMatcher": "$ts-checker-webpack-watch",
       "presentation": {
         "echo": false,
         "reveal": "silent",
@@ -53,6 +51,30 @@
         "panel": "shared",
         "showReuseMessage": false,
         "clear": true
+      },
+      "isBackground": true,
+      "runOptions": {
+        "instanceLimit": 1,
+        "instancePolicy": "warn"
+      }
+    },
+    {
+      "label": "electron bundle daemon",
+      "type": "npm",
+      "script": "watch:electron",
+      "problemMatcher": "$ts-checker-webpack-watch",
+      "presentation": {
+        "echo": false,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "isBackground": true,
+      "runOptions": {
+        "instanceLimit": 1,
+        "instancePolicy": "warn"
       }
     },
     {

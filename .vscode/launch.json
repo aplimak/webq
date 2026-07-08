@@ -4,7 +4,7 @@
     {
       "name": "Debug Electron",
       "configurations": ["Debug Electron Main Process", "Debug Electron Renderer Process"],
-      "preLaunchTask": "build electron dev",
+      "preLaunchTask": "electron bundle daemon",
       "presentation": {
         "group": "electron"
       },
@@ -51,7 +51,7 @@
         "order": 4,
         "group": "cordova"
       },
-      "preLaunchTask": "bundle cordova dev"
+      "preLaunchTask": "cordova bundle daemon"
     },
     {
       "name": "Debug in Firefox",

@@ -36,7 +36,7 @@
     "build:electron:prod": "npm run lint && cross-env NODE_ENV=production npm run bundle:electron",
     "watch:browser": "cross-env WEBQ_WATCH=1 npm run bundle:browser",
     "watch:cordova": "cross-env WEBQ_WATCH=1 npm run bundle:cordova",
-    "watch:electron": "cross-env WEBQ_WATCH=1 npm npm run bundle:electron",
+    "watch:electron": "cross-env WEBQ_WATCH=1 npm run bundle:electron",
     "start": "npm run serve",
     "start:prod": "cross-env NODE_ENV=production npm run serve",
     "run:cordova:prod": "npm run build:cordova:prod && cordova run android --release --noprepare --nobuild -- --packageType=apk",
