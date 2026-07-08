@@ -38,6 +38,27 @@
       "preLaunchTask": "build electron dev"
     },
     {
+      "name": "Debug Electron Renderer Process",
+      "type": "chrome",
+      "request": "launch",
+      "presentation": {
+        "order": 5,
+        "group": "electron"
+      },
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+      },
+      "runtimeArgs": ["--remote-debugging-port=9222", "."],
+      "port": 9222,
+      "disableNetworkCache": true,
+      "preLaunchTask": "build electron dev",
+      "pathMapping": {
+        "webpack://ir.aeliux.webq": "${workspaceFolder}"
+      }
+    },
+    {
       "name": "Launch in Firefox",
       "type": "firefox",
       "request": "launch",
