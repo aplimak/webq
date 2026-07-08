@@ -35,6 +35,21 @@
         "showReuseMessage": false,
         "clear": true
       }
+    },
+    {
+      "label": "build electron dev",
+      "type": "npm",
+      "script": "build:electron:dev",
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
     }
   ]
 }

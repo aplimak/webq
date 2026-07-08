@@ -21,6 +21,23 @@
       "preLaunchTask": "bundle cordova dev"
     },
     {
+      "name": "Debug Electron Main Process",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+      },
+      "args": ["."],
+      "outputCapture": "std",
+      "presentation": {
+        "order": 5,
+        "group": "electron"
+      },
+      "preLaunchTask": "build electron dev"
+    },
+    {
       "name": "Launch in Firefox",
       "type": "firefox",
       "request": "launch",
