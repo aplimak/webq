@@ -33,9 +33,6 @@
       "request": "attach",
       "port": 9222,
       "disableNetworkCache": true,
-      "pathMapping": {
-        "webpack://": "${workspaceFolder}"
-      },
       "presentation": {
         "hidden": true
       }
@@ -48,9 +45,6 @@
       "target": "device",
       "port": 9222,
       "sourceMaps": true,
-      "sourceMapPathOverrides": {
-        "webpack://": "${workspaceFolder}"
-      },
       "cwd": "${workspaceFolder}",
       "livereload": false,
       "presentation": {
@@ -118,9 +112,6 @@
         "group": "browser"
       },
       "url": "http://localhost:8088",
-      "pathMapping": {
-        "webpack://": "${workspaceFolder}"
-      },
       "preLaunchTask": "launch dev server"
     },
     {
@@ -137,9 +128,6 @@
       "cwd": "${workspaceFolder}",
       "userDataDir": "${workspaceFolder}/.chrome-data",
       "cleanUp": "wholeBrowser",
-      "pathMapping": {
-        "webpack://": "${workspaceFolder}"
-      },
       "preLaunchTask": "launch dev server",
       "postDebugTask": "Clear Chrome data"
     }
