@@ -1,4 +1,5 @@
 {
   "editor.tabSize": 2,
-  "cordova.cordovaExecutable": "node_modules/.bin/cordova"
+  "cordova.cordovaExecutable": "node_modules/.bin/cordova",
+  "workbench.browser.dataStorage": "workspace"
 }
