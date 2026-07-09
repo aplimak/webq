@@ -1,148 +1,140 @@
 {
-    "version": "0.2.0",
-    "compounds": [
-        {
-            "name": "Debug Electron",
-            "configurations": [
-                "Debug Electron Main Process",
-                "Debug Electron Renderer Process"
-            ],
-            "preLaunchTask": "electron dev server",
-            "presentation": {
-                "group": "electron"
-            },
-            "stopAll": true
-        }
-    ],
-    "configurations": [
-        {
-            "name": "Debug Electron Main Process",
-            "type": "node",
-            "request": "launch",
-            "restart": true,
-            "cwd": "${workspaceFolder}",
-            "runtimeExecutable": "node",
-            "runtimeArgs": [
-                "scripts/electron-nodemon.js",
-                "npx electron --remote-debugging-port=9222 --webq-use-server ."
-            ],
-            "outputCapture": "std",
-            "presentation": {
-                "hidden": true
-            }
-        },
-        {
-            "name": "Debug Electron Renderer Process",
-            "type": "chrome",
-            "request": "attach",
-            "restart": true,
-            "port": 9222,
-            "disableNetworkCache": true,
-            "presentation": {
-                "hidden": true
-            }
-        },
-        {
-            "name": "Debug Android on device",
-            "type": "cordova",
-            "request": "launch",
-            "platform": "android",
-            "target": "device",
-            "port": 9222,
-            "sourceMaps": true,
-            "cwd": "${workspaceFolder}",
-            "livereload": false,
-            "presentation": {
-                "order": 5,
-                "group": "cordova"
-            },
-            "preLaunchTask": "cordova bundle daemon"
-        },
-        {
-            "name": "Debug Android on emulator",
-            "type": "cordova",
-            "request": "launch",
-            "platform": "android",
-            "target": "desk34",
-            "port": 9222,
-            "sourceMaps": true,
-            "cwd": "${workspaceFolder}",
-            "livereload": false,
-            "presentation": {
-                "order": 4,
-                "group": "cordova"
-            },
-            "preLaunchTask": "cordova bundle daemon"
-        },
-        {
-            "name": "Debug in Firefox",
-            "type": "firefox",
-            "request": "launch",
-            "url": "http://localhost:8088",
-            "clearConsoleOnReload": true,
-            "reloadOnAttach": true,
-            "keepProfileChanges": false,
-            "firefoxArgs": [
-                "--devtools"
-            ],
-            "preferences": {
-                "browser.cache.disk.enable": false,
-                "browser.cache.memory.enable": false,
-                "browser.cache.offline.enable": false,
-                "network.http.use-cache": false,
-                "app.update.auto": false,
-                "app.update.enabled": false,
-                "browser.safebrowsing.enabled": false,
-                "browser.safebrowsing.malware.enabled": false,
-                "browser.warnOnQuit": false,
-                "browser.warnOnRestart": false,
-                "identity.fxaccounts.enabled": false,
-                "toolkit.telemetry.enabled": false,
-                "datareporting.healthreport.uploadEnabled": false,
-                "browser.urlbar.autocomplete.enabled": false,
-                "browser.search.suggest.enabled": false,
-                "reader.parse-on-load.enabled": false,
-                "devtools.toolbox.host": "bottom",
-                "privacy.trackingprotection.enabled": false,
-                "privacy.trackingprotection.pbmode.enabled": false,
-                "browser.send_pings": false
-            },
-            "presentation": {
-                "order": 3,
-                "group": "browser"
-            },
-            "preLaunchTask": "browser dev server"
-        },
-        {
-            "name": "Debug",
-            "type": "editor-browser",
-            "request": "launch",
-            "presentation": {
-                "order": 1,
-                "group": "browser"
-            },
-            "url": "http://localhost:8088",
-            "preLaunchTask": "browser dev server"
-        },
-        {
-            "name": "Debug in Chrome",
-            "type": "chrome",
-            "request": "launch",
-            "presentation": {
-                "order": 2,
-                "group": "browser"
-            },
-            "url": "http://localhost:8088",
-            "disableNetworkCache": true,
-            "runtimeArgs": [
-                "--auto-open-devtools-for-tabs",
-                "--start-maximized"
-            ],
-            "cwd": "${workspaceFolder}",
-            "userDataDir": "${workspaceFolder}/.chrome-data",
-            "cleanUp": "wholeBrowser",
-            "preLaunchTask": "browser dev server",
-            "postDebugTask": "Clear Chrome data"
-        }
-    ]
+  "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "Debug Electron",
+      "configurations": ["Debug Electron Main Process", "Debug Electron Renderer Process"],
+      "preLaunchTask": "electron dev server",
+      "presentation": {
+        "group": "electron"
+      },
+      "stopAll": true
+    }
+  ],
+  "configurations": [
+    {
+      "name": "Debug Electron Main Process",
+      "type": "node",
+      "request": "launch",
+      "restart": true,
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "scripts/electron-nodemon.js",
+        "npx electron --remote-debugging-port=9222 --webq-use-server ."
+      ],
+      "outputCapture": "std",
+      "presentation": {
+        "hidden": true
+      }
+    },
+    {
+      "name": "Debug Electron Renderer Process",
+      "type": "chrome",
+      "request": "attach",
+      "restart": true,
+      "port": 9222,
+      "disableNetworkCache": true,
+      "presentation": {
+        "hidden": true
+      }
+    },
+    {
+      "name": "Debug Android on device",
+      "type": "cordova",
+      "request": "launch",
+      "platform": "android",
+      "target": "device",
+      "port": 9222,
+      "sourceMaps": true,
+      "cwd": "${workspaceFolder}",
+      "livereload": false,
+      "presentation": {
+        "order": 5,
+        "group": "cordova"
+      },
+      "preLaunchTask": "cordova bundle daemon"
+    },
+    {
+      "name": "Debug Android on emulator",
+      "type": "cordova",
+      "request": "launch",
+      "platform": "android",
+      "target": "emulator",
+      "port": 9222,
+      "sourceMaps": true,
+      "cwd": "${workspaceFolder}",
+      "livereload": false,
+      "presentation": {
+        "order": 4,
+        "group": "cordova"
+      },
+      "preLaunchTask": "cordova bundle daemon"
+    },
+    {
+      "name": "Debug in Firefox",
+      "type": "firefox",
+      "request": "launch",
+      "url": "http://localhost:8088",
+      "clearConsoleOnReload": true,
+      "reloadOnAttach": true,
+      "keepProfileChanges": false,
+      "firefoxArgs": ["--devtools"],
+      "preferences": {
+        "browser.cache.disk.enable": false,
+        "browser.cache.memory.enable": false,
+        "browser.cache.offline.enable": false,
+        "network.http.use-cache": false,
+        "app.update.auto": false,
+        "app.update.enabled": false,
+        "browser.safebrowsing.enabled": false,
+        "browser.safebrowsing.malware.enabled": false,
+        "browser.warnOnQuit": false,
+        "browser.warnOnRestart": false,
+        "identity.fxaccounts.enabled": false,
+        "toolkit.telemetry.enabled": false,
+        "datareporting.healthreport.uploadEnabled": false,
+        "browser.urlbar.autocomplete.enabled": false,
+        "browser.search.suggest.enabled": false,
+        "reader.parse-on-load.enabled": false,
+        "devtools.toolbox.host": "bottom",
+        "privacy.trackingprotection.enabled": false,
+        "privacy.trackingprotection.pbmode.enabled": false,
+        "browser.send_pings": false
+      },
+      "presentation": {
+        "order": 3,
+        "group": "browser"
+      },
+      "preLaunchTask": "browser dev server"
+    },
+    {
+      "name": "Debug",
+      "type": "editor-browser",
+      "request": "launch",
+      "presentation": {
+        "order": 1,
+        "group": "browser"
+      },
+      "url": "http://localhost:8088",
+      "preLaunchTask": "browser dev server"
+    },
+    {
+      "name": "Debug in Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "presentation": {
+        "order": 2,
+        "group": "browser"
+      },
+      "url": "http://localhost:8088",
+      "disableNetworkCache": true,
+      "runtimeArgs": ["--auto-open-devtools-for-tabs", "--start-maximized"],
+      "cwd": "${workspaceFolder}",
+      "userDataDir": "${workspaceFolder}/.chrome-data",
+      "cleanUp": "wholeBrowser",
+      "preLaunchTask": "browser dev server",
+      "postDebugTask": "Clear Chrome data"
+    }
+  ]
 }
