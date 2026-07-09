@@ -1,5 +1,4 @@
 const base = require('./webpack.base');
-const rendererConfig = require('./webpack.config');
 
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
@@ -41,4 +40,9 @@ const preloadConfig = merge(base, {
   },
 });
 
-module.exports = [mainConfig, preloadConfig, rendererConfig];
+const configs = [mainConfig, preloadConfig];
+if (process.env.WEBQ_ELECTRON_NO_RENDERER !== '1') {
+  configs.push(require('./webpack.config'));
+}
+
+module.exports = configs;
