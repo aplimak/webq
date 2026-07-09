@@ -18,7 +18,7 @@ class InjectCordovaPlugin {
       const hooks = HtmlWebpackPlugin.getHooks(compilation);
       hooks.beforeEmit.tapAsync('InjectCordovaPlugin', (data, cb) => {
         if (targetPlatform === 'cordova') {
-          data.html = data.html.replace('</head>', '<script src="cordova.js"></script></head>');
+          data.html = data.html.replace('<head>', '<head><script src="cordova.js"></script>');
         }
         cb(null, data);
       });
