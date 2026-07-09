@@ -16,12 +16,13 @@
       "name": "Debug Electron Main Process",
       "type": "node",
       "request": "launch",
+      "restart": true,
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
-      "windows": {
-        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
-      },
-      "runtimeArgs": ["--remote-debugging-port=9222", "--webq-use-server", "."],
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "scripts/electron-nodemon.js",
+        "npx electron --remote-debugging-port=9222 --webq-use-server ."
+      ],
       "outputCapture": "std",
       "presentation": {
         "hidden": true
@@ -31,6 +32,7 @@
       "name": "Debug Electron Renderer Process",
       "type": "chrome",
       "request": "attach",
+      "restart": true,
       "port": 9222,
       "disableNetworkCache": true,
       "presentation": {
