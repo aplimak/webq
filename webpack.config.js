@@ -12,6 +12,29 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const { merge } = require('webpack-merge');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
+const getTarget = () => {
+  if (isWebpackServe) {
+    return 'web';
+  }
+  if (targetPlatform === 'electron') {
+    return 'electron42-renderer';
+  }
+  return 'browserslist';
+};
+
+function getDevServerPort() {
+  switch (targetPlatform) {
+    case 'browser':
+      return 8088;
+    case 'cordova':
+      return 8089;
+    case 'electron':
+      return 8090;
+    default:
+      return 8100;
+  }
+}
+
 const pwaPlugins =
   targetPlatform === 'browser' && !isWebpackServe
     ? [
@@ -80,8 +103,7 @@ const iconPlugin =
     : [];
 
 const config = {
-  target:
-    targetPlatform === 'electron' ? 'electron42-renderer' : isWebpackServe ? 'web' : 'browserslist',
+  target: getTarget(),
   entry: {
     shell: './src/index.ts',
   },
@@ -95,7 +117,7 @@ const config = {
     devtoolModuleFilenameTemplate: 'webpack:///[resource-path]?[loaders]',
     publicPath: isWebpackServe ? '/' : '',
     globalObject: 'window',
-    clean: true,
+    clean: !isWebpackServe,
   },
   resolve: {
     alias: {
@@ -260,8 +282,9 @@ const config = {
   },
   devServer: isWebpackServe
     ? {
-        port: targetPlatform === 'browser' ? 8088 : targetPlatform === 'electron' ? 8089 : 8090,
+        port: getDevServerPort(),
         hot: true,
+        liveReload: false,
         compress: false,
         client: {
           overlay: {
@@ -269,7 +292,6 @@ const config = {
             warnings: true,
             runtimeErrors: true,
           },
-          progress: true,
         },
       }
     : {

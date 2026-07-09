@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "launch dev server",
+      "label": "browser dev server",
       "type": "npm",
       "script": "start",
       "problemMatcher": "$ts-checker-webpack-watch",
@@ -19,6 +19,26 @@
         "instanceLimit": 1,
         "instancePolicy": "warn"
       }
+    },
+    {
+      "label": "electron dev server",
+      "type": "npm",
+      "script": "serve:electron",
+      "problemMatcher": "$ts-checker-webpack-watch",
+      "presentation": {
+        "echo": false,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "isBackground": true,
+      "runOptions": {
+        "instanceLimit": 1,
+        "instancePolicy": "warn"
+      },
+      "dependsOn": "electron bundle daemon"
     },
     {
       "label": "browser bundle daemon",

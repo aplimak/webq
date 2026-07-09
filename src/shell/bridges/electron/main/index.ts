@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 
 let mainWindow: BrowserWindow | null = null;
+const useServer = process.argv.includes('--webq-use-server');
 
 function createWindow(): void {
   mainWindow = new BrowserWindow({
@@ -17,7 +18,11 @@ function createWindow(): void {
     },
   });
 
-  mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
+  if (useServer) {
+    mainWindow.loadURL('http://localhost:8090');
+  } else {
+    mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
+  }
 
   // Open DevTools in development
   if (__WEBQ_NODE_ENV__ === 'development') {

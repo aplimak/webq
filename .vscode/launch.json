@@ -4,7 +4,7 @@
     {
       "name": "Debug Electron",
       "configurations": ["Debug Electron Main Process", "Debug Electron Renderer Process"],
-      "preLaunchTask": "electron bundle daemon",
+      "preLaunchTask": "electron dev server",
       "presentation": {
         "group": "electron"
       },
@@ -21,7 +21,7 @@
       "windows": {
         "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
       },
-      "runtimeArgs": ["--remote-debugging-port=9222", "."],
+      "runtimeArgs": ["--remote-debugging-port=9222", "--webq-use-server", "."],
       "outputCapture": "std",
       "presentation": {
         "hidden": true
@@ -101,7 +101,7 @@
         "order": 3,
         "group": "browser"
       },
-      "preLaunchTask": "launch dev server"
+      "preLaunchTask": "browser dev server"
     },
     {
       "name": "Debug",
@@ -112,7 +112,7 @@
         "group": "browser"
       },
       "url": "http://localhost:8088",
-      "preLaunchTask": "launch dev server"
+      "preLaunchTask": "browser dev server"
     },
     {
       "name": "Debug in Chrome",
@@ -128,7 +128,7 @@
       "cwd": "${workspaceFolder}",
       "userDataDir": "${workspaceFolder}/.chrome-data",
       "cleanUp": "wholeBrowser",
-      "preLaunchTask": "launch dev server",
+      "preLaunchTask": "browser dev server",
       "postDebugTask": "Clear Chrome data"
     }
   ]
