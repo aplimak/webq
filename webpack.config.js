@@ -260,7 +260,7 @@ const config = {
   },
   devServer: isWebpackServe
     ? {
-        port: 8088,
+        port: targetPlatform === 'browser' ? 8088 : targetPlatform === 'electron' ? 8089 : 8090,
         hot: true,
         compress: false,
         client: {

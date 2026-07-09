@@ -5,6 +5,3 @@ export const targetPlatform = process.env.WEBQ_TARGET;
 if (!targetPlatform || !['browser', 'cordova', 'electron'].includes(targetPlatform)) {
   throw Error(`Unknown target platform: ${targetPlatform}`);
 }
-if (targetPlatform === 'electron' && isWebpackServe) {
-  throw Error("Can't serve electron target with webpack");
-}

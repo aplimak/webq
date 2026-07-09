@@ -8,8 +8,9 @@ const target = process.env.WEBQ_TARGET || 'browser';
 const outDir = target === 'cordova' ? ['www'] : ['bundle', target];
 const output = path.resolve(__dirname, '..', ...outDir);
 const watch = process.env.WEBQ_WATCH === '1';
+const serve = process.env.WEBQ_SERVE === '1';
 
-const args = ['--config', config, '--stats-error-details'];
+const args = [serve ? 'serve' : 'build', '--config', config, '--stats-error-details'];
 if (env === 'production') {
   args.push('--fail-on-warnings');
 }
