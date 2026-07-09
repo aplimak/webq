@@ -1,8 +1,10 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
+import fs from 'fs';
 
 let mainWindow: BrowserWindow | null = null;
 const useServer = process.argv.includes('--webq-use-server');
+const preloadPath = path.join(__dirname, '../preload/index.js');
 
 function createWindow(): void {
   mainWindow = new BrowserWindow({
@@ -12,7 +14,7 @@ function createWindow(): void {
     frame: __WEBQ_NODE_ENV__ === 'development',
     hasShadow: true,
     webPreferences: {
-      preload: path.join(__dirname, '../preload/index.js'),
+      preload: preloadPath,
       contextIsolation: true,
       nodeIntegration: false,
     },
@@ -54,6 +56,13 @@ function createWindow(): void {
 
 app.whenReady().then(() => {
   createWindow();
+
+  if (__WEBQ_NODE_ENV__ === 'development') {
+    fs.watch(path.dirname(preloadPath), () => {
+      console.log('Preload updated, reloading window...');
+      mainWindow?.webContents.reload();
+    });
+  }
 });
 
 app.on('window-all-closed', () => {
