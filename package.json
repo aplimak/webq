@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "description": "A suite of simple web apps.",
   "keywords": [
-    "ecosystem:cordova",
+    "ecosystem:capacitor",
     "ecosystem:electron"
   ],
   "author": {
@@ -26,29 +26,28 @@
     "bundle": "node scripts/webpack-runner.js",
     "bundle:browser": "cross-env WEBQ_TARGET=browser npm run bundle",
     "bundle:electron": "cross-env WEBQ_TARGET=electron npm run bundle webpack.electron.js",
-    "bundle:cordova": "cross-env WEBQ_TARGET=cordova npm run bundle",
+    "bundle:cap": "cross-env WEBQ_TARGET=cap npm run bundle",
     "serve": "cross-env WEBQ_SERVE=1 node scripts/webpack-runner.js",
     "serve:browser": "cross-env WEBQ_TARGET=browser npm run serve",
     "serve:electron": "cross-env WEBQ_TARGET=electron npm run serve",
     "build:browser:dev": "npm run bundle:browser",
     "build:browser:prod": "npm run lint && cross-env NODE_ENV=production npm run bundle:browser",
-    "build:cordova:dev": "npm run bundle:cordova && cordova build android --debug",
-    "build:cordova:prod": "npm run lint && cross-env NODE_ENV=production npm run bundle:cordova && cordova build android --release -- --packageType=apk",
+    "build:cap:dev": "npm run bundle:cap && cap build android --flavor development",
+    "build:cap:prod": "npm run lint && cross-env NODE_ENV=production npm run bundle:cap && cap build android --flavor production",
     "build:electron:dev": "npm run bundle:electron",
     "build:electron:prod": "npm run lint && cross-env NODE_ENV=production npm run bundle:electron",
     "watch:browser": "cross-env WEBQ_WATCH=1 npm run bundle:browser",
-    "watch:cordova": "cross-env WEBQ_WATCH=1 npm run bundle:cordova",
+    "watch:cap": "cross-env WEBQ_WATCH=1 npm run bundle:cap",
     "watch:electron": "cross-env WEBQ_WATCH=1 npm run bundle:electron",
     "start": "npm run serve:browser",
-    "run:cordova:prod": "npm run build:cordova:prod && cordova run android --release --noprepare --nobuild -- --packageType=apk",
-    "run:cordova:dev": "npm run build:cordova:dev && cordova run android --debug --noprepare --nobuild",
+    "run:cap:dev": "npm run build:cap:dev && cap run android",
+    "run:cap:prod": "npm run build:cap:prod && cap run android",
     "run:electron:prod": "npm run build:electron:prod && electron .",
     "run:electron:dev": "npm run build:electron:dev && NODE_ENV=development electron .",
-    "sync:cordova": "node scripts/update-cordova.js",
     "dist:browser": "npm run build:browser:prod && rimraf dist/browser && shx mkdir -p dist && shx cp -r bundle/browser dist/browser",
-    "dist:cordova": "npm run sync:cordova && npm run build:cordova:prod && shx mkdir -p dist && shx cp platforms/android/app/build/outputs/apk/release/app-release.apk dist/android.apk",
+    "dist:cap": "npm run build:cap:prod && shx mkdir -p dist && shx cp android/app/build/outputs/apk/release/app-release.apk dist/android.apk",
     "dist:electron": "npm run build:electron:prod && electron-builder --config electron-builder.config.js && shx rm -rf dist/*-unpacked dist/*.y*ml dist/.icon-ico",
-    "dist": "concurrently \"npm run dist:browser\" \"npm run dist:cordova\" \"npm run dist:electron\"",
+    "dist": "concurrently \"npm run dist:browser\" \"npm run dist:cap\" \"npm run dist:electron\"",
     "lint": "eslint --ext .ts src --max-warnings 0",
     "lint:fix": "eslint --ext .ts src --fix --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,js,css,scss,html,json,md}\"",
@@ -62,7 +61,6 @@
     "@capacitor/cli": "^8.4.1",
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^10.0.1",
-    "@types/cordova": "^11.0.3",
     "@types/electron": "^1.4.38",
     "@types/lodash": "^4.17.24",
     "@types/markdown-it": "^14.1.2",
@@ -73,12 +71,6 @@
     "babel-plugin-polyfill-corejs3": "^1.0.0",
     "concurrently": "^10.0.3",
     "copy-webpack-plugin": "^14.0.0",
-    "cordova": "^13.0.0",
-    "cordova-android": "^15.0.0",
-    "cordova-plugin-device": "^3.0.0",
-    "cordova-plugin-dialogs": "^2.0.2",
-    "cordova-plugin-statusbar": "^4.0.0",
-    "cordova-plugin-webq": "file:src/shell/bridges/cordova/native",
     "cordova-res": "^0.15.4",
     "cross-env": "^10.1.0",
     "css-loader": "^7.1.4",
@@ -116,17 +108,6 @@
     "workbox-webpack-plugin": "^7.4.1",
     "xml2js": "^0.6.2"
   },
-  "cordova": {
-    "platforms": [
-      "android"
-    ],
-    "plugins": {
-      "cordova-plugin-device": {},
-      "cordova-plugin-dialogs": {},
-      "cordova-plugin-statusbar": {},
-      "cordova-plugin-webq": {}
-    }
-  },
   "dependencies": {
     "@capacitor/android": "^8.4.1",
     "@capacitor/core": "^8.4.1",
@@ -153,13 +134,13 @@
       "Edge 18",
       "Firefox ESR"
     ],
-    "cordova": "chrome >= 51",
+    "cap": "chrome >= 60",
     "electron": "electron 42.0"
   },
   "allowScripts": {
     "@parcel/watcher@2.5.6": true,
     "core-js@3.49.0": true,
     "electron-winstaller@5.4.0": true,
-    "sharp@0.29.3": true
+    "sharp@0.34.5": true
   }
 }
