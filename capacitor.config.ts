@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   webDir: 'bundle/cap',
   plugins: {
     SplashScreen: {
-      launchShowDuration: 500,
+      launchShowDuration: 1000,
       launchAutoHide: true,
     },
   },
