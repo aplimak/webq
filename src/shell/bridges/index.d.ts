@@ -1,9 +1,9 @@
 import { TargetPlatform } from '@/shell/env';
 import { BrowserBridge } from './browser';
-import { CordovaBridge } from './cordova';
+import { CapacitorBridge } from './cap';
 import { ElectronBridge } from './electron';
 
-type NativeBridge = CordovaBridge | ElectronBridge | BrowserBridge;
+type NativeBridge = CapacitorBridge | ElectronBridge | BrowserBridge;
 
 export declare global {
   interface Window {

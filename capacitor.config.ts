@@ -5,9 +5,8 @@ const config: CapacitorConfig = {
   appName: 'WebQ',
   webDir: 'bundle/cap',
   plugins: {
-    SplashScreen: {
-      launchShowDuration: 1000,
-      launchAutoHide: true,
+    StatusBar: {
+      overlaysWebView: false,
     },
   },
 };
