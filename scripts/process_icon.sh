@@ -39,6 +39,7 @@ fuzz="15%"
 bgcolor=$(magick "$BASE_ICON" -format "%[pixel:p{$x,$y}]" info:-)
 
 magick "$BASE_ICON" -fuzz "$fuzz" -transparent "$bgcolor" "$FOREGROUND"
+magick "$FOREGROUND" -resize 75% -background none -gravity center -extent "${W}x${H}" "icon_foreground_small.png"
 magick "$FOREGROUND" -fill white -colorize 100% "$MONOCHROME"
 
 cx=$((W / 2))
@@ -49,56 +50,5 @@ magick -size "${W}x${H}" xc:none -fill "$bgcolor" \
   "$BACKGROUND"
 
 magick -size 3000x3000 xc:"#2e2e2e" \( icon_round.png -resize 50% \) -gravity center -composite splash.png
-
-echo "Generating Android icons"
-
-# Density scale factors (relative to mdpi)
-declare -A SCALE
-SCALE["ldpi"]="0.75"
-SCALE["mdpi"]="1"
-SCALE["hdpi"]="1.5"
-SCALE["xhdpi"]="2"
-SCALE["xxhdpi"]="3"
-SCALE["xxxhdpi"]="4"
-
-# Legacy icon sizes (non‑adaptive)
-declare -A LEGACY_SIZE
-LEGACY_SIZE["ldpi"]="36"
-LEGACY_SIZE["mdpi"]="48"
-LEGACY_SIZE["hdpi"]="72"
-LEGACY_SIZE["xhdpi"]="96"
-LEGACY_SIZE["xxhdpi"]="144"
-LEGACY_SIZE["xxxhdpi"]="192"
-
-# Adaptive icon base size in dp (Android standard)
-ADAPTIVE_DP=108
-
-for density in "${!SCALE[@]}"; do
-  scale=${SCALE[$density]}
-  # Calculate adaptive pixel size (108 dp × scale factor)
-  size_px=$(echo "$ADAPTIVE_DP * $scale" | bc)
-  size_rounded=$(printf "%.0f" "$size_px")
-
-  echo "Generating $density (${size_rounded}px)..."
-
-  # Foreground
-  magick "$FOREGROUND" -resize "${size_rounded}x${size_rounded}" \
-    -resize 75% -background none -gravity center -extent "${size_rounded}x${size_rounded}" \
-    "$ANDROID_OUT_DIR/${density}-foreground.png"
-
-  # Background
-  magick "$BACKGROUND" -resize "${size_rounded}x${size_rounded}" \
-    "$ANDROID_OUT_DIR/${density}-background.png"
-
-  # Monochrome (white foreground on transparent background)
-  magick "$FOREGROUND" -fill white -colorize 100% \
-    -resize "${size_rounded}x${size_rounded}" \
-    "$ANDROID_OUT_DIR/${density}-monochrome.png"
-
-  # Legacy icon (old‑style square)
-  legacy=${LEGACY_SIZE[$density]}
-  magick "$BASE_ICON" -resize "${legacy}x${legacy}" \
-    "$ANDROID_OUT_DIR/icon-${density}.png"
-done
 
 echo "All icons generated successfully"
