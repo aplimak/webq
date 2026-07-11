@@ -1,10 +1,10 @@
 {
   "recommendations": [
-    "msjsdiag.cordova-tools",
     "firefox-devtools.vscode-firefox-debug",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "typescriptteam.native-preview",
-    "amodio.tsl-problem-matcher"
+    "amodio.tsl-problem-matcher",
+    "webnative.webnative"
   ]
 }

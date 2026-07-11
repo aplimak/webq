@@ -40,38 +40,6 @@
       }
     },
     {
-      "name": "Debug Android on device",
-      "type": "cordova",
-      "request": "launch",
-      "platform": "android",
-      "target": "device",
-      "port": 9222,
-      "sourceMaps": true,
-      "cwd": "${workspaceFolder}",
-      "livereload": false,
-      "presentation": {
-        "order": 5,
-        "group": "cordova"
-      },
-      "preLaunchTask": "cordova bundle daemon"
-    },
-    {
-      "name": "Debug Android on emulator",
-      "type": "cordova",
-      "request": "launch",
-      "platform": "android",
-      "target": "emulator",
-      "port": 9222,
-      "sourceMaps": true,
-      "cwd": "${workspaceFolder}",
-      "livereload": false,
-      "presentation": {
-        "order": 4,
-        "group": "cordova"
-      },
-      "preLaunchTask": "cordova bundle daemon"
-    },
-    {
       "name": "Debug in Firefox",
       "type": "firefox",
       "request": "launch",

@@ -120,7 +120,6 @@ interface ShellEvents {
     useDarkTheme: boolean;
     initial: boolean;
   };
-  'bridge:cordova-ready': null;
   'bridge:back-pressed': null;
 }
 

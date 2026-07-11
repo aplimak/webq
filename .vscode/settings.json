@@ -1,5 +1,5 @@
 {
   "editor.tabSize": 2,
-  "cordova.cordovaExecutable": "node_modules/.bin/cordova",
-  "workbench.browser.dataStorage": "ephemeral"
+  "workbench.browser.dataStorage": "ephemeral",
+  "webnative.androidDebugWebRoot": "workspace"
 }

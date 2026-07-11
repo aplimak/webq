@@ -60,9 +60,9 @@
       }
     },
     {
-      "label": "cordova bundle daemon",
+      "label": "capacitor bundle daemon",
       "type": "npm",
-      "script": "watch:cordova",
+      "script": "watch:cap",
       "problemMatcher": "$ts-checker-webpack-watch",
       "presentation": {
         "echo": false,
