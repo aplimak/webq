@@ -48,6 +48,8 @@ magick -size "${W}x${H}" xc:none -fill "$bgcolor" \
   -draw "circle $cx,$cy $cx,0" \
   "$BACKGROUND"
 
+magick -size 3000x3000 xc:"#2e2e2e" \( icon_round.png -resize 50% \) -gravity center -composite splash.png
+
 echo "Generating Android icons"
 
 # Density scale factors (relative to mdpi)

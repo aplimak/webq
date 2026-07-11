@@ -12,20 +12,6 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const { merge } = require('webpack-merge');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-class InjectCordovaPlugin {
-  apply(compiler) {
-    compiler.hooks.compilation.tap('InjectCordovaPlugin', (compilation) => {
-      const hooks = HtmlWebpackPlugin.getHooks(compilation);
-      hooks.beforeEmit.tapAsync('InjectCordovaPlugin', (data, cb) => {
-        if (targetPlatform === 'cordova') {
-          data.html = data.html.replace('<head>', '<head><script src="cordova.js"></script>');
-        }
-        cb(null, data);
-      });
-    });
-  }
-}
-
 const getTarget = () => {
   if (isWebpackServe) {
     return 'web';
@@ -40,7 +26,7 @@ function getDevServerPort() {
   switch (targetPlatform) {
     case 'browser':
       return 8088;
-    case 'cordova':
+    case 'cap':
       return 8089;
     case 'electron':
       return 8090;
@@ -190,13 +176,6 @@ const config = {
         test: /\.(txt|xml)$/i,
         type: 'asset/source',
       },
-      {
-        test: /cordova\.js$/,
-        type: 'asset/resource',
-        generator: {
-          filename: '[name][ext]',
-        },
-      },
     ],
   },
   plugins: [
@@ -204,7 +183,6 @@ const config = {
       template: './src/index.html',
       filename: 'index.html',
     }),
-    new InjectCordovaPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash:8].css',
     }),

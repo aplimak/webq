@@ -1,6 +1,6 @@
 import pkg from 'package.json';
 
-const PLATFORMS = ['browser', 'cordova', 'electron'] as const;
+const PLATFORMS = ['browser', 'cap', 'electron'] as const;
 
 /**
  * Supported compilation platforms.

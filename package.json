@@ -59,6 +59,7 @@
   "devDependencies": {
     "@babel/core": "^8.0.1",
     "@babel/preset-env": "^8.0.2",
+    "@capacitor/cli": "^8.4.1",
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^10.0.1",
     "@types/cordova": "^11.0.3",
@@ -78,6 +79,7 @@
     "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-statusbar": "^4.0.0",
     "cordova-plugin-webq": "file:src/shell/bridges/cordova/native",
+    "cordova-res": "^0.15.4",
     "cross-env": "^10.1.0",
     "css-loader": "^7.1.4",
     "css-minimizer-webpack-plugin": "^8.0.0",
@@ -126,6 +128,8 @@
     }
   },
   "dependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/core": "^8.4.1",
     "core-js": "^3.49.0",
     "lodash": "^4.18.1",
     "material-design-icons": "^3.0.1",
@@ -156,6 +160,6 @@
     "@parcel/watcher@2.5.6": true,
     "core-js@3.49.0": true,
     "electron-winstaller@5.4.0": true,
-    "sharp@0.34.5": true
+    "sharp@0.29.3": true
   }
 }
