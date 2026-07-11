@@ -2,10 +2,9 @@ import type { NativeBridgeBase } from '../base';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Toast } from '@capacitor/toast';
 import { App } from '@capacitor/app';
-import { StatusBar, Style } from '@capacitor/status-bar';
+import { SystemBars, SystemBarsStyle } from '@capacitor/core';
 import { SafeArea } from 'capacitor-plugin-safe-area';
 import { shellEvents } from '@/shell/event';
-import { getHeaderColor } from '@/shell/header';
 
 SafeArea.getSafeAreaInsets().then(({ insets }) => {
   for (const [key, value] of Object.entries(insets)) {
@@ -41,7 +40,9 @@ App.addListener('backButton', () => {
 });
 
 shellEvents.on('ui:theme-change', async (data) => {
-  await StatusBar.setStyle({ style: !data.useDarkTheme ? Style.Light : Style.Dark });
+  await SystemBars.setStyle({
+    style: data.useDarkTheme ? SystemBarsStyle.Dark : SystemBarsStyle.Light,
+  });
   // await StatusBar.setBackgroundColor({ color: getHeaderColor() });
 });
 
