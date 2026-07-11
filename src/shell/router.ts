@@ -1,8 +1,10 @@
 import { shellStorage } from './storage';
 import type { Page, PageContext } from './page';
 import { shellEvents } from './event';
+import { Mutex } from 'async-mutex';
 
 const DEFAULT_ROUTE = shellStorage.get('defaultRoute');
+const mutex = new Mutex();
 
 let currentHash: string | null = null;
 export let currentPage: Page | null = null;
@@ -215,11 +217,11 @@ async function initRoute(): Promise<void> {
     comp.loading.hide();
   }
 
-  function doNavigate(): void {
+  async function doNavigate(): Promise<void> {
     const newHash = window.location.hash.slice(1) || DEFAULT_ROUTE;
     if (currentHash === newHash) return;
     currentHash = newHash;
-    navigate(newHash);
+    await navigate(newHash);
   }
 
   const _content = document.getElementById('content');
@@ -228,10 +230,10 @@ async function initRoute(): Promise<void> {
   }
   const content = _content;
 
-  doNavigate();
+  mutex.runExclusive(doNavigate);
 
   window.addEventListener('hashchange', () => {
-    doNavigate();
+    mutex.runExclusive(doNavigate);
   });
 
   const headerBranding = document.querySelector('#header #branding');

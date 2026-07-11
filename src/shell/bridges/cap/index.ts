@@ -67,6 +67,7 @@ App.addListener('backButton', async () => {
 });
 
 App.addListener('appUrlOpen', (data: URLOpenListenerEvent) => {
+  console.log('App opened with URL:', data.url);
   const url = new URL(data.url);
   if (url.pathname === '/navigate') {
     const target = url.searchParams.get('target');

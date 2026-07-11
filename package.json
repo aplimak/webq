@@ -115,6 +115,7 @@
     "@capacitor/device": "^8.0.2",
     "@capacitor/splash-screen": "^8.0.1",
     "@capacitor/toast": "^8.0.1",
+    "async-mutex": "^0.5.0",
     "capacitor-plugin-safe-area": "^5.0.1",
     "core-js": "^3.49.0",
     "lodash": "^4.18.1",
