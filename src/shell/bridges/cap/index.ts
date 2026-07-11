@@ -4,27 +4,32 @@ import { Toast } from '@capacitor/toast';
 import { App } from '@capacitor/app';
 import { SystemBars, SystemBarsStyle } from '@capacitor/core';
 import { SafeArea } from 'capacitor-plugin-safe-area';
+import { Device } from '@capacitor/device';
 import { shellEvents } from '@/shell/event';
 
-SafeArea.getSafeAreaInsets().then(({ insets }) => {
-  for (const [key, value] of Object.entries(insets)) {
-    document.documentElement.style.setProperty(`--safe-area-inset-${key}`, `${value}px`);
-  }
-});
-
-SafeArea.getStatusBarHeight().then(({ statusBarHeight }) => {
-  document.documentElement.style.setProperty(`--status-bar-height`, `${statusBarHeight}px`);
-});
-
-SafeArea.removeAllListeners().then(() => {
-  // when safe-area changed
-  SafeArea.addListener('safeAreaChanged', (data) => {
-    const { insets } = data;
+async function init(): Promise<void> {
+  const devInfo = await Device.getInfo();
+  if (devInfo.androidSDKVersion && devInfo.androidSDKVersion <= 34) {
+    const { insets } = await SafeArea.getSafeAreaInsets();
     for (const [key, value] of Object.entries(insets)) {
       document.documentElement.style.setProperty(`--safe-area-inset-${key}`, `${value}px`);
     }
-  });
-});
+
+    const { statusBarHeight } = await SafeArea.getStatusBarHeight();
+    document.documentElement.style.setProperty(`--status-bar-height`, `${statusBarHeight}px`);
+
+    await SafeArea.removeAllListeners();
+    // when safe-area changed
+    await SafeArea.addListener('safeAreaChanged', (data) => {
+      const { insets } = data;
+      for (const [key, value] of Object.entries(insets)) {
+        document.documentElement.style.setProperty(`--safe-area-inset-${key}`, `${value}px`);
+      }
+    });
+  }
+
+  SplashScreen.hide();
+}
 
 export interface CapacitorBridge extends NativeBridgeBase {
   readonly platform: 'cap';
@@ -46,7 +51,7 @@ shellEvents.on('ui:theme-change', async (data) => {
   // await StatusBar.setBackgroundColor({ color: getHeaderColor() });
 });
 
-SplashScreen.hide();
+init();
 
 export const _bridge: CapacitorBridge = {
   platform: 'cap',
