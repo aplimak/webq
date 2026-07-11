@@ -16,4 +16,13 @@ public class WebQPlugin extends Plugin {
         ret.put("value", value);
         call.resolve(ret);
     }
+
+    @PluginMethod()
+    public void canGoBack(PluginCall call) {
+        getActivity().runOnUiThread(() -> {
+            JSObject ret = new JSObject();
+            ret.put("canGoBack", bridge.getWebView().canGoBack());
+            call.resolve(ret);
+        });
+    }
 }

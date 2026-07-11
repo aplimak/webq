@@ -120,7 +120,9 @@ interface ShellEvents {
     useDarkTheme: boolean;
     initial: boolean;
   };
-  'bridge:back-pressed': null;
+  'bridge:back-pressed': {
+    canGoBack: boolean;
+  } | null;
 }
 
 /**

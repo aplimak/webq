@@ -245,8 +245,8 @@ async function initRoute(): Promise<void> {
 
 document.addEventListener('DOMContentLoaded', initRoute);
 
-shellEvents.on('bridge:back-pressed', async () => {
-  if (inMainPage() && window.nativeBridge.platform !== 'browser') {
+shellEvents.on('bridge:back-pressed', async (data) => {
+  if (window.nativeBridge.platform !== 'browser' && (inMainPage() || !data?.canGoBack)) {
     await window.nativeBridge.quit();
   } else {
     window.history.back();

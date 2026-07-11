@@ -11,6 +11,7 @@ import { navigateTo } from '@/shell/router';
 
 export interface WebQPlugin {
   echo(options: { value: string }): Promise<{ value: string }>;
+  canGoBack(): Promise<{ canGoBack: boolean }>;
 }
 
 const WebQ = registerPlugin<WebQPlugin>('WebQ');
@@ -58,8 +59,11 @@ async function quit(): Promise<void> {
   await App.exitApp();
 }
 
-App.addListener('backButton', () => {
-  shellEvents.emit('bridge:back-pressed');
+App.addListener('backButton', async () => {
+  const { canGoBack } = await WebQ.canGoBack();
+  shellEvents.emit('bridge:back-pressed', {
+    canGoBack,
+  });
 });
 
 App.addListener('appUrlOpen', (data: URLOpenListenerEvent) => {
