@@ -1,12 +1,13 @@
 import type { NativeBridgeBase } from '../base';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Toast } from '@capacitor/toast';
-import { App } from '@capacitor/app';
+import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { SystemBars, SystemBarsStyle, registerPlugin } from '@capacitor/core';
 import { SafeArea } from 'capacitor-plugin-safe-area';
 import { Device } from '@capacitor/device';
 import { shellEvents } from '@/shell/event';
 import { isProduction } from '@/shell/env';
+import { navigateTo } from '@/shell/router';
 
 export interface WebQPlugin {
   echo(options: { value: string }): Promise<{ value: string }>;
@@ -59,6 +60,16 @@ async function quit(): Promise<void> {
 
 App.addListener('backButton', () => {
   shellEvents.emit('bridge:back-pressed');
+});
+
+App.addListener('appUrlOpen', (data: URLOpenListenerEvent) => {
+  const url = new URL(data.url);
+  if (url.pathname === '/navigate') {
+    const target = url.searchParams.get('target');
+    if (target) {
+      navigateTo(target);
+    }
+  }
 });
 
 shellEvents.on('ui:theme-change', async (data) => {
