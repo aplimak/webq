@@ -5,8 +5,7 @@ const path = require('path');
 const config = process.argv[2] || 'webpack.config.js';
 const env = process.env.NODE_ENV || 'development';
 const target = process.env.WEBQ_TARGET || 'browser';
-const outDir = target === 'cordova' ? ['www'] : ['bundle', target];
-const output = path.resolve(__dirname, '..', ...outDir);
+const output = path.resolve(__dirname, '..', 'bundle', target);
 const watch = process.env.WEBQ_WATCH === '1';
 const serve = process.env.WEBQ_SERVE === '1';
 

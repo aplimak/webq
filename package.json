@@ -32,8 +32,8 @@
     "serve:electron": "cross-env WEBQ_TARGET=electron npm run serve",
     "build:browser:dev": "npm run bundle:browser",
     "build:browser:prod": "npm run lint && cross-env NODE_ENV=production npm run bundle:browser",
-    "build:cap:dev": "npm run bundle:cap && cap build android --flavor development",
-    "build:cap:prod": "npm run lint && cross-env NODE_ENV=production npm run bundle:cap && cap build android --flavor production",
+    "build:cap:dev": "npm run bundle:cap && cap sync && cap build android --flavor development",
+    "build:cap:prod": "npm run lint && cross-env NODE_ENV=production npm run bundle:cap && cap sync && cap build android --flavor production",
     "build:electron:dev": "npm run bundle:electron",
     "build:electron:prod": "npm run lint && cross-env NODE_ENV=production npm run bundle:electron",
     "watch:browser": "cross-env WEBQ_WATCH=1 npm run bundle:browser",
@@ -52,7 +52,7 @@
     "lint:fix": "eslint --ext .ts src --fix --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,js,css,scss,html,json,md}\"",
     "clean": "npm run clean:staging dist",
-    "clean:staging": "rimraf www bundle",
+    "clean:staging": "rimraf bundle",
     "clean:all": "npm run clean node_modules platforms plugins"
   },
   "devDependencies": {
