@@ -4,11 +4,12 @@ const config: CapacitorConfig = {
   appId: 'ir.aeliux.webq',
   appName: 'WebQ',
   webDir: 'bundle/cap',
-  cordova: {
-    preferences: {
-      FadeSplashScreen: 'false'
-    }
-  }
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 500,
+      launchAutoHide: true,
+    },
+  },
 };
 
 export default config;
