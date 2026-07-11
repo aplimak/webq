@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   webDir: 'bundle/cap',
   plugins: {
     StatusBar: {
-      overlaysWebView: false,
+      overlaysWebView: true,
     },
   },
 };
