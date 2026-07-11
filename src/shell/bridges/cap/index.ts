@@ -2,12 +2,29 @@ import type { NativeBridgeBase } from '../base';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Toast } from '@capacitor/toast';
 import { App } from '@capacitor/app';
-import { SystemBars, SystemBarsStyle } from '@capacitor/core';
+import { SystemBars, SystemBarsStyle, registerPlugin } from '@capacitor/core';
 import { SafeArea } from 'capacitor-plugin-safe-area';
 import { Device } from '@capacitor/device';
 import { shellEvents } from '@/shell/event';
+import { isProduction } from '@/shell/env';
+
+export interface WebQPlugin {
+  echo(options: { value: string }): Promise<{ value: string }>;
+}
+
+const WebQ = registerPlugin<WebQPlugin>('WebQ');
 
 async function init(): Promise<void> {
+  if (!isProduction) {
+    // ensure our plugin works properly in dev mode
+    const { value } = await WebQ.echo({ value: 'Hello World!' });
+    if (value !== 'Hello World!') {
+      console.error('WebQ plugin is not working properly');
+    } else {
+      console.log('WebQ plugin is working properly');
+    }
+  }
+
   const devInfo = await Device.getInfo();
   if (devInfo.androidSDKVersion && devInfo.androidSDKVersion <= 34) {
     const { insets } = await SafeArea.getSafeAreaInsets();
