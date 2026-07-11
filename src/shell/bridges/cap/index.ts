@@ -14,6 +14,12 @@ export interface WebQPlugin {
   canGoBack(): Promise<{ canGoBack: boolean }>;
 }
 
+export interface CapacitorBridge extends NativeBridgeBase {
+  readonly platform: 'cap';
+  shouldNavigate(): Promise<boolean>;
+  quit(): Promise<void>;
+}
+
 const WebQ = registerPlugin<WebQPlugin>('WebQ');
 
 async function init(): Promise<void> {
@@ -50,9 +56,13 @@ async function init(): Promise<void> {
   SplashScreen.hide();
 }
 
-export interface CapacitorBridge extends NativeBridgeBase {
-  readonly platform: 'cap';
-  quit(): Promise<void>;
+async function shouldNavigate(): Promise<boolean> {
+  const info = await App.getLaunchUrl();
+  if (info === undefined || info.url === '') {
+    return true;
+  }
+
+  return false;
 }
 
 async function quit(): Promise<void> {
@@ -88,6 +98,7 @@ init();
 
 export const _bridge: CapacitorBridge = {
   platform: 'cap',
+  shouldNavigate,
   quit,
   async toast(message: string, duration: number = 3000): Promise<void> {
     await Toast.show({ text: message, duration: duration < 1000 ? 'short' : 'long' });

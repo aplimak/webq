@@ -230,8 +230,6 @@ async function initRoute(): Promise<void> {
   }
   const content = _content;
 
-  mutex.runExclusive(doNavigate);
-
   window.addEventListener('hashchange', () => {
     mutex.runExclusive(doNavigate);
   });
@@ -242,6 +240,10 @@ async function initRoute(): Promise<void> {
     headerBranding.addEventListener('click', () => {
       navigateTo('home');
     });
+  }
+
+  if (!('shouldNavigate' in window.nativeBridge) || (await window.nativeBridge.shouldNavigate())) {
+    mutex.runExclusive(doNavigate);
   }
 }
 
