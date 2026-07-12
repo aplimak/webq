@@ -56,7 +56,7 @@ function createWindow(): void {
 }
 
 app.whenReady().then(() => {
-  const res = webq_rs.webq_rs.add(BigInt(2), BigInt(7));
+  const res = webq_rs.webq_rs.add(2, 7);
   console.log(`webq_rs respond: ${res}`);
   createWindow();
 

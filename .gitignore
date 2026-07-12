@@ -45,3 +45,7 @@ google-services.json
 *.hprof
 
 src/shell/bridges/electron/main/webq_rs/
+
+android/app/src/main/jniLibs/*/libwebq_rs.so
+
+android/app/src/main/java/uniffi/webq_rs/
