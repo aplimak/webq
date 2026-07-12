@@ -52,3 +52,24 @@ try {
 } catch(Exception e) {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
 }
+
+// Define a custom task
+tasks.register('DistRelease') {
+    dependsOn 'assembleRelease'
+    doLast {
+        def variant = android.applicationVariants.find { it.name == "release" }
+        def outputFile = variant.outputs[0].outputFile
+
+        def customDir = file("../../dist")
+        customDir.mkdirs()
+        def destFile = new File(customDir, outputFile.name)
+
+        copy {
+            from outputFile
+            into customDir
+            rename { outputFile.name }
+        }
+
+        println "Release artifact copied to: ${destFile.absolutePath}"
+    }
+}
