@@ -35,6 +35,13 @@ const mainConfig = merge(base, {
     __dirname: false, // Keep __dirname as actual path
     __filename: false,
   },
+  ignoreWarnings: [
+    (warning) => {
+      return (
+        warning.name === 'ModuleNotFoundError' && /(@ubjs\/node-)|uniffi-/.test(warning.message)
+      );
+    },
+  ],
 });
 
 const preloadConfig = merge(base, {

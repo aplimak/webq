@@ -17,6 +17,7 @@ const compat = new FlatCompat({
 export default defineConfig([
   {
     files: ['src/**/*.ts'],
+    ignores: ['src/shell/bridges/electron/main/webq_rs/*.ts'],
     extends: compat.extends(
       'eslint:recommended',
       'plugin:@typescript-eslint/recommended',
