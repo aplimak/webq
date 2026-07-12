@@ -37,22 +37,8 @@ async function init(): Promise<void> {
 
   const devInfo = await Device.getInfo();
   if (devInfo.androidSDKVersion && devInfo.androidSDKVersion <= 34) {
-    const { insets } = await SafeArea.getSafeAreaInsets();
-    for (const [key, value] of Object.entries(insets)) {
-      document.documentElement.style.setProperty(`--safe-area-inset-${key}`, `${value}px`);
-    }
-
     const { statusBarHeight } = await SafeArea.getStatusBarHeight();
     document.documentElement.style.setProperty(`--status-bar-height`, `${statusBarHeight}px`);
-
-    await SafeArea.removeAllListeners();
-    // when safe-area changed
-    await SafeArea.addListener('safeAreaChanged', (data) => {
-      const { insets } = data;
-      for (const [key, value] of Object.entries(insets)) {
-        document.documentElement.style.setProperty(`--safe-area-inset-${key}`, `${value}px`);
-      }
-    });
   }
 
   SplashScreen.hide();
