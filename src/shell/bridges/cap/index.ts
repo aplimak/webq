@@ -2,7 +2,7 @@ import type { NativeBridgeBase } from '../base';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Toast } from '@capacitor/toast';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
-import { SystemBars, SystemBarsStyle, registerPlugin } from '@capacitor/core';
+import { PluginListenerHandle, SystemBars, SystemBarsStyle, registerPlugin } from '@capacitor/core';
 import { SafeArea } from 'capacitor-plugin-safe-area';
 import { Device } from '@capacitor/device';
 import { shellEvents } from '@/shell/event';
@@ -10,6 +10,8 @@ import { isProduction } from '@/shell/env';
 import { navigateTo } from '@/shell/router';
 
 export interface WebQPlugin {
+  addListener(eventName: 'uiReady', listenerFunc: () => void): Promise<PluginListenerHandle>;
+  removeAllListeners(): Promise<void>;
   echo(options: { value: string }): Promise<{ value: string }>;
   canGoBack(): Promise<{ canGoBack: boolean }>;
 }

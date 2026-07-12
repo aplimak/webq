@@ -4,6 +4,11 @@ const config: CapacitorConfig = {
   appId: 'ir.aeliux.webq',
   appName: 'WebQ',
   webDir: 'bundle/cap',
+  plugins: {
+    SplashScreen: {
+      launchAutoHide: false,
+    },
+  },
 };
 
 export default config;
