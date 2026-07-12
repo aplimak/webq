@@ -4,5 +4,7 @@ set -e
 
 cd "$(dirname "$0")"
 
-cargo install uniffi --features cli --root .bin
+. common.sh
+
+cargo install uniffi --version 0.31.0 --features cli --root .bin
 cargo install cargo-ndk --root .bin

@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 import fs from 'fs';
+import webq_rs from './webq_rs';
 
 let mainWindow: BrowserWindow | null = null;
 const useServer = process.argv.includes('--webq-use-server');
@@ -55,6 +56,8 @@ function createWindow(): void {
 }
 
 app.whenReady().then(() => {
+  const res = webq_rs.webq_rs.add(BigInt(2), BigInt(7));
+  console.log(`webq_rs respond: ${res}`);
   createWindow();
 
   if (__WEBQ_NODE_ENV__ === 'development') {

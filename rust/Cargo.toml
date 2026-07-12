@@ -8,7 +8,7 @@ crate-type = ["cdylib"]
 name = "webq_rs"
 
 [dependencies]
-uniffi = { version = "0.32.0" }
+uniffi = { version = "0.31.0" }
 
 [build-dependencies]
-uniffi = { version = "0.32.0", features = ["build"] }
+uniffi = { version = "0.31.0", features = ["build"] }

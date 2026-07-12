@@ -13,6 +13,14 @@ const mainConfig = merge(base, {
     path: path.resolve(process.env.WEBQ_OUTPUT, 'main'),
     filename: 'index.js',
   },
+  module: {
+    rules: [
+      {
+        test: /\.node$/,
+        use: 'node-loader',
+      },
+    ],
+  },
   plugins: [
     new CopyPlugin({
       patterns: [

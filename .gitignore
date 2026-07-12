@@ -43,3 +43,5 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+src/shell/bridges/electron/main/webq_rs/
