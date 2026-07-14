@@ -10,9 +10,6 @@ def rustSources = files(
         file("$rustRoot/Cargo.lock")
 )
 
-def rustLibsDir = file("${getLayout().buildDirectory.get()}/rustLibs")
-def generatedKotlinDir = file("${getLayout().buildDirectory.get()}/generated/uniffi")
-
 android {
     namespace 'uniffi.webq_rs'
 
@@ -38,12 +35,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
-    sourceSets {
-        main {
-            kotlin.srcDirs += generatedKotlinDir
-            jniLibs.srcDirs += rustLibsDir
-        }
-    }
 }
 
 dependencies {
@@ -56,6 +47,9 @@ dependencies {
 
 android.libraryVariants.configureEach { variant ->
     def cargoTargetDir = file("${getLayout().buildDirectory.get()}/cargo_target/${variant.name}")
+    def rustLibsDir = file("${layout.buildDirectory.get()}/rustLibs/${variant.name}")
+    def generatedKotlinDir = file("${layout.buildDirectory.get()}/generated/uniffi/${variant.name}")
+
     tasks.register("cargo${variant.name.capitalize()}Build", Exec) {
         inputs.files(rustSources)
 
@@ -71,6 +65,13 @@ android.libraryVariants.configureEach { variant ->
                 "uniffi-bindgen generate --library ${rustLibsDir.absolutePath}/arm64-v8a/libwebq_rs.so " +
                 "--language kotlin --out-dir ${generatedKotlinDir.absolutePath}"
     }
+
+    android.sourceSets.named(variant.name) { it ->
+        it.kotlin.srcDir(generatedKotlinDir)
+        it.jniLibs.srcDir(rustLibsDir)
+    }
+
+    println "Variant $variant.name kotlin srcDirs: ${android.sourceSets.named(variant.name).kotlin.srcDirs}"
 
     tasks.named("pre${variant.name.capitalize()}Build") {
         dependsOn "cargo${variant.name.capitalize()}Build"
