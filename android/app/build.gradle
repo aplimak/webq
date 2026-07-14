@@ -81,7 +81,6 @@ try {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
 }
 
-// Define a custom task
 tasks.register('DistRelease') {
     dependsOn 'assembleRelease'
     doLast {
@@ -100,4 +99,32 @@ tasks.register('DistRelease') {
 
         println "Release artifact copied to: ${destFile.absolutePath}"
     }
+}
+
+def bundleDir = new File(project.rootDir.parentFile, 'bundle/cap')
+def assetTargetDir = file('src/main/assets/public')
+
+tasks.register("verifyWebAssets") {
+    // Fail if source does not exist or is not a directory
+    if (!bundleDir.exists() || !bundleDir.isDirectory()) {
+        throw new GradleException("Source directory does not exist or is not a directory: ${bundleDir.absolutePath}")
+    }
+    // Optional: ensure the destination parent directory can be created
+    if (!assetTargetDir.parentFile.exists() && !assetTargetDir.parentFile.mkdirs()) {
+        throw new GradleException("Cannot create destination parent directory: ${assetTargetDir.parentFile.absolutePath}")
+    }
+}
+
+tasks.register('copyWebAssets', Sync) {
+    dependsOn verifyWebAssets
+
+    inputs.dir(bundleDir)
+    outputs.dir(assetTargetDir)
+
+    from bundleDir
+    into assetTargetDir
+}
+
+tasks.named('preBuild') {
+    dependsOn copyWebAssets
 }
