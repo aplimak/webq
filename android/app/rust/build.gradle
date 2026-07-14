@@ -17,10 +17,6 @@ android {
         jvmTarget = '11'
     }
 
-    compileSdk {
-        version = release(37)
-    }
-
     defaultConfig {
         minSdk 24
 
@@ -30,10 +26,14 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        targetSdk 37
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
+    }
+    compileSdk {
+        version = release(37)
     }
 }
 
@@ -42,7 +42,6 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation 'net.java.dev.jna:jna:5.13.0@aar'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 android.libraryVariants.configureEach { variant ->
@@ -70,8 +69,6 @@ android.libraryVariants.configureEach { variant ->
         it.kotlin.srcDir(generatedKotlinDir)
         it.jniLibs.srcDir(rustLibsDir)
     }
-
-    println "Variant $variant.name kotlin srcDirs: ${android.sourceSets.named(variant.name).kotlin.srcDirs}"
 
     tasks.named("pre${variant.name.capitalize()}Build") {
         dependsOn "cargo${variant.name.capitalize()}Build"
