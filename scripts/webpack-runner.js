@@ -5,7 +5,8 @@ const path = require('path');
 const config = process.argv[2] || 'webpack.config.js';
 const env = process.env.NODE_ENV || 'development';
 const target = process.env.WEBQ_TARGET || 'browser';
-const output = path.resolve(__dirname, '..', 'bundle', target);
+const targetOutput = [target, target !== 'cap' ? '.' : env === 'production' ? 'release' : 'debug'];
+const output = path.resolve(__dirname, '..', 'bundle', ...targetOutput);
 const watch = process.env.WEBQ_WATCH === '1';
 const serve = process.env.WEBQ_SERVE === '1';
 

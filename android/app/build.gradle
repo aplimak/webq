@@ -101,30 +101,32 @@ tasks.register('DistRelease') {
     }
 }
 
-def bundleDir = new File(project.rootDir.parentFile, 'bundle/cap')
-def assetTargetDir = file('src/main/assets/public')
+android.applicationVariants.all { variant ->
+    def bundleDir = new File(project.rootDir.parentFile, "bundle/cap/${variant.name}")
+    def assetTargetDir = file('src/main/assets/public')
 
-tasks.register("verifyWebAssets") {
-    // Fail if source does not exist or is not a directory
-    if (!bundleDir.exists() || !bundleDir.isDirectory()) {
-        throw new GradleException("Source directory does not exist or is not a directory: ${bundleDir.absolutePath}")
+    tasks.register("verify${variant.name.capitalize()}WebAssets") {
+        // Fail if source does not exist or is not a directory
+        if (!bundleDir.exists() || !bundleDir.isDirectory()) {
+            throw new GradleException("Source directory does not exist or is not a directory: ${bundleDir.absolutePath}")
+        }
+        // Optional: ensure the destination parent directory can be created
+        if (!assetTargetDir.parentFile.exists() && !assetTargetDir.parentFile.mkdirs()) {
+            throw new GradleException("Cannot create destination parent directory: ${assetTargetDir.parentFile.absolutePath}")
+        }
     }
-    // Optional: ensure the destination parent directory can be created
-    if (!assetTargetDir.parentFile.exists() && !assetTargetDir.parentFile.mkdirs()) {
-        throw new GradleException("Cannot create destination parent directory: ${assetTargetDir.parentFile.absolutePath}")
+
+    tasks.register("copy${variant.name.capitalize()}WebAssets", Sync) {
+        dependsOn "verify${variant.name.capitalize()}WebAssets"
+
+        inputs.dir(bundleDir)
+        outputs.dir(assetTargetDir)
+
+        from bundleDir
+        into assetTargetDir
     }
-}
 
-tasks.register('copyWebAssets', Sync) {
-    dependsOn verifyWebAssets
-
-    inputs.dir(bundleDir)
-    outputs.dir(assetTargetDir)
-
-    from bundleDir
-    into assetTargetDir
-}
-
-tasks.named('preBuild') {
-    dependsOn copyWebAssets
+    tasks.named("pre${variant.name.capitalize()}Build") {
+        dependsOn "copy${variant.name.capitalize()}WebAssets"
+    }
 }
