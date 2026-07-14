@@ -32,7 +32,7 @@
     "bundle:browser": "cross-env WEBQ_TARGET=browser npm run bundle",
     "bundle:electron": "cross-env WEBQ_TARGET=electron npm run bundle webpack.electron.js",
     "bundle:cap": "cross-env WEBQ_TARGET=cap npm run bundle",
-    "sync:cap": "concurrently \"npm run bundle:cap && cap sync\" \"./rust/build-android.sh\"",
+    "sync:cap": "concurrently \"npm run bundle:cap && cap sync\"",
     "serve": "cross-env WEBQ_SERVE=1 node scripts/webpack-runner.js",
     "serve:browser": "cross-env WEBQ_TARGET=browser npm run serve",
     "serve:electron": "cross-env WEBQ_TARGET=electron npm run serve",

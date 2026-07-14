@@ -1,0 +1,75 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+def rustRoot = new File(project.rootDir.parentFile, 'rust')
+def rustSources = files(
+        fileTree("$rustRoot/src"),
+        file("$rustRoot/Cargo.toml"),
+        file("$rustRoot/Cargo.lock")
+)
+def cargoTargetDir = file("${getLayout().buildDirectory.get()}/cargo_target")
+def rustLibsDir = file("${getLayout().buildDirectory.get()}/rustLibs")
+def generatedKotlinDir = file("${getLayout().buildDirectory.get()}/generated/uniffi")
+
+android {
+    namespace 'uniffi.webq_rs'
+
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+
+    compileSdk {
+        version = release(37)
+    }
+
+    defaultConfig {
+        minSdk 24
+
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86_64"
+        }
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    sourceSets {
+        main {
+            kotlin.srcDirs += generatedKotlinDir
+            jniLibs.srcDirs += rustLibsDir
+        }
+    }
+}
+
+dependencies {
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation 'net.java.dev.jna:jna:5.13.0@aar'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+
+tasks.register('cargoBuild', Exec) {
+    inputs.files(rustSources)
+
+    outputs.dir(cargoTargetDir)
+    outputs.dir(rustLibsDir)
+    outputs.dir(generatedKotlinDir)
+
+    workingDir rustRoot
+    environment 'CARGO_TARGET_DIR', cargoTargetDir
+
+    commandLine 'bash', '-c', ". common.sh; cargo ndk -t arm64-v8a -t armeabi-v7a -t x86_64 " +
+            "-o ${rustLibsDir.absolutePath} build --release && " +
+            "./.bin/bin/uniffi-bindgen generate --library ${rustLibsDir.absolutePath}/arm64-v8a/libwebq_rs.so " +
+            "--language kotlin --out-dir ${generatedKotlinDir.absolutePath}"
+}
+
+tasks.named('preBuild') {
+    dependsOn cargoBuild
+}
