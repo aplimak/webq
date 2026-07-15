@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
 }
 
 def rustRoot = new File(project.rootDir.parentFile, 'rust')
@@ -12,10 +11,6 @@ def rustSources = files(
 
 android {
     namespace 'uniffi.webq_rs'
-
-    kotlinOptions {
-        jvmTarget = '11'
-    }
 
     defaultConfig {
         minSdk 24
@@ -32,9 +27,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
-    compileSdk {
-        version = release(37)
-    }
+    compileSdk = 37
 }
 
 dependencies {
@@ -44,33 +37,33 @@ dependencies {
     implementation 'net.java.dev.jna:jna:5.13.0@aar'
 }
 
-android.libraryVariants.configureEach { variant ->
-    def cargoTargetDir = file("${getLayout().buildDirectory.get()}/cargo_target/${variant.name}")
-    def rustLibsDir = file("${layout.buildDirectory.get()}/rustLibs/${variant.name}")
-    def generatedKotlinDir = file("${layout.buildDirectory.get()}/generated/uniffi/${variant.name}")
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        def capName = variant.name.capitalize()
+        def cargoTargetDir = file("${layout.buildDirectory.get()}/cargo_target/${variant.name}")
+        def rustLibsDir = file("${layout.buildDirectory.get()}/rustLibs/${variant.name}")
+        def generatedKotlinDir = file("${layout.buildDirectory.get()}/generated/uniffi/${variant.name}")
 
-    tasks.register("cargo${variant.name.capitalize()}Build", Exec) {
-        inputs.files(rustSources)
+        tasks.register("cargo${capName}Build", Exec) {
+            inputs.files(rustSources)
+            outputs.dir(cargoTargetDir)
+            outputs.dir(rustLibsDir)
+            outputs.dir(generatedKotlinDir)
+            workingDir rustRoot
+            environment 'CARGO_TARGET_DIR', cargoTargetDir
+            commandLine 'bash', '-c', ". common.sh; cargo ndk -t arm64-v8a -t armeabi-v7a -t x86_64 " +
+                    "-o ${rustLibsDir.absolutePath} build ${variant.name == 'debug' ? '' : '--release'} && " +
+                    "uniffi-bindgen generate --library ${rustLibsDir.absolutePath}/arm64-v8a/libwebq_rs.so " +
+                    "--language kotlin --out-dir ${generatedKotlinDir.absolutePath}"
+        }
 
-        outputs.dir(cargoTargetDir)
-        outputs.dir(rustLibsDir)
-        outputs.dir(generatedKotlinDir)
+        android.sourceSets.named(variant.name) {
+            it.kotlin.srcDir(generatedKotlinDir)
+            it.jniLibs.srcDir(rustLibsDir)
+        }
 
-        workingDir rustRoot
-        environment 'CARGO_TARGET_DIR', cargoTargetDir
-
-        commandLine 'bash', '-c', ". common.sh; cargo ndk -t arm64-v8a -t armeabi-v7a -t x86_64 " +
-                "-o ${rustLibsDir.absolutePath} build ${variant.name == 'debug' ? '' : '--release'} && " +
-                "uniffi-bindgen generate --library ${rustLibsDir.absolutePath}/arm64-v8a/libwebq_rs.so " +
-                "--language kotlin --out-dir ${generatedKotlinDir.absolutePath}"
-    }
-
-    android.sourceSets.named(variant.name) { it ->
-        it.kotlin.srcDir(generatedKotlinDir)
-        it.jniLibs.srcDir(rustLibsDir)
-    }
-
-    tasks.named("pre${variant.name.capitalize()}Build") {
-        dependsOn "cargo${variant.name.capitalize()}Build"
+        tasks.matching { it.name == "compile${capName}Kotlin" || it.name == "merge${capName}JniLibFolders" }.configureEach {
+            dependsOn "cargo${capName}Build"
+        }
     }
 }

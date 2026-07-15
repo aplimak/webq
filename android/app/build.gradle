@@ -1,10 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 
 android {
-    kotlinOptions {
-        jvmTarget = '11'
-    }
     namespace = "ir.aeliux.webq"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
@@ -69,7 +65,6 @@ dependencies {
 }
 
 apply from: 'capacitor.build.gradle'
-apply plugin: 'org.jetbrains.kotlin.android'
 
 try {
     def servicesJSON = file('google-services.json')
@@ -80,52 +75,65 @@ try {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
 }
 
-tasks.register('DistRelease') {
-    dependsOn 'assembleRelease'
-    doLast {
-        def variant = android.applicationVariants.find { it.name == "release" }
-        def outputFile = variant.outputs[0].outputFile
+import com.android.build.api.artifact.SingleArtifact
 
-        def customDir = file("../../dist")
-        customDir.mkdirs()
-        def destFile = new File(customDir, outputFile.name)
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        def capName = variant.name.capitalize()
+        def bundleDir = file("${rootDir}/../bundle/cap/${variant.name}")
+        def assetTargetDir = file('src/main/assets/public')
 
-        copy {
-            from outputFile
-            into customDir
-            rename { outputFile.name }
+        // Verify source directory exists
+        def verifyTask = tasks.register("verify${capName}WebAssets") {
+            doLast {
+                if (!bundleDir.exists() || !bundleDir.isDirectory()) {
+                    throw new GradleException(
+                            "Source directory does not exist: ${bundleDir.absolutePath}"
+                    )
+                }
+                if (!assetTargetDir.parentFile.exists() && !assetTargetDir.parentFile.mkdirs()) {
+                    throw new GradleException(
+                            "Cannot create destination parent: ${assetTargetDir.parentFile.absolutePath}"
+                    )
+                }
+            }
         }
 
-        println "Release artifact copied to: ${destFile.absolutePath}"
-    }
-}
-
-android.applicationVariants.all { variant ->
-    def bundleDir = new File(project.rootDir.parentFile, "bundle/cap/${variant.name}")
-    def assetTargetDir = file('src/main/assets/public')
-
-    tasks.register("verify${variant.name.capitalize()}WebAssets") {
-        // Fail if source does not exist or is not a directory
-        if (!bundleDir.exists() || !bundleDir.isDirectory()) {
-            throw new GradleException("Source directory does not exist or is not a directory: ${bundleDir.absolutePath}")
+        // Copy web assets
+        def copyTask = tasks.register("copy${capName}WebAssets", Sync) {
+            dependsOn verifyTask
+            inputs.dir(bundleDir)
+            outputs.dir(assetTargetDir)
+            from bundleDir
+            into assetTargetDir
         }
-        // Optional: ensure the destination parent directory can be created
-        if (!assetTargetDir.parentFile.exists() && !assetTargetDir.parentFile.mkdirs()) {
-            throw new GradleException("Cannot create destination parent directory: ${assetTargetDir.parentFile.absolutePath}")
+
+        // Hook into the asset merging task (lazy – works even if not yet registered)
+        tasks.matching { it.name == "merge${capName}Assets" }.configureEach {
+            dependsOn copyTask
         }
     }
 
-    tasks.register("copy${variant.name.capitalize()}WebAssets", Sync) {
-        dependsOn "verify${variant.name.capitalize()}WebAssets"
+    onVariants(selector().withBuildType("release")) { variant ->
+        def capName = variant.name.capitalize()
 
-        inputs.dir(bundleDir)
-        outputs.dir(assetTargetDir)
+        tasks.register('DistRelease') {
+            // Depend on the standard assemble task
+            dependsOn tasks.named("assemble${capName}")
 
-        from bundleDir
-        into assetTargetDir
-    }
+            doLast {
+                // Get the APK using the modern artifact API
+                def apk = variant.artifacts.get(SingleArtifact.APK).get().asFile
 
-    tasks.named("pre${variant.name.capitalize()}Build") {
-        dependsOn "copy${variant.name.capitalize()}WebAssets"
+                def customDir = file("${rootDir}/../../dist")
+                customDir.mkdirs()
+                copy {
+                    from apk
+                    into customDir
+                    rename { apk.name }
+                }
+                println "Release artifact copied to: ${customDir.absolutePath}/${apk.name}"
+            }
+        }
     }
 }
