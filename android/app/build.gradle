@@ -109,7 +109,7 @@ androidComponents {
         }
 
         // Hook into the asset merging task (lazy – works even if not yet registered)
-        tasks.matching { it.name == "merge${capName}Assets" }.configureEach {
+        tasks.matching { it.name == "merge${capName}Assets" || it.name == "generate${capName}LintVitalReportModel" || it.name == "lintVitalAnalyze${capName}" }.configureEach {
             dependsOn copyTask
         }
     }
@@ -121,19 +121,18 @@ androidComponents {
             // Depend on the standard assemble task
             dependsOn tasks.named("assemble${capName}")
 
-            doLast {
-                // Get the APK using the modern artifact API
-                def apk = variant.artifacts.get(SingleArtifact.APK).get().asFile
+            // Get the APK using the modern artifact API
+            def apk = variant.artifacts.get(SingleArtifact.APK.INSTANCE).get().asFile
 
-                def customDir = file("${rootDir}/../../dist")
-                customDir.mkdirs()
-                copy {
-                    from apk
-                    into customDir
-                    rename { apk.name }
-                }
-                println "Release artifact copied to: ${customDir.absolutePath}/${apk.name}"
+            def customDir = file("${rootDir}/../dist")
+            customDir.mkdirs()
+            copy {
+                from apk
+                into customDir
+                rename { apk.name }
+                duplicatesStrategy = DuplicatesStrategy.INCLUDE
             }
+            println "Release artifact copied to: ${customDir.absolutePath}/${apk.name}"
         }
     }
 }

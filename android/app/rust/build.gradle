@@ -62,7 +62,7 @@ androidComponents {
             it.jniLibs.srcDir(rustLibsDir)
         }
 
-        tasks.matching { it.name == "compile${capName}Kotlin" || it.name == "merge${capName}JniLibFolders" }.configureEach {
+        tasks.matching { it.name == "compile${capName}Kotlin" || it.name == "merge${capName}JniLibFolders" || it.name == "extract${capName}Annotations" }.configureEach {
             dependsOn "cargo${capName}Build"
         }
     }
