@@ -11,7 +11,7 @@ export function setTitle(title: string): void {
 }
 
 export function setVisibility(visible: boolean): void {
-  const header = document.querySelector('header');
+  const header = document.querySelector('#header');
   if (header) {
     if (visible) {
       header.classList.remove('hide');
@@ -32,7 +32,7 @@ export function resetTitle(): void {
 }
 
 export function getHeaderColor(): string {
-  const header = document.querySelector('header');
+  const header = document.querySelector('#header');
   if (header) {
     const styles = getComputedStyle(header);
     const rgb = styles.backgroundColor;
@@ -53,7 +53,7 @@ export function getHeaderColor(): string {
 }
 
 function updateThemeBtnIcon(useDarkTheme: boolean, initial: boolean): void {
-  const btn = document.querySelector('header #switch-theme');
+  const btn = document.querySelector('#header #switch-theme');
   if (!btn) {
     throw Error('Theme change button not found');
   }
@@ -101,7 +101,7 @@ shellEvents.on('ui:theme-change', (data) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  const switchThemeButton = document.querySelector('header #switch-theme');
+  const switchThemeButton = document.querySelector('#header #switch-theme');
   if (switchThemeButton) {
     switchThemeButton.addEventListener('click', async () => {
       const { isDark, setTheme } = await import('./themeManager');

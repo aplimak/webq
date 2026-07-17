@@ -8,7 +8,7 @@ function registerHandler(e: any): void {
   // Save the event so we can trigger it later
   let deferredPrompt = e;
 
-  const installBtn = document.querySelector('header #install-pwa');
+  const installBtn = document.querySelector('#header #install-pwa');
   if (installBtn) {
     installBtn.classList.remove('hide');
     installBtn.addEventListener('click', async () => {
