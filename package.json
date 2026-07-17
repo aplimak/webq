@@ -45,6 +45,7 @@
     "watch:browser": "cross-env WEBQ_WATCH=1 npm run bundle:browser",
     "watch:cap:dev": "cross-env WEBQ_WATCH=1 npm run bundle:cap",
     "watch:cap:prod": "cross-env NODE_ENV=production WEBQ_WATCH=1 npm run bundle:cap",
+    "watch:cap": "concurrently \"npm run watch:cap:dev\" \"npm run watch:cap:prod\"",
     "watch:electron": "cross-env WEBQ_WATCH=1 npm run bundle:electron",
     "start": "npm run serve:browser",
     "run:electron:prod": "npm run build:electron:prod && electron .",
