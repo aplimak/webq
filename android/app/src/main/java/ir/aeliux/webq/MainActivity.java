@@ -26,9 +26,6 @@ public class MainActivity extends BridgeActivity {
 
         registerPlugin(WebQPlugin.class);
         super.onCreate(savedInstanceState);
-        // My emulators do not show good signs, so i disable it until i have a real pgone or learn how to fix this
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            WindowCompat.enableEdgeToEdge(getWindow());
-        }
+        WindowCompat.enableEdgeToEdge(getWindow());
     }
 }

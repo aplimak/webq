@@ -4,7 +4,6 @@ import { Toast } from '@capacitor/toast';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { PluginListenerHandle, SystemBars, SystemBarsStyle, registerPlugin } from '@capacitor/core';
 import { SafeArea } from 'capacitor-plugin-safe-area';
-import { Device } from '@capacitor/device';
 import { shellEvents } from '@/shell/event';
 import { isProduction } from '@/shell/env';
 import { navigateTo } from '@/shell/router';
@@ -35,11 +34,8 @@ async function init(): Promise<void> {
     }
   }
 
-  const devInfo = await Device.getInfo();
-  if (devInfo.androidSDKVersion && devInfo.androidSDKVersion <= 34) {
-    const { statusBarHeight } = await SafeArea.getStatusBarHeight();
-    document.documentElement.style.setProperty(`--status-bar-height`, `${statusBarHeight}px`);
-  }
+  const { statusBarHeight } = await SafeArea.getStatusBarHeight();
+  document.documentElement.style.setProperty(`--status-bar-height`, `${statusBarHeight}px`);
 
   SplashScreen.hide();
 }
